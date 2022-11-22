@@ -1,0 +1,11 @@
+[package]
+name = "common"
+edition = "2021"
+description = "Types that the runner and my solutions use for Advents of Code"
+version.workspace = true
+authors.workspace = true
+repository.workspace = true
+license.workspace = true
+
+[dependencies]
+anyhow.workspace = true

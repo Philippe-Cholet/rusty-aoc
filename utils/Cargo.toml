@@ -1,0 +1,11 @@
+[package]
+name = "utils"
+edition = "2021"
+description = "Utilities that my solutions can all use for Advents of Code"
+version.workspace = true
+authors.workspace = true
+repository.workspace = true
+license.workspace = true
+
+[dependencies]
+common = { path="../common" }

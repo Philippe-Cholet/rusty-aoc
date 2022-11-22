@@ -1,0 +1,49 @@
+use common::{bail, Context, Part, Part1, Part2, Result};
+use utils::InputParser;
+
+/// Dive!
+pub fn solver(part: Part, input: &str) -> Result<String> {
+    let mut position: i32 = 0;
+    let mut depth: i32 = 0;
+    let mut aim: i32 = 0;
+    let commands = InputParser(input).lines(|line| {
+        let (s, n) = line.split_once(' ').context("no whitespace")?;
+        Ok((s, n.parse::<i32>()?))
+    })?;
+    for command in commands {
+        match (part, command) {
+            (Part1, ("forward", n)) => position += n,
+            (Part1, ("down", n)) => depth += n,
+            (Part1, ("up", n)) => depth -= n,
+            (Part2, ("down", n)) => aim += n,
+            (Part2, ("up", n)) => aim -= n,
+            (Part2, ("forward", n)) => {
+                position += n;
+                depth += n * aim;
+            }
+            _ => bail!("Invalid submarine command"),
+        }
+    }
+    let result = position * depth;
+    Ok(result.to_string())
+}
+
+pub const INPUTS: [&str; 2] = [
+    "forward 5
+down 5
+forward 8
+up 3
+down 8
+forward 2
+",
+    include_str!("input.txt"),
+];
+
+#[test]
+fn solver_21_02() -> Result<()> {
+    assert_eq!(solver(Part1, INPUTS[0])?, "150");
+    assert_eq!(solver(Part1, INPUTS[1])?, "1507611");
+    assert_eq!(solver(Part2, INPUTS[0])?, "900");
+    assert_eq!(solver(Part2, INPUTS[1])?, "1880593125");
+    Ok(())
+}

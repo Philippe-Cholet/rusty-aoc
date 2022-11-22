@@ -1,0 +1,13 @@
+/target
+
+# Puzzle descriptions for offline use.
+/html
+
+# I use a Sublime Text project to manage this workspace.
+*.sublime-*
+
+# I used a python script and now a rusty one for fun (with "inquire" for nice prompts,
+# "time" to know year/month and "tinytemplate"/"serde" for basic templates)
+# to create a project for a new AoC puzzle and fully update "cli-runner" files.
+*.py
+*.exe

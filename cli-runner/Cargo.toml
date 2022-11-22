@@ -1,0 +1,36 @@
+[package]
+name = "cli-runner"
+edition = "2021"
+description = "Run my rust solutions to Advents of Code from the command line"
+version.workspace = true
+authors.workspace = true
+repository.workspace = true
+license.workspace = true
+
+[dependencies]
+common = { path="../common" }
+aoc21-01 = { path="../aoc2021/day01" }
+aoc21-02 = { path="../aoc2021/day02" }
+aoc21-03 = { path="../aoc2021/day03" }
+aoc21-04 = { path="../aoc2021/day04" }
+aoc21-05 = { path="../aoc2021/day05" }
+aoc21-06 = { path="../aoc2021/day06" }
+aoc21-07 = { path="../aoc2021/day07" }
+aoc21-08 = { path="../aoc2021/day08" }
+aoc21-09 = { path="../aoc2021/day09" }
+aoc21-10 = { path="../aoc2021/day10" }
+aoc21-11 = { path="../aoc2021/day11" }
+aoc21-12 = { path="../aoc2021/day12" }
+aoc21-13 = { path="../aoc2021/day13" }
+aoc21-14 = { path="../aoc2021/day14" }
+aoc21-15 = { path="../aoc2021/day15" }
+aoc21-16 = { path="../aoc2021/day16" }
+aoc21-17 = { path="../aoc2021/day17" }
+aoc21-18 = { path="../aoc2021/day18" }
+aoc21-19 = { path="../aoc2021/day19" }
+aoc21-20 = { path="../aoc2021/day20" }
+aoc21-21 = { path="../aoc2021/day21" }
+aoc21-22 = { path="../aoc2021/day22" }
+aoc21-23 = { path="../aoc2021/day23" }
+aoc21-24 = { path="../aoc2021/day24" }
+aoc21-25 = { path="../aoc2021/day25" }

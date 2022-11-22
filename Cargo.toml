@@ -1,0 +1,13 @@
+[workspace]
+members = ["aoc20*/day*", "cli-runner", "common", "utils"]
+
+[workspace.package]
+version = "0.1.0"
+authors = ["Philippe Cholet"]
+repository = "https://github.com/Philippe-Cholet/rusty-aoc"
+license = "MIT OR Apache-2.0"
+
+[workspace.dependencies]
+# Common dependencies to my solvers
+anyhow = "1.0.66"
+itertools = "0.10.5"

@@ -1,0 +1,12 @@
+[package]
+name = "aoc21-25"
+edition = "2021"
+description = "My solution for the Advent of Code 2021 day 25"
+version.workspace = true
+authors.workspace = true
+repository.workspace = true
+license.workspace = true
+
+[dependencies]
+common = { path="../../common" }
+utils = { path="../../utils" }
