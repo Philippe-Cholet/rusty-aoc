@@ -6,29 +6,35 @@ use std::{
 
 use common::{format_err, Result};
 
-type Parser<S, T> = fn(S) -> Result<T>;
-
 /// Map `Iterator<Item=&str>` and try to collect results to clear types.
 pub trait FromIterStr<'a>: Sized + Iterator<Item = &'a str> {
-    fn parse_to_vec<T>(self, parser: Parser<&'a str, T>) -> Result<Vec<T>> {
+    fn parse_to_vec<T, F>(self, parser: F) -> Result<Vec<T>>
+    where
+        F: FnMut(&'a str) -> Result<T>,
+    {
         self.map(parser).collect()
     }
 
-    fn parse_to_hmap<K, V>(self, parser: Parser<&'a str, (K, V)>) -> Result<HashMap<K, V>>
+    fn parse_to_hmap<K, V, F>(self, parser: F) -> Result<HashMap<K, V>>
     where
         K: Eq + Hash,
+        F: FnMut(&'a str) -> Result<(K, V)>,
     {
         self.map(parser).collect()
     }
 
-    fn parse_to_hset<T>(self, parser: Parser<&'a str, T>) -> Result<HashSet<T>>
+    fn parse_to_hset<T, F>(self, parser: F) -> Result<HashSet<T>>
     where
         T: Eq + Hash,
+        F: FnMut(&'a str) -> Result<T>,
     {
         self.map(parser).collect()
     }
 
-    fn parse_to_grid<T>(self, parser: Parser<char, T>) -> Result<Vec<Vec<T>>> {
+    fn parse_to_grid<T, F>(self, parser: F) -> Result<Vec<Vec<T>>>
+    where
+        F: FnMut(char) -> Result<T> + Copy,
+    {
         self.map(|line| line.chars().map(parser).collect())
             .collect()
     }
@@ -38,18 +44,21 @@ pub trait FromIterStr<'a>: Sized + Iterator<Item = &'a str> {
     fn parse_to_string
     fn parse_to_btmap<K, V> // std::collections::BTreeMap
     fn parse_to_btset<T>    // std::collections::BTreeSet
+    */
 
-    fn to_loc_grid<T>(self, parser: Parser<((usize, usize), char), T>) -> Result<Vec<Vec<T>>> {
+    fn parse_to_grid_with_loc<T, F>(self, mut parser: F) -> Result<Vec<Vec<T>>>
+    where
+        F: FnMut((usize, usize), char) -> Result<T>,
+    {
         self.enumerate()
             .map(|(r, line)| {
                 line.chars()
                     .enumerate()
-                    .map(|(c, ch)| parser(((r, c), ch)))
+                    .map(|(c, ch)| parser((r, c), ch))
                     .collect()
             })
             .collect()
     }
-    */
 
     // Sometimes `str::parse` would do the job directly.
     // However the error type would not necessarily be anyhow-compatible

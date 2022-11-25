@@ -10,7 +10,7 @@ use std::{
 use itertools::{iproduct, Itertools};
 
 use common::{bail, Context, Part, Part1, Part2, Result};
-use utils::neighbors;
+use utils::{neighbors, FromIterStr};
 
 type Location = (usize, usize);
 
@@ -283,33 +283,28 @@ pub fn solver(part: Part, input: &str) -> Result<String> {
         _ => None,
     };
     let mut init_places = HashMap::new();
-    let mut grid = vec![];
-    for (r, line) in lines.into_iter().enumerate() {
-        grid.push(vec![]);
-        for (c, ch) in line.chars().enumerate() {
-            let cell = match ch {
-                '#' | ' ' => Cell::Wall,
-                '.' => Cell::Hallway {
-                    entry: column2amphipod(c).is_some(),
-                },
-                'A' | 'B' | 'C' | 'D' => {
-                    let amphipod = match ch {
-                        'A' => Amphipod::Amber,
-                        'B' => Amphipod::Bronze,
-                        'C' => Amphipod::Copper,
-                        'D' => Amphipod::Desert,
-                        _ => bail!("Not an amphipod: {}", ch),
-                    };
-                    init_places.insert((r, c), amphipod);
-                    Cell::Room {
-                        target: column2amphipod(c).context("Amphipod in hallway")?,
-                    }
+    let grid = lines.into_iter().parse_to_grid_with_loc(|(r, c), ch| {
+        Ok(match ch {
+            '#' | ' ' => Cell::Wall,
+            '.' => Cell::Hallway {
+                entry: column2amphipod(c).is_some(),
+            },
+            'A' | 'B' | 'C' | 'D' => {
+                let amphipod = match ch {
+                    'A' => Amphipod::Amber,
+                    'B' => Amphipod::Bronze,
+                    'C' => Amphipod::Copper,
+                    'D' => Amphipod::Desert,
+                    _ => bail!("Not an amphipod: {}", ch),
+                };
+                init_places.insert((r, c), amphipod);
+                Cell::Room {
+                    target: column2amphipod(c).context("Amphipod in hallway")?,
                 }
-                _ => bail!("Wrong char: {}", ch),
-            };
-            grid[r].push(cell);
-        }
-    }
+            }
+            _ => bail!("Wrong char: {}", ch),
+        })
+    })?;
     let grid = Grid::new(grid, amphipods_per_room);
     let mut been = HashSet::from([AmphipodLocations::from(&init_places)]);
     let mut pqueue = BinaryHeap::from([State {
