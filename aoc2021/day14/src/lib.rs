@@ -1,14 +1,14 @@
 use itertools::Itertools;
 
 use common::{Context, Part, Part1, Part2, Result};
-use utils::InputParser;
+use utils::FromIterStr;
 
 /// Extended Polymerization
 pub fn solver(part: Part, input: &str) -> Result<String> {
     let (template, rules) = input
         .split_once("\n\n")
         .context("No empty line before the rules")?;
-    let rules = InputParser(rules).lines_hmap(|line| {
+    let rules = rules.lines().parse_to_hmap(|line| {
         let (from, to) = line.split_once(" -> ").context("No arrow?!")?;
         let pair = from
             .chars()

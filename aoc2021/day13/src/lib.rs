@@ -1,18 +1,18 @@
 use itertools::Itertools;
 
 use common::{Context, Part, Part1, Part2, Result};
-use utils::InputParser;
+use utils::FromIterStr;
 
 /// Transparent Origami
 pub fn solver(part: Part, input: &str) -> Result<String> {
     let (coords, fold_alongs) = input
         .split_once("\n\n")
         .context("No empty line after coords")?;
-    let mut coords = InputParser(coords).lines_hset(|line| {
+    let mut coords = coords.lines().parse_to_hset(|line| {
         let (x, y) = line.split_once(',').context("no comma")?;
         Ok((x.parse()?, y.parse()?))
     })?;
-    let mut fold_alongs = InputParser(fold_alongs).lines(|line| {
+    let mut fold_alongs = fold_alongs.lines().parse_to_vec(|line| {
         let (xy, n) = line
             .rsplit_once(' ')
             .context("no space")?

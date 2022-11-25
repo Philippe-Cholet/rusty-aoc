@@ -3,11 +3,11 @@ use std::collections::{HashMap, HashSet};
 use itertools::Itertools;
 
 use common::{Context, Part, Part1, Part2, Result};
-use utils::InputParser;
+use utils::FromIterStr;
 
 /// Seven Segment Search
 pub fn solver(part: Part, input: &str) -> Result<String> {
-    let data: Vec<([&str; 10], [&str; 4])> = InputParser(input).lines(|line| {
+    let data: Vec<([&str; 10], [&str; 4])> = input.lines().parse_to_vec(|line| {
         let (signals, four) = line.split_once(" | ").context("no delimiter")?;
         let signals: Vec<_> = signals.split(' ').collect();
         let four: Vec<_> = four.split(' ').collect();

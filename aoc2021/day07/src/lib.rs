@@ -1,10 +1,11 @@
 use itertools::Itertools;
 
 use common::{Context, Part, Part1, Part2, Result};
+use utils::FromIterStr;
 
 /// The Treachery of Whales
 pub fn solver(part: Part, input: &str) -> Result<String> {
-    let ns: Vec<u32> = input.trim_end().split(',').map(str::parse).try_collect()?;
+    let ns: Vec<u32> = input.trim_end().split(',').parse_str_to_vec()?;
     let (&min_n, &max_n) = ns.iter().minmax().into_option().context("empty")?;
     let result: u32 = (min_n..=max_n)
         .map(|h| {

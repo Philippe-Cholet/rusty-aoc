@@ -64,6 +64,7 @@ mod parser {
     use itertools::Itertools;
 
     use common::{bail, ensure, Error, Result};
+    use utils::FromIterStr;
 
     use super::{INPUTS, PATTERN};
 
@@ -140,7 +141,7 @@ mod parser {
     }
 
     pub fn check_input(input: &str) -> Result<()> {
-        let instructions: Vec<Instruction> = input.lines().map(str::parse).try_collect()?;
+        let instructions: Vec<Instruction> = input.lines().parse_str_to_vec()?;
         let data: Vec<_> = instructions.chunks(18)
             .map(|chunk| {
                 match chunk {

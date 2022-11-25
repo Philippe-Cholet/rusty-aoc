@@ -1,12 +1,12 @@
 use common::{bail, Context, Part, Part1, Part2, Result};
-use utils::InputParser;
+use utils::FromIterStr;
 
 /// Dive!
 pub fn solver(part: Part, input: &str) -> Result<String> {
     let mut position: i32 = 0;
     let mut depth: i32 = 0;
     let mut aim: i32 = 0;
-    let commands = InputParser(input).lines(|line| {
+    let commands = input.lines().parse_to_vec(|line| {
         let (s, n) = line.split_once(' ').context("no whitespace")?;
         Ok((s, n.parse::<i32>()?))
     })?;

@@ -6,7 +6,7 @@ use std::{
 use itertools::{iproduct, Itertools};
 
 use common::{bail, Context, Error, Part, Part1, Result};
-use utils::InputParser;
+use utils::FromIterStr;
 
 #[derive(Debug, PartialEq)]
 struct Cuboid {
@@ -113,7 +113,7 @@ impl Cuboid {
 
 /// Reactor Reboot
 pub fn solver(part: Part, input: &str) -> Result<String> {
-    let data = InputParser(input).lines(|line| {
+    let data = input.lines().parse_to_vec(|line| {
         let (on, xyz) = line.split_once(' ').context("No whitespace")?;
         let on = match on {
             "on" => true,

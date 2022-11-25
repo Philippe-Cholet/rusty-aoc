@@ -8,5 +8,5 @@ repository.workspace = true
 license.workspace = true
 
 [dependencies]
-itertools.workspace = true
 common = { path="../../common" }
+utils = { path="../../utils" }
