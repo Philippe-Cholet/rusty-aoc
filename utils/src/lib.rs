@@ -31,11 +31,11 @@ pub trait FromIterStr<'a>: Sized + Iterator<Item = &'a str> {
         self.map(parser).collect()
     }
 
-    fn parse_to_grid<T, F>(self, parser: F) -> Result<Vec<Vec<T>>>
+    fn parse_to_grid<T, F>(self, mut parser: F) -> Result<Vec<Vec<T>>>
     where
-        F: FnMut(char) -> Result<T> + Copy,
+        F: FnMut(char) -> Result<T>,
     {
-        self.map(|line| line.chars().map(parser).collect())
+        self.map(|line| line.chars().map(&mut parser).collect())
             .collect()
     }
 
