@@ -32,7 +32,8 @@ In this workspace, packages are:
 
 When no input is given to the command line, the main/last one is chosen.
 
-I chose this structure to reduce compile times (a package without changes is not recompiled).
+To [reduce compile times](https://endler.dev/2020/rust-compile-times/),
+my target directory is on a SSD and packages without changes are not recompiled thanks to this workspace structure.
 I first used "clap" to parse command line arguments but the compile times were longer.
 
 ### Dependencies
