@@ -7,6 +7,10 @@ authors.workspace = true
 repository.workspace = true
 license.workspace = true
 
+[[bin]]
+name = "cli-runner"
+test = false
+
 [dependencies]
 common = { path="../common" }
 aoc21-01 = { path="../aoc2021/day01" }
