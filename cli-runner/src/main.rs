@@ -1,8 +1,10 @@
+use std::{env, time::Instant};
+
 #[allow(clippy::wildcard_imports)]
 use common::*;
 
 fn main() -> Result<()> {
-    let mut args = std::env::args().skip(1);
+    let mut args = env::args().skip(1);
     let year = args
         .next()
         .context("Missing argument: <year 15...>")?
@@ -45,8 +47,10 @@ fn main() -> Result<()> {
             )
         })?;
 
+    let now = Instant::now();
     let result = solver(part, input)?;
-    println!("My result:\n{result}");
+    let t = now.elapsed();
+    println!("My result [ {t:?} ]\n{result}");
 
     Ok(())
 }
