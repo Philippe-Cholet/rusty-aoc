@@ -1,3 +1,5 @@
+use std::str::FromStr;
+
 pub use anyhow::{bail, ensure, format_err, Context, Error, Result};
 
 pub use self::{Day::*, Part::*, Year::*};
@@ -19,11 +21,11 @@ pub enum Year {
     Year2024,
 }
 
-impl TryFrom<String> for Year {
-    type Error = Error;
+impl FromStr for Year {
+    type Err = Error;
 
-    fn try_from(value: String) -> Result<Self> {
-        Ok(match value.as_ref() {
+    fn from_str(s: &str) -> Result<Self> {
+        Ok(match s {
             "2015" | "15" => Self::Year2015,
             "2016" | "16" => Self::Year2016,
             "2017" | "17" => Self::Year2017,
@@ -68,11 +70,11 @@ pub enum Day {
     Day25,
 }
 
-impl TryFrom<String> for Day {
-    type Error = Error;
+impl FromStr for Day {
+    type Err = Error;
 
-    fn try_from(value: String) -> Result<Self> {
-        Ok(match value.as_ref() {
+    fn from_str(s: &str) -> Result<Self> {
+        Ok(match s {
             "01" | "1" => Self::Day1,
             "02" | "2" => Self::Day2,
             "03" | "3" => Self::Day3,
@@ -109,11 +111,11 @@ pub enum Part {
     Part2,
 }
 
-impl TryFrom<String> for Part {
-    type Error = Error;
+impl FromStr for Part {
+    type Err = Error;
 
-    fn try_from(value: String) -> Result<Self> {
-        Ok(match value.as_ref() {
+    fn from_str(s: &str) -> Result<Self> {
+        Ok(match s {
             "1" => Self::Part1,
             "2" => Self::Part2,
             v => bail!("Failed to parse part (1..=2): {}", v),

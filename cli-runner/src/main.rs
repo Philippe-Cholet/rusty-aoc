@@ -8,15 +8,15 @@ fn main() -> Result<()> {
     let year = args
         .next()
         .context("Missing argument: <year 15...>")?
-        .try_into()?;
+        .parse()?;
     let day = args
         .next()
         .context("Missing argument: <day 1...25>")?
-        .try_into()?;
+        .parse()?;
     let part = args
         .next()
         .context("Missing argument: <part 1 2>")?
-        .try_into()?;
+        .parse()?;
     let (input_idx, input_nb): (Option<usize>, _) = match args.next() {
         None => (None, String::new()),
         Some(s) => (Some(s.parse()?), format!(" input #{s}")),
