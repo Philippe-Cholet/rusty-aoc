@@ -31,7 +31,7 @@ fn main() -> Result<()> {
         // Year2019 => aoc19(day)?,
         // Year2020 => aoc20(day)?,
         Year2021 => aoc21(day),
-        // Year2022 => aoc22(day)?,
+        Year2022 => aoc22(day)?,
         _ => bail!(
             "You have not solved the advent of code of \
             this year ({:?}), what are you waiting for?!",
@@ -83,4 +83,36 @@ fn aoc21(day: Day) -> (AocSolver, &'static [&'static str]) {
         Day24 => (aoc21_24::solver, &aoc21_24::INPUTS),
         Day25 => (aoc21_25::solver, &aoc21_25::INPUTS),
     }
+}
+
+// TODO: Once all days are implemented, remove Result...
+fn aoc22(day: Day) -> Result<(AocSolver, &'static [&'static str])> {
+    Ok(match day {
+        Day1 => (aoc22_01::solver, &aoc22_01::INPUTS),
+        // Day2 => (aoc22_02::solver, &aoc22_02::INPUTS),
+        // Day3 => (aoc22_03::solver, &aoc22_03::INPUTS),
+        // Day4 => (aoc22_04::solver, &aoc22_04::INPUTS),
+        // Day5 => (aoc22_05::solver, &aoc22_05::INPUTS),
+        // Day6 => (aoc22_06::solver, &aoc22_06::INPUTS),
+        // Day7 => (aoc22_07::solver, &aoc22_07::INPUTS),
+        // Day8 => (aoc22_08::solver, &aoc22_08::INPUTS),
+        // Day9 => (aoc22_09::solver, &aoc22_09::INPUTS),
+        // Day10 => (aoc22_10::solver, &aoc22_10::INPUTS),
+        // Day11 => (aoc22_11::solver, &aoc22_11::INPUTS),
+        // Day12 => (aoc22_12::solver, &aoc22_12::INPUTS),
+        // Day13 => (aoc22_13::solver, &aoc22_13::INPUTS),
+        // Day14 => (aoc22_14::solver, &aoc22_14::INPUTS),
+        // Day15 => (aoc22_15::solver, &aoc22_15::INPUTS),
+        // Day16 => (aoc22_16::solver, &aoc22_16::INPUTS),
+        // Day17 => (aoc22_17::solver, &aoc22_17::INPUTS),
+        // Day18 => (aoc22_18::solver, &aoc22_18::INPUTS),
+        // Day19 => (aoc22_19::solver, &aoc22_19::INPUTS),
+        // Day20 => (aoc22_20::solver, &aoc22_20::INPUTS),
+        // Day21 => (aoc22_21::solver, &aoc22_21::INPUTS),
+        // Day22 => (aoc22_22::solver, &aoc22_22::INPUTS),
+        // Day23 => (aoc22_23::solver, &aoc22_23::INPUTS),
+        // Day24 => (aoc22_24::solver, &aoc22_24::INPUTS),
+        // Day25 => (aoc22_25::solver, &aoc22_25::INPUTS),
+        _ => bail!("AoC 2022 {:?}... What are you waiting for?!", day),
+    })
 }
