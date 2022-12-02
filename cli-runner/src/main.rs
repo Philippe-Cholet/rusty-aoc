@@ -89,7 +89,7 @@ fn aoc21(day: Day) -> (AocSolver, &'static [&'static str]) {
 fn aoc22(day: Day) -> Result<(AocSolver, &'static [&'static str])> {
     Ok(match day {
         Day1 => (aoc22_01::solver, &aoc22_01::INPUTS),
-        // Day2 => (aoc22_02::solver, &aoc22_02::INPUTS),
+        Day2 => (aoc22_02::solver, &aoc22_02::INPUTS),
         // Day3 => (aoc22_03::solver, &aoc22_03::INPUTS),
         // Day4 => (aoc22_04::solver, &aoc22_04::INPUTS),
         // Day5 => (aoc22_05::solver, &aoc22_05::INPUTS),
