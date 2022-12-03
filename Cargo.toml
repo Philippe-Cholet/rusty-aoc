@@ -17,3 +17,6 @@ license = "MIT OR Apache-2.0"
 # Common dependencies to my solvers
 anyhow = "1.0.66"
 itertools = "0.10.5"
+# Dependencies to create procedural macros
+quote = "1.0.21"
+syn = "1.0.105"
