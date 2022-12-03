@@ -12,6 +12,7 @@ name = "cli-runner"
 test = false
 
 [dependencies]
+aoc-macro = { path="../aoc-macro" }
 common = { path="../common" }
 aoc21-01 = { path="../aoc2021/day01" }
 aoc21-02 = { path="../aoc2021/day02" }

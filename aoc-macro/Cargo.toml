@@ -1,0 +1,16 @@
+[package]
+name = "aoc-macro"
+edition = "2021"
+description = "A macro to get the solver and inputs for a given year and day"
+version.workspace = true
+authors.workspace = true
+repository.workspace = true
+license.workspace = true
+
+[lib]
+proc-macro = true
+doctest = false
+
+[dependencies]
+quote = "1.0"
+syn = "1.0"
