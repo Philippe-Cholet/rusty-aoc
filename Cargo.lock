@@ -231,6 +231,14 @@ dependencies = [
 ]
 
 [[package]]
+name = "aoc22-03"
+version = "0.1.0"
+dependencies = [
+ "common",
+ "itertools",
+]
+
+[[package]]
 name = "cli-runner"
 version = "0.1.0"
 dependencies = [
@@ -261,6 +269,7 @@ dependencies = [
  "aoc21-25",
  "aoc22-01",
  "aoc22-02",
+ "aoc22-03",
  "common",
 ]
 
