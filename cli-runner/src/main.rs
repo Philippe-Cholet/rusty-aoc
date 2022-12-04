@@ -3,7 +3,7 @@ use std::{env, time::Instant};
 #[allow(clippy::wildcard_imports)]
 use common::*;
 
-aoc_macro::make_aoc!(21 25, 22 4);
+aoc_macro::make_aoc!("cli-runner");
 
 fn main() -> Result<()> {
     let mut args = env::args().skip(1);

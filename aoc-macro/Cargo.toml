@@ -12,5 +12,6 @@ proc-macro = true
 doctest = false
 
 [dependencies]
+cargo_toml.workspace = true
 quote.workspace = true
 syn.workspace = true
