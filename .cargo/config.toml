@@ -1,0 +1,7 @@
+[alias]
+f = "fmt --check"
+clip = "clippy -- -W clippy::all -W clippy::pedantic -W clippy::nursery -W clippy::unwrap_used -W clippy::expect_used -A clippy::missing-errors-doc"
+cli = "run --bin cli-runner"
+
+[build]
+target-dir = "Y:\\rust-targets\\rusty-aoc"  # use my SSD for faster compile times
