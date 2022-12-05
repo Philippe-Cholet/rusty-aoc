@@ -7,38 +7,47 @@ aoc_macro::make_aoc!("cli-runner");
 
 fn main() -> Result<()> {
     let mut args = env::args().skip(1);
+    // Get the solver for a given puzzle (year, day).
     let year = args
         .next()
-        .context("Missing argument: <year 15...>")?
+        .context("Missing argument: <year [20]15...>")?
         .parse()?;
     let day = args
         .next()
         .context("Missing argument: <day 1...25>")?
         .parse()?;
-    let part = args
-        .next()
-        .context("Missing argument: <part 1 2>")?
-        .parse()?;
-    let (input_idx, input_nb): (Option<usize>, _) = match args.next() {
-        None => (None, String::new()),
-        Some(s) => (Some(s.parse()?), format!(" input #{s}")),
-    };
-
-    println!("Advent of Code {year:?} {day:?} {part:?}{input_nb}...");
     let (solver, inputs) = aoc(year, day)?;
-    let input = input_idx
-        .map_or_else(|| inputs.last(), |idx| inputs.get(idx))
-        .ok_or_else(|| {
-            input_idx.map_or_else(
-                || format_err!("No input!"),
-                |idx| format_err!("No input #{}, there are only {} inputs!", idx, inputs.len()),
-            )
-        })?;
-
-    let now = Instant::now();
-    let result = solver(part, input)?;
-    let t = now.elapsed();
-    println!("My result [ {t:?} ]\n{result}");
-
+    // Given part or both.
+    let parts = match args.next() {
+        Some(s) => vec![s.parse()?],
+        None => vec![Part1, Part2],
+    };
+    // Given index or all.
+    let input_indexes = match args.next() {
+        Some(s) => {
+            let idx: usize = s.parse()?;
+            ensure!(
+                idx < inputs.len(),
+                "No input #{}, there are only {} inputs!",
+                idx,
+                inputs.len()
+            );
+            vec![idx]
+        }
+        None => (0..inputs.len()).collect(),
+    };
+    // Run the solver on selected parts and inputs.
+    println!("Advent of Code {year:?} {day:?}...");
+    for part in parts {
+        for input_idx in &input_indexes {
+            println!("\n{part:?} input #{input_idx}:");
+            let input = inputs[*input_idx];
+            ensure!(!input.is_empty(), "Empty input: you forgot to fill it?!");
+            let now = Instant::now();
+            let result = solver(part, input)?;
+            let t = now.elapsed();
+            println!("[ Done in {t:?} ]\n{result}");
+        }
+    }
     Ok(())
 }

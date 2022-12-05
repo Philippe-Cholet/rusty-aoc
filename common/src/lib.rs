@@ -36,7 +36,7 @@ impl FromStr for Year {
             "2022" | "22" => Self::Year2022,
             "2023" | "23" => Self::Year2023,
             "2024" | "24" => Self::Year2024,
-            v => bail!("Failed to parse year (2015..): {}", v),
+            v => bail!("Failed to parse year ([20]15..): {}", v),
         })
     }
 }

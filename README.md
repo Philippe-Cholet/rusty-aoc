@@ -30,9 +30,10 @@ In this workspace, packages are:
 - "utils" lists utilities that my solutions can all use.
 - The folder "aoc2021/day01" is for the library "aoc21-01" containing a solver, inputs and tests against those inputs.
 
-"cli-runner" usage: `<year [20]15...> <day 1...25> <part 1 2> [<input 0...>]`
+"cli-runner" usage: `<year [20]15...> <day 1...25> [<part 1 2> [<input 0...>]]`
 
-When no input is given to the command line, the main/last one is chosen.
+When no part is given, the solver runs on both.
+When no input index is given, the solver runs on all inputs.
 
 To [reduce compile times](https://endler.dev/2020/rust-compile-times/),
 my target directory is on a SSD and packages without changes are not recompiled thanks to this workspace structure.
