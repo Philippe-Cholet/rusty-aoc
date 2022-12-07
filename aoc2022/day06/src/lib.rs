@@ -1,4 +1,6 @@
+/*
 use std::collections::VecDeque;
+*/
 
 use itertools::Itertools;
 
@@ -10,6 +12,7 @@ pub fn solver(part: Part, input: &str) -> Result<String> {
         Part1 => 4,
         Part2 => 14,
     };
+    /*
     let mut chars = input.trim_end().chars();
     let mut window: VecDeque<_> = chars.by_ref().take(size).collect();
     let (idx, _) = chars
@@ -25,6 +28,16 @@ pub fn solver(part: Part, input: &str) -> Result<String> {
             }
         })
         .context("No solution")?;
+    */
+    // I implemented my own window above but there is more straightforward way I was looking for yesterday.
+    let chars: Vec<_> = input.trim_end().chars().collect();
+    let (idx, _) = chars
+        .as_slice()
+        .windows(size)
+        .find_position(|window| window.iter().all_unique())
+        .context("No solution")?;
+    // It still calls `all_unique` on each window (and therefore make a hashset each time)
+    // and collect chars to vec could be bad if the input was very large but it is faster on given tests.
     Ok((size + idx).to_string())
 }
 
