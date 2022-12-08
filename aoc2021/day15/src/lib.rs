@@ -3,14 +3,12 @@ use std::collections::{HashMap, VecDeque};
 use itertools::iproduct;
 
 use common::{Context, Part, Part2, Result};
-use utils::{neighbors, FromIterStr};
+use utils::{char10, neighbors, FromIterStr};
 
 /// Chiton
 pub fn solver(part: Part, input: &str) -> Result<String> {
     let (grid, nrows, ncols) = {
-        let mut grid = input
-            .lines()
-            .parse_to_grid(|ch| ch.to_digit(10).context("Not a decimal digit"))?;
+        let mut grid = input.lines().parse_to_grid(char10::<u32>)?;
         let mut nrows = grid.len();
         let mut ncols = grid.first().context("Empty grid")?.len();
         // TODO: Eventually check if the grid is rectangular.

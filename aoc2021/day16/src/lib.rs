@@ -1,6 +1,7 @@
 use itertools::Itertools;
 
 use common::{bail, Context, Part, Part1, Part2, Result};
+use utils::char16;
 
 #[derive(Debug)]
 enum Packet {
@@ -109,10 +110,7 @@ pub fn solver(part: Part, input: &str) -> Result<String> {
     let bin_line: String = input
         .trim_end()
         .chars()
-        .map(|ch| {
-            let hex = ch.to_digit(16).context("Not hexadecimal")?;
-            Ok(format!("{:04b}", hex))
-        })
+        .map(|ch| Ok(format!("{:04b}", char16::<u32>(ch)?)))
         .collect::<Result<_>>()?;
     let main_packet = Stream(bin_line.chars().rev().collect()).read_packet()?;
     // println!("{:#?}", main_packet);

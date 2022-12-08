@@ -1,13 +1,11 @@
 use std::collections::HashSet;
 
 use common::{ensure, Context, Part, Part1, Part2, Result};
-use utils::{neighbors, FromIterStr};
+use utils::{char10, neighbors, FromIterStr};
 
 /// Dumbo Octopus
 pub fn solver(part: Part, input: &str) -> Result<String> {
-    let mut grid = input
-        .lines()
-        .parse_to_grid(|ch| ch.to_digit(10).context("not a decimal digit"))?;
+    let mut grid = input.lines().parse_to_grid(char10)?;
     let ncols = grid.first().context("Empty grid")?.len();
     let nrows = grid.len();
     ensure!(

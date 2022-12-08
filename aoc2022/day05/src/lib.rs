@@ -1,4 +1,5 @@
 use common::{ensure, Context, Part, Part1, Result};
+use utils::char10;
 
 /// Supply Stacks
 pub fn solver(part: Part, input: &str) -> Result<String> {
@@ -13,7 +14,8 @@ pub fn solver(part: Part, input: &str) -> Result<String> {
         (1..=nb_crates).collect::<Vec<_>>()
             == headers
                 .iter()
-                .map(|ch| Ok(ch.to_digit(10).context("Not digit")? as usize))
+                .copied()
+                .map(char10::<usize>)
                 .collect::<Result<Vec<_>>>()?,
         "headers are not 1..=headers.len()",
     );

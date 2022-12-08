@@ -3,7 +3,7 @@ use std::{fmt::Display, iter::repeat};
 use itertools::iproduct;
 
 use common::{Context, Part, Part1, Part2, Result};
-use utils::FromIterStr;
+use utils::{char10, FromIterStr};
 
 struct VisibleTrees<'a> {
     grid: &'a [Vec<u8>],
@@ -122,10 +122,7 @@ impl<'a> TreeHouse<'a> {
 
 /// Treetop Tree House
 pub fn solver(part: Part, input: &str) -> Result<String> {
-    let grid = input.lines().parse_to_grid(|ch| {
-        let n = ch.to_digit(10).context("not decimal")?;
-        Ok(u8::try_from(n)?)
-    })?;
+    let grid = input.lines().parse_to_grid(char10::<u8>)?;
     Ok(match part {
         Part1 => {
             let mut vis_trees = VisibleTrees::new(&grid);
@@ -162,14 +159,12 @@ use std::iter::repeat;
 
 use itertools::iproduct;
 
-use common::{ensure, Context, Part, Part1, Part2, Result};
-use utils::FromIterStr;
+use common::{Part, Part1, Part2, Result};
+use utils::{char10, FromIterStr};
 
 /// Treetop Tree House
 pub fn solver(part: Part, input: &str) -> Result<String> {
-    let grid = input
-        .lines()
-        .parse_to_grid(|ch| ch.to_digit(10).context("not decimal"))?;
+    let grid = input.lines().parse_to_grid(char10::<u8>)?;
     let (nrows, ncols) = (grid.len(), grid[0].len());
     Ok(match part {
         Part1 => {

@@ -148,6 +148,7 @@ version = "0.1.0"
 dependencies = [
  "common",
  "itertools",
+ "utils",
 ]
 
 [[package]]
@@ -260,6 +261,7 @@ name = "aoc22-05"
 version = "0.1.0"
 dependencies = [
  "common",
+ "utils",
 ]
 
 [[package]]
