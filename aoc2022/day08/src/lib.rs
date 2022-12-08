@@ -156,3 +156,84 @@ fn solver_22_08() -> Result<()> {
     assert_eq!(solver(Part2, INPUTS[1])?, "383520");
     Ok(())
 }
+
+/*
+use std::iter::repeat;
+
+use itertools::iproduct;
+
+use common::{ensure, Context, Part, Part1, Part2, Result};
+use utils::FromIterStr;
+
+/// Treetop Tree House
+pub fn solver(part: Part, input: &str) -> Result<String> {
+    let grid = input
+        .lines()
+        .parse_to_grid(|ch| ch.to_digit(10).context("not decimal"))?;
+    let (nrows, ncols) = (grid.len(), grid[0].len());
+    Ok(match part {
+        Part1 => {
+            // I first used a hashset instead of a grid of booleans, but this is quite basic.
+            let mut visible = vec![vec![false; ncols]; nrows];
+            macro_rules! add_visible_trees {
+                ($locs: expr) => {
+                    let (r, c) = $locs.next().expect("Empty line");
+                    visible[r][c] = true;
+                    let mut h_max = grid[r][c];
+                    for (r, c) in $locs {
+                        let h = grid[r][c];
+                        if h > h_max {
+                            visible[r][c] = true;
+                            if h == 9 {
+                                break;
+                            }
+                            h_max = h;
+                        }
+                    }
+                };
+            }
+            for r in 0..nrows {
+                add_visible_trees!(repeat(r).zip(0..ncols));
+                add_visible_trees!(repeat(r).zip((0..ncols).rev()));
+            }
+            for c in 0..ncols {
+                add_visible_trees!((0..nrows).zip(repeat(c)));
+                add_visible_trees!((0..nrows).rev().zip(repeat(c)));
+            }
+            // for row in &visible {
+            //     for vis in row {
+            //         print!("{}", if *vis { 'x' } else { '.' });
+            //     }
+            //     println!();
+            // }
+            visible.into_iter().flatten().filter(|x| *x).count()
+        }
+        Part2 => {
+            macro_rules! direction_score {
+                ($locs: expr, $height: ident) => {{
+                    let mut n = 0;
+                    for (r, c) in $locs {
+                        n += 1;
+                        if grid[r][c] >= $height {
+                            break;
+                        }
+                    }
+                    n
+                }};
+            }
+            // Trees at the border have a scenic score of 0, ignore them.
+            iproduct!(1..nrows - 1, 1..ncols - 1)
+                .map(|(r, c)| {
+                    let height = grid[r][c];
+                    direction_score!((0..r).rev().zip(repeat(c)), height)
+                        * direction_score!((r + 1..nrows).zip(repeat(c)), height)
+                        * direction_score!(repeat(r).zip((0..c).rev()), height)
+                        * direction_score!(repeat(r).zip(c + 1..ncols), height)
+                })
+                .max()
+                .unwrap_or(0)
+        }
+    }
+    .to_string())
+}
+*/
