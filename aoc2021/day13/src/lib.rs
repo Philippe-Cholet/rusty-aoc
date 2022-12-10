@@ -57,9 +57,9 @@ pub fn solver(part: Part, input: &str) -> Result<String> {
                 .minmax()
                 .into_option()
                 .context("No point left?!")?;
-            let mut grid = vec![vec!['.'; (x1 - x0 + 1) as usize]; (y1 - y0 + 1) as usize];
+            let mut grid = vec![vec!['░'; (x1 - x0 + 1) as usize]; (y1 - y0 + 1) as usize];
             for (x, y) in xs.into_iter().zip(ys.into_iter()) {
-                grid[(y - y0) as usize][(x - x0) as usize] = '#';
+                grid[(y - y0) as usize][(x - x0) as usize] = '█';
             }
             grid.into_iter().map(|line| line.iter().join("")).join("\n")
         }
@@ -97,17 +97,19 @@ fn solver_21_13() -> Result<()> {
     assert_eq!(solver(Part1, INPUTS[0])?, "17");
     assert_eq!(solver(Part1, INPUTS[1])?, "607");
     let answers = [
-        "#####
-#...#
-#...#
-#...#
-#####",
-        ".##..###..####.#....###..####.####.#...
-#..#.#..#....#.#....#..#.#.......#.#...
-#....#..#...#..#....#..#.###....#..#...
-#....###...#...#....###..#.....#...#...
-#..#.#....#....#....#....#....#....#...
-.##..#....####.####.#....#....####.####",
+        "\
+█████
+█░░░█
+█░░░█
+█░░░█
+█████",
+        "\
+░██░░███░░████░█░░░░███░░████░████░█░░░
+█░░█░█░░█░░░░█░█░░░░█░░█░█░░░░░░░█░█░░░
+█░░░░█░░█░░░█░░█░░░░█░░█░███░░░░█░░█░░░
+█░░░░███░░░█░░░█░░░░███░░█░░░░░█░░░█░░░
+█░░█░█░░░░█░░░░█░░░░█░░░░█░░░░█░░░░█░░░
+░██░░█░░░░████░████░█░░░░█░░░░████░████",
     ];
     assert_eq!(solver(Part2, INPUTS[0])?, answers[0]); // Squared O
     assert_eq!(solver(Part2, INPUTS[1])?, answers[1]); // CPZLPFZL
