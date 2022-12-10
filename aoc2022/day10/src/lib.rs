@@ -1,14 +1,14 @@
 use common::{bail, ensure, Part, Part1, Part2, Result};
 
 #[derive(Debug)]
-struct Cpu {
+struct Crt {
     x: i32,
     cycle: i32,
     strengths: [i32; 6],
     screen: [bool; 240],
 }
 
-impl Cpu {
+impl Crt {
     const fn new() -> Self {
         Self {
             x: 1,
@@ -44,7 +44,7 @@ impl Cpu {
     }
 }
 
-impl std::fmt::Display for Cpu {
+impl std::fmt::Display for Crt {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         for row in self.screen.chunks_exact(40) {
             for visible in row {
@@ -58,20 +58,20 @@ impl std::fmt::Display for Cpu {
 
 /// Cathode-Ray Tube
 pub fn solver(part: Part, input: &str) -> Result<String> {
-    let mut cpu = Cpu::new();
+    let mut crt = Crt::new();
     for line in input.lines() {
         if line == "noop" {
-            cpu.noop();
+            crt.noop();
         } else if let Some(addx) = line.strip_prefix("addx ") {
-            cpu.addx(addx.parse()?);
+            crt.addx(addx.parse()?);
         } else {
             bail!("Wrong command: {}", line);
         }
     }
-    ensure!(cpu.is_done(), "Not 240 cycles");
+    ensure!(crt.is_done(), "Not 240 cycles");
     Ok(match part {
-        Part1 => cpu.signal_strength_sum().to_string(),
-        Part2 => cpu.to_string(),
+        Part1 => crt.signal_strength_sum().to_string(),
+        Part2 => crt.to_string(),
     })
 }
 
