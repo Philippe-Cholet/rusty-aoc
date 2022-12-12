@@ -314,6 +314,15 @@ dependencies = [
 ]
 
 [[package]]
+name = "aoc22-12"
+version = "0.1.0"
+dependencies = [
+ "common",
+ "itertools",
+ "utils",
+]
+
+[[package]]
 name = "cargo_toml"
 version = "0.13.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -364,6 +373,7 @@ dependencies = [
  "aoc22-09",
  "aoc22-10",
  "aoc22-11",
+ "aoc22-12",
  "common",
 ]
 
