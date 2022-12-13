@@ -62,7 +62,7 @@ impl Ord for Packet {
                         cmp.is_ne().then_some(cmp)
                     }
                 })
-                .unwrap_or(Ordering::Less),
+                .unwrap_or(Ordering::Equal),
         }
     }
 }
