@@ -1,0 +1,17 @@
+[package]
+name = "aoc22-16"
+edition = "2021"
+description = "My solution for the Advent of Code 2022 day 16"
+version.workspace = true
+authors.workspace = true
+repository.workspace = true
+license.workspace = true
+
+[lib]
+doctest = false
+
+[dependencies]
+itertools.workspace = true
+petgraph.workspace = true
+common = { path="../../common" }
+utils = { path="../../utils" }
