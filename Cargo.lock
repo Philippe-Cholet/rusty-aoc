@@ -366,6 +366,15 @@ dependencies = [
 ]
 
 [[package]]
+name = "aoc22-18"
+version = "0.1.0"
+dependencies = [
+ "common",
+ "itertools",
+ "utils",
+]
+
+[[package]]
 name = "autocfg"
 version = "1.1.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -428,6 +437,7 @@ dependencies = [
  "aoc22-15",
  "aoc22-16",
  "aoc22-17",
+ "aoc22-18",
  "common",
 ]
 
