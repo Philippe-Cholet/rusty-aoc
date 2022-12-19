@@ -1,5 +1,10 @@
 /target
 
+# AoC 2022 day 19, I use the "good_lp" crate which require some external solver.
+# I downloaded it here from  https://github.com/coin-or/Cbc/releases
+/Cbc-releases.*
+# And I added its "bin" subfolder to my PATH.
+
 # Puzzle descriptions for offline use.
 /html
 # Puzzle inputs to solve them.
