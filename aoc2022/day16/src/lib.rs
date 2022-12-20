@@ -85,11 +85,13 @@ fn best_pressure<const N: usize>(rates: &[u32], distances: &[Vec<u32>], minutes_
     let mut top = TOP;
     while let Some(item) = pqueue.pop() {
         let min_left = item.minutes_left();
-        if min_left == n {
-            top -= 1;
-        } else if min_left < n {
-            n = min_left;
-            top = TOP;
+        match min_left.cmp(&n) {
+            std::cmp::Ordering::Equal => top -= 1,
+            std::cmp::Ordering::Less => {
+                n = min_left;
+                top = TOP;
+            }
+            std::cmp::Ordering::Greater => {}
         }
         if top < 0 {
             continue;
