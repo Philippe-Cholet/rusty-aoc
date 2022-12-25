@@ -1,21 +1,9 @@
 # [Advent of Code](https://adventofcode.com), in Rust
-
-## About me
-I'm French, I studied mathematics, became a professor two years,
-I learnt Python and solved "[CheckiO](https://py.checkio.org/user/Phil15/) missions"
-(I created some, most based on [Simon Tatham Puzzles](https://www.chiark.greenend.org.uk/~sgtatham/puzzles/)).
-
-Meanwhile I looked at C/C++ with envy but horror and I kept using Python.
-Then I heard of Rust only a few months ago, so I tried on "ugly numbers" (with the crate "num-bigint")
-and [Simon Tatham's Inertia](https://www.chiark.greenend.org.uk/~sgtatham/puzzles/js/inertia.html) (with the crate "petgraph").
-
-I like being able to use a low level language without the headaches I expected with C.
-I certainly like Rust's "cargo" tools way more than Python's "pip" (+ mypy + black + virtual environments)
-and prefer an annoying compiler/buddy saying what I'm doing wrong while I'm writing it.
-Plus the rusty "itertools" is way better than the Python one.
-
-I heard about Advent of Code a year ago, solved "AoC 2021" in november 2022 (roughly two weeks).
-I will surely solve some previous advents after AoC 2022.
+Year | Stars | When
+---- | ----- | ---------
+2021 | 50 🌟 | Nov. 2022
+2022 | 50 🌟 | Déc. 2022
+2020 |       | Soon
 
 ## About this workspace
 My main goal here is to practice and write idiomatic Rust solving "Advent of Code" puzzles.
@@ -40,9 +28,9 @@ my target directory is on a SSD and packages without changes are not recompiled 
 I first used "clap" to parse command line arguments but the compile times were longer.
 
 ### Dependencies
-Just "anyhow" and "itertools" at the moment to solve puzzles.
+"anyhow" (error handling), "itertools" (iterators are nice), "petgraph" (graph algorithms), "good_lp" (linear programming) at the moment to solve puzzles.
 
-But I might need "regex", "num", "petgraph", "ndarray" at some point, eventually others.
+But I might need "regex", "num", "ndarray" at some point, eventually others.
 
 I also use "quote" and "syn" for procedural macros ; and "cargo_toml" to parse dependencies inside a macro.
 
