@@ -62,6 +62,7 @@ impl Direction {
     }
 }
 
+#[allow(clippy::match_on_vec_items)] // I made sure the grid is rectangular, it should not panic.
 fn follow_instructions(
     instructions: &[Instruction],
     grid: &[Vec<Tile>],
@@ -132,6 +133,7 @@ fn find_position_after_void(
         .context("Could not find non-void position")
 }
 
+#[allow(clippy::match_on_vec_items)] // I made sure the grid is rectangular, it should not panic.
 fn follow_instructions_v2(
     instructions: &[Instruction],
     grid: &[Vec<Tile>],
