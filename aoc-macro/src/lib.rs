@@ -56,7 +56,7 @@ pub fn make_aoc(input: TokenStream) -> TokenStream {
 #[allow(clippy::unwrap_used)] // The compiler already say the provided path is wrong.
 fn all_years_and_days(path: &str) -> Vec<(u8, u8)> {
     let cargo_path = PathBuf::from(path).join("Cargo.toml");
-    Manifest::from_path(&cargo_path)
+    Manifest::from_path(cargo_path)
         .unwrap()
         .dependencies
         .into_keys()

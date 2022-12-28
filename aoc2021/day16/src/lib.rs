@@ -86,7 +86,7 @@ impl Stream {
         } else {
             let mut sub_packets = vec![];
             if s2n(&self.read(1)?)? == 0 {
-                let total_bits_length = s2n(&self.read(15)?)? as usize;
+                let total_bits_length = s2n(&self.read(15)?)?;
                 let to_read = self.0.len() - total_bits_length;
                 while self.0.len() != to_read {
                     sub_packets.push(self.read_packet()?);
