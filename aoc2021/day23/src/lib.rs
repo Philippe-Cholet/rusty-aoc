@@ -10,7 +10,7 @@ use std::{
 use itertools::{iproduct, Itertools};
 
 use common::{bail, Context, Part, Part1, Part2, Result};
-use utils::{neighbors, FromIterStr};
+use utils::{neighbors, parse_to_grid_with_loc};
 
 type Location = (usize, usize);
 
@@ -283,7 +283,7 @@ pub fn solver(part: Part, input: &str) -> Result<String> {
         _ => None,
     };
     let mut init_places = HashMap::new();
-    let grid = lines.into_iter().parse_to_grid_with_loc(|(r, c), ch| {
+    let grid = parse_to_grid_with_loc(lines, |(r, c), ch| {
         Ok(match ch {
             '#' | ' ' => Cell::Wall,
             '.' => Cell::Hallway {

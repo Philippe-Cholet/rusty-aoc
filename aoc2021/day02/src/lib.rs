@@ -1,15 +1,18 @@
 use common::{bail, Context, Part, Part1, Part2, Result};
-use utils::FromIterStr;
+use utils::OkIterator;
 
 /// Dive!
 pub fn solver(part: Part, input: &str) -> Result<String> {
     let mut position: i32 = 0;
     let mut depth: i32 = 0;
     let mut aim: i32 = 0;
-    let commands = input.lines().parse_to_vec(|line| {
-        let (s, n) = line.split_once(' ').context("no whitespace")?;
-        Ok((s, n.parse::<i32>()?))
-    })?;
+    let commands = input
+        .lines()
+        .map(|line| {
+            let (s, n) = line.split_once(' ').context("no whitespace")?;
+            Ok((s, n.parse::<i32>()?))
+        })
+        .ok_collect_vec()?;
     for command in commands {
         match (part, command) {
             (Part1, ("forward", n)) => position += n,

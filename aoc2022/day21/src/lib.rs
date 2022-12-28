@@ -3,7 +3,7 @@ use std::collections::HashMap;
 use petgraph::{algo::toposort, graph::NodeIndex, Directed, Graph};
 
 use common::{bail, ensure, format_err, Context, Error, Part, Part1, Part2, Result};
-use utils::FromIterStr;
+use utils::OkIterator;
 
 #[derive(Debug)]
 enum Operation {
@@ -141,23 +141,26 @@ fn get_order(data: &[(&str, Job)]) -> Result<Vec<usize>> {
 
 /// Monkey Math
 pub fn solver(part: Part, input: &str) -> Result<String> {
-    let data = input.lines().parse_to_vec(|line| {
-        let mut vs: Vec<_> = line.split_whitespace().collect();
-        vs[0] = vs[0].split_once(':').context("No :")?.0;
-        Ok(match (part, vs.as_slice()) {
-            (Part2, &["humn", _]) => ("humn", Job::Unknown),
-            (_, &[name, n]) => (name, Job::Number(n.parse()?)),
-            (_, &[name, left, op, right]) => (
-                name,
-                Job::Operation {
-                    left,
-                    op: op.parse()?,
-                    right,
-                },
-            ),
-            _ => bail!("Wrong line: {:?}", vs),
+    let data = input
+        .lines()
+        .map(|line| {
+            let mut vs: Vec<_> = line.split_whitespace().collect();
+            vs[0] = vs[0].split_once(':').context("No :")?.0;
+            Ok(match (part, vs.as_slice()) {
+                (Part2, &["humn", _]) => ("humn", Job::Unknown),
+                (_, &[name, n]) => (name, Job::Number(n.parse()?)),
+                (_, &[name, left, op, right]) => (
+                    name,
+                    Job::Operation {
+                        left,
+                        op: op.parse()?,
+                        right,
+                    },
+                ),
+                _ => bail!("Wrong line: {:?}", vs),
+            })
         })
-    })?;
+        .ok_collect_vec()?;
     let order = get_order(&data)?;
     // println!(
     //     "Ordered names: {:?}",

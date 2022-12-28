@@ -3,7 +3,7 @@ use std::collections::HashSet;
 use itertools::Itertools;
 
 use common::{Context, Part, Part1, Part2, Result};
-use utils::FromIterStr;
+use utils::OkIterator;
 
 const fn neighbors((x, y, z): (i32, i32, i32)) -> [(i32, i32, i32); 6] {
     [
@@ -18,10 +18,17 @@ const fn neighbors((x, y, z): (i32, i32, i32)) -> [(i32, i32, i32); 6] {
 
 /// Boiling Boulders
 pub fn solver(part: Part, input: &str) -> Result<String> {
-    let lava = input.lines().parse_to_hset(|line| {
-        let (x, y, z) = line.split(',').collect_tuple().context("Not 3 elements")?;
-        Ok((x.parse::<i32>()?, y.parse::<i32>()?, z.parse::<i32>()?))
-    })?;
+    let lava = input
+        .lines()
+        .map(|line| {
+            let (x, y, z) = line
+                .split(',')
+                .map(str::parse::<i32>)
+                .collect_tuple()
+                .context("Not 3 elements")?;
+            Ok((x?, y?, z?))
+        })
+        .ok_collect_hset()?;
     let result = match part {
         Part1 => lava
             .iter()

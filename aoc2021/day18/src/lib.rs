@@ -3,6 +3,7 @@ use std::{fmt, iter::Sum, ops::Add, str::FromStr};
 use itertools::Itertools;
 
 use common::{format_err, Context, Error, Part, Part1, Part2, Result};
+use utils::OkIterator;
 
 // I avoided to derive Clone on purpose.
 #[derive(Debug)]
@@ -255,9 +256,7 @@ mod tests_18 {
             ),
         ] {
             assert_eq!(
-                fs.into_iter()
-                    .map(str::parse)
-                    .sum::<Result<Snailfish, _>>()?,
+                fs.into_iter().map(str::parse).ok_sum::<Snailfish>()?,
                 answer.parse()?
             );
         }
@@ -297,9 +296,7 @@ mod tests_18 {
             "[[[[5,2],5],[8,[3,7]]],[[5,[7,5]],[4,4]]]",
         ];
         assert_eq!(
-            fs.into_iter()
-                .map(str::parse)
-                .sum::<Result<Snailfish, _>>()?,
+            fs.into_iter().map(str::parse).ok_sum::<Snailfish>()?,
             "[[[[6,6],[7,6]],[[7,7],[7,0]]],[[[7,7],[7,7]],[[7,8],[9,9]]]]".parse()?,
         );
         Ok(())
@@ -312,7 +309,7 @@ pub fn solver(part: Part, input: &str) -> Result<String> {
         Part1 => input
             .lines()
             .map(str::parse)
-            .sum::<Result<Snailfish, _>>()?
+            .ok_sum::<Snailfish>()?
             .magnitude(),
         Part2 => input
             .lines()

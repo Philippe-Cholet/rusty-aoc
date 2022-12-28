@@ -1,19 +1,24 @@
 use itertools::{iproduct, Itertools};
 
 use common::{ensure, Context, Part, Part1, Part2, Result};
-use utils::FromIterStr;
+use utils::OkIterator;
 
 type Loc = (usize, usize);
 const START: Loc = (500, 0);
 
 /// Regolith Reservoir
 pub fn solver(part: Part, input: &str) -> Result<String> {
-    let rock_lines = input.lines().parse_to_vec(|line| {
-        line.split(" -> ").parse_to_vec(|s| {
-            let (a, b) = s.split_once(',').context("No comma delimiter")?;
-            Ok((a.parse::<usize>()?, b.parse::<usize>()?))
+    let rock_lines: Vec<Vec<(usize, usize)>> = input
+        .lines()
+        .map(|line| {
+            line.split(" -> ")
+                .map(|s| {
+                    let (a, b) = s.split_once(',').context("No comma delimiter")?;
+                    Ok((a.parse()?, b.parse()?))
+                })
+                .collect()
         })
-    })?;
+        .ok_collect()?;
     let (&x_min, &x_max) = rock_lines
         .iter()
         .flatten()

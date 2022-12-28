@@ -1,13 +1,12 @@
-use std::collections::BinaryHeap; // max-heap
-
 use common::{Context, Part, Part1, Part2, Result};
+use utils::{str_parse, OkIterator};
 
 /// Calorie Counting
 pub fn solver(part: Part, input: &str) -> Result<String> {
-    let mut counts: BinaryHeap<u32> = input
+    let mut counts = input
         .split("\n\n")
-        .map(|snacks| snacks.lines().map(str::parse::<u32>).sum())
-        .collect::<Result<_, _>>()?;
+        .map(|snacks| snacks.lines().map(str_parse::<u32>).ok_sum::<u32>())
+        .ok_collect_heap()?;
     // No need to pop when peek is enough.
     Ok(match part {
         Part1 => *counts.peek().context("No elf")?,

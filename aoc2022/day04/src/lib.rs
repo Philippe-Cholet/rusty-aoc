@@ -1,14 +1,17 @@
 use common::{ensure, Part, Part1, Part2, Result};
-use utils::FromIterStr;
+use utils::{str_parse, OkIterator};
 
 /// Camp Cleanup
 pub fn solver(part: Part, input: &str) -> Result<String> {
-    let assignment_pairs = input.lines().parse_to_vec(|line| {
-        let ns = line.splitn(4, [',', '-']).parse_str_to_vec::<u32>()?;
-        ensure!(ns.len() == 4, "Not 4 integers");
-        debug_assert!(ns[0] <= ns[1] && ns[2] <= ns[3]);
-        Ok(((ns[0], ns[1]), (ns[2], ns[3])))
-    })?;
+    let assignment_pairs = input
+        .lines()
+        .map(|line| {
+            let ns: Vec<u32> = line.splitn(4, [',', '-']).map(str_parse).ok_collect()?;
+            ensure!(ns.len() == 4, "Not 4 integers");
+            debug_assert!(ns[0] <= ns[1] && ns[2] <= ns[3]);
+            Ok(((ns[0], ns[1]), (ns[2], ns[3])))
+        })
+        .ok_collect_vec()?;
     Ok(assignment_pairs
         .into_iter()
         .filter(|(a, b)| match part {

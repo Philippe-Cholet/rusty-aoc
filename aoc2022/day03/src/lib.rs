@@ -3,6 +3,7 @@ use std::collections::HashSet;
 use itertools::Itertools;
 
 use common::{ensure, Context, Part, Part1, Part2, Result};
+use utils::OkIterator;
 
 const AZAZ: &str = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
 
@@ -26,7 +27,7 @@ pub fn solver(part: Part, input: &str) -> Result<String> {
                 let h2 = line[n / 2..n].chars().collect();
                 priority(common_item(h1, h2)?)
             })
-            .sum::<Result<usize>>()?,
+            .ok_sum::<usize>()?,
         Part2 => input
             .lines()
             .chunks(3)
@@ -39,7 +40,7 @@ pub fn solver(part: Part, input: &str) -> Result<String> {
                 let h2_3 = h2.intersection(&h3).copied().collect();
                 priority(common_item(h1, h2_3)?)
             })
-            .sum::<Result<_>>()?,
+            .ok_sum()?,
     }
     .to_string())
 }

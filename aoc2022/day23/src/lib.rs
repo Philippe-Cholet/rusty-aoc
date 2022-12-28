@@ -1,7 +1,7 @@
 use itertools::Itertools;
 
 use common::{bail, ensure, Context, Part, Part1, Part2, Result};
-use utils::FromIterStr;
+use utils::parse_to_grid;
 
 use Direction::{E, N, S, W};
 
@@ -104,7 +104,7 @@ fn display_grid(grid: &[Vec<bool>]) {
 
 /// Unstable Diffusion
 pub fn solver(part: Part, input: &str) -> Result<String> {
-    let mut grid = input.lines().parse_to_grid(|ch| {
+    let mut grid = parse_to_grid(input.lines(), |ch| {
         Ok(match ch {
             '.' => false,
             '#' => true,

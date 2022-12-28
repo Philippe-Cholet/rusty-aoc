@@ -6,7 +6,7 @@
 use good_lp::{default_solver, variable, variables, Expression, Solution, SolverModel};
 
 use common::{ensure, Error, Part, Part1, Part2, Result};
-use utils::FromIterStr;
+use utils::OkIterator;
 
 #[derive(Debug)]
 struct Blueprint {
@@ -83,18 +83,18 @@ impl Blueprint {
 
 /// Not Enough Minerals
 pub fn solver(part: Part, input: &str) -> Result<String> {
-    let data = input.lines().parse_str_to_vec::<Blueprint>()?;
-    let result = match part {
+    let data: Vec<Blueprint> = input.lines().map(str::parse).ok_collect()?;
+    let result: i32 = match part {
         Part1 => data
             .iter()
             .map(|bp| Ok(bp.id * bp.maximise_geodes(24)?))
-            .sum::<Result<i32>>()?,
+            .ok_sum()?,
         Part2 => data
             .iter()
             // .take(3)
             .filter(|bp| bp.id <= 3)
             .map(|bp| bp.maximise_geodes(32))
-            .product::<Result<i32>>()?,
+            .ok_product()?,
     };
     Ok(result.to_string())
 }

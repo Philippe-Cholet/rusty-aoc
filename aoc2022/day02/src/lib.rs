@@ -1,4 +1,5 @@
 use common::{bail, Context, Part, Part1, Part2, Result};
+use utils::OkIterator;
 
 use Outcome::{Draw, Lose, Win};
 use Shape::{Paper, Rock, Scissors};
@@ -74,7 +75,7 @@ pub fn solver(part: Part, input: &str) -> Result<String> {
             };
             Ok(me.fight_outcome(&elf).score() + me.score())
         })
-        .sum::<Result<u32, _>>()?
+        .ok_sum::<u32>()?
         .to_string())
 }
 

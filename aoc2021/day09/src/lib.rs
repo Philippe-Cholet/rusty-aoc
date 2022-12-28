@@ -3,11 +3,11 @@ use std::collections::HashSet;
 use itertools::iproduct;
 
 use common::{Context, Part, Part1, Part2, Result};
-use utils::{char10, neighbors, FromIterStr};
+use utils::{char10, neighbors, parse_to_grid};
 
 /// Smoke Basin
 pub fn solver(part: Part, input: &str) -> Result<String> {
-    let grid = input.lines().parse_to_grid(char10::<u32>)?;
+    let grid = parse_to_grid(input.lines(), char10::<u32>)?;
     let ncols = grid.first().context("No line")?.len();
     let nrows = grid.len();
     let low_points = iproduct!(0..nrows, 0..ncols).filter(|(r, c)| {

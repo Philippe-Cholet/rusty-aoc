@@ -1,26 +1,32 @@
 use itertools::Itertools;
 
 use common::{Context, Part, Part1, Part2, Result};
-use utils::FromIterStr;
+use utils::OkIterator;
 
 /// Transparent Origami
 pub fn solver(part: Part, input: &str) -> Result<String> {
     let (coords, fold_alongs) = input
         .split_once("\n\n")
         .context("No empty line after coords")?;
-    let mut coords = coords.lines().parse_to_hset(|line| {
-        let (x, y) = line.split_once(',').context("no comma")?;
-        Ok((x.parse()?, y.parse()?))
-    })?;
-    let mut fold_alongs = fold_alongs.lines().parse_to_vec(|line| {
-        let (xy, n) = line
-            .rsplit_once(' ')
-            .context("no space")?
-            .1
-            .split_once('=')
-            .context("no equal")?;
-        Ok((xy == "x", n.parse::<u32>()?))
-    })?;
+    let mut coords = coords
+        .lines()
+        .map(|line| {
+            let (x, y) = line.split_once(',').context("no comma")?;
+            Ok((x.parse()?, y.parse()?))
+        })
+        .ok_collect_hset()?;
+    let mut fold_alongs = fold_alongs
+        .lines()
+        .map(|line| {
+            let (xy, n) = line
+                .rsplit_once(' ')
+                .context("no space")?
+                .1
+                .split_once('=')
+                .context("no equal")?;
+            Ok((xy == "x", n.parse::<u32>()?))
+        })
+        .ok_collect_vec()?;
     if part == Part1 {
         fold_alongs = fold_alongs.into_iter().take(1).collect();
     }

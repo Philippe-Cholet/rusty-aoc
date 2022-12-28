@@ -1,7 +1,7 @@
 use itertools::Itertools;
 
 use common::{Context, Part, Part1, Part2, Result};
-use utils::FromIterStr;
+use utils::OkIterator;
 
 fn range_inclusive(a: u32, b: u32) -> impl Iterator<Item = u32> {
     let x: Box<dyn Iterator<Item = u32>> = if b > a {
@@ -14,12 +14,15 @@ fn range_inclusive(a: u32, b: u32) -> impl Iterator<Item = u32> {
 
 /// Hydrothermal Venture
 pub fn solver(part: Part, input: &str) -> Result<String> {
-    let data: Vec<(u32, u32, u32, u32)> = input.lines().parse_to_vec(|line| {
-        line.split(&[',', ' ', '-', '>'])
-            .filter_map(|s| s.parse().ok())
-            .collect_tuple()
-            .with_context(|| format!("Not 4 integers: {}", line))
-    })?;
+    let data = input
+        .lines()
+        .map(|line| {
+            line.split(&[',', ' ', '-', '>'])
+                .filter_map(|s| s.parse().ok())
+                .collect_tuple()
+                .with_context(|| format!("Not 4 integers: {line}"))
+        })
+        .ok_collect_vec()?;
     let counts = data
         .into_iter()
         .flat_map(|(x1, y1, x2, y2)| {

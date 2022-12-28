@@ -1,5 +1,5 @@
 use common::{ensure, Context, Part, Part1, Result};
-use utils::char10;
+use utils::{char10, OkIterator};
 
 /// Supply Stacks
 pub fn solver(part: Part, input: &str) -> Result<String> {
@@ -16,7 +16,7 @@ pub fn solver(part: Part, input: &str) -> Result<String> {
                 .iter()
                 .copied()
                 .map(char10::<usize>)
-                .collect::<Result<Vec<_>>>()?,
+                .ok_collect_vec()?,
         "headers are not 1..=headers.len()",
     );
     let mut stacks: Vec<Vec<_>> = (0..nb_crates)
@@ -52,7 +52,7 @@ pub fn solver(part: Part, input: &str) -> Result<String> {
     stacks
         .into_iter()
         .map(|mut stack| stack.pop().context("empty stack"))
-        .collect::<Result<_>>()
+        .ok_collect()
 }
 
 pub const INPUTS: [&str; 2] = [

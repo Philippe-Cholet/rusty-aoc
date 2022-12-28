@@ -1,5 +1,5 @@
 use common::{bail, ensure, Context, Part, Part1, Part2, Result};
-use utils::FromIterStr;
+use utils::parse_to_grid;
 
 use SeaCucumberKind::{East, South};
 
@@ -11,7 +11,7 @@ enum SeaCucumberKind {
 
 /// Sea Cucumber
 pub fn solver(part: Part, input: &str) -> Result<String> {
-    let mut grid = input.lines().parse_to_grid(|ch| {
+    let mut grid = parse_to_grid(input.lines(), |ch| {
         Ok(match ch {
             '.' => None,
             'v' => Some(South),

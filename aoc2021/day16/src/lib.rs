@@ -1,7 +1,7 @@
 use itertools::Itertools;
 
 use common::{bail, Context, Part, Part1, Part2, Result};
-use utils::char16;
+use utils::{char16, OkIterator};
 
 #[derive(Debug)]
 enum Packet {
@@ -107,11 +107,11 @@ impl Stream {
 
 /// Packet Decoder
 pub fn solver(part: Part, input: &str) -> Result<String> {
-    let bin_line: String = input
+    let bin_line = input
         .trim_end()
         .chars()
         .map(|ch| Ok(format!("{:04b}", char16::<u32>(ch)?)))
-        .collect::<Result<_>>()?;
+        .ok_collect_str()?;
     let main_packet = Stream(bin_line.chars().rev().collect()).read_packet()?;
     // println!("{:#?}", main_packet);
     Ok(match part {

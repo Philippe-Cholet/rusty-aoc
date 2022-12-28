@@ -3,14 +3,14 @@ use std::collections::VecDeque;
 use itertools::iproduct;
 
 use common::{ensure, Context, Part, Part1, Part2, Result};
-use utils::{neighbors, FromIterStr};
+use utils::{neighbors, parse_to_grid_with_loc};
 
 const AZ_LOWER: &str = "abcdefghijklmnopqrstuvwxyz";
 
 /// Hill Climbing Algorithm
 pub fn solver(part: Part, input: &str) -> Result<String> {
     let (mut start, mut end) = (None, None);
-    let grid = input.lines().parse_to_grid_with_loc(|loc, mut ch| {
+    let grid = parse_to_grid_with_loc(input.lines(), |loc, mut ch| {
         match ch {
             'S' => (ch, start) = ('a', Some(loc)),
             'E' => (ch, end) = ('z', Some(loc)),

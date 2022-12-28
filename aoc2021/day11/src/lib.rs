@@ -1,11 +1,11 @@
 use std::collections::HashSet;
 
 use common::{ensure, Context, Part, Part1, Part2, Result};
-use utils::{char10, neighbors, FromIterStr};
+use utils::{char10, neighbors, parse_to_grid};
 
 /// Dumbo Octopus
 pub fn solver(part: Part, input: &str) -> Result<String> {
-    let mut grid = input.lines().parse_to_grid(char10)?;
+    let mut grid = parse_to_grid(input.lines(), char10)?;
     let ncols = grid.first().context("Empty grid")?.len();
     let nrows = grid.len();
     ensure!(

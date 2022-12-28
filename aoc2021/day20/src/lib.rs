@@ -1,6 +1,7 @@
 use itertools::{iproduct, Itertools};
 
 use common::{bail, Context, Part, Part1, Part2, Result};
+use utils::OkIterator;
 
 /// Trench Map
 pub fn solver(part: Part, input: &str) -> Result<String> {
@@ -24,7 +25,7 @@ pub fn solver(part: Part, input: &str) -> Result<String> {
     let enhancement: [bool; 512] = enhancement
         .chars()
         .map(char2bool)
-        .collect::<Result<Vec<_>, _>>()?
+        .ok_collect_vec()?
         .try_into()
         .ok()
         .context("Not 512 long")?;

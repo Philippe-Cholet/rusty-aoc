@@ -1,6 +1,7 @@
 use std::collections::{HashMap, HashSet};
 
 use common::{bail, ensure, Error, Part, Part1, Part2, Result};
+use utils::OkIterator;
 
 const CAVE_WIDTH: usize = 7;
 const NB_ROCKS: usize = 5;
@@ -218,7 +219,7 @@ impl std::str::FromStr for TetrisSolver {
                 '<' => Ok(JetDirection::Left),
                 _ => bail!("Wrong char: {}", ch),
             })
-            .collect::<Result<Vec<_>>>()?;
+            .ok_collect_vec()?;
         ensure!(!jet_patterns.is_empty(), "No jet");
         Ok(Self {
             period_detector: HashMap::new(),

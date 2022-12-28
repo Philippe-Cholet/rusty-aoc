@@ -1,7 +1,7 @@
 use itertools::Itertools;
 
 use common::{bail, Context, Part, Part1, Part2, Result};
-use utils::FromIterStr;
+use utils::OkIterator;
 
 #[derive(Debug, Hash, PartialEq, Eq, Clone, Copy)]
 struct Pt(i32, i32);
@@ -51,17 +51,20 @@ fn get_tail_positions<const NB_KNOTS: usize>(moves: &[(Pt, usize)]) -> Result<Ve
 
 /// Rope Bridge
 pub fn solver(part: Part, input: &str) -> Result<String> {
-    let moves = input.lines().parse_to_vec(|line| {
-        let (s, nb) = line.split_once(' ').context("No whitespace")?;
-        let head_move = match s {
-            "D" => Pt(1, 0),
-            "U" => Pt(-1, 0),
-            "L" => Pt(0, -1),
-            "R" => Pt(0, 1),
-            _ => bail!("Wrong move: {}", s),
-        };
-        Ok((head_move, nb.parse()?))
-    })?;
+    let moves = input
+        .lines()
+        .map(|line| {
+            let (s, nb) = line.split_once(' ').context("No whitespace")?;
+            let head_move = match s {
+                "D" => Pt(1, 0),
+                "U" => Pt(-1, 0),
+                "L" => Pt(0, -1),
+                "R" => Pt(0, 1),
+                _ => bail!("Wrong move: {}", s),
+            };
+            Ok((head_move, nb.parse()?))
+        })
+        .ok_collect_vec()?;
     let tail_pos = match part {
         Part1 => get_tail_positions::<2>(&moves)?,
         Part2 => get_tail_positions::<10>(&moves)?,

@@ -6,7 +6,7 @@ use std::{
 use itertools::{iproduct, Itertools};
 
 use common::{bail, Context, Error, Part, Part1, Result};
-use utils::FromIterStr;
+use utils::OkIterator;
 
 #[derive(Debug, PartialEq)]
 struct Cuboid {
@@ -113,21 +113,24 @@ impl Cuboid {
 
 /// Reactor Reboot
 pub fn solver(part: Part, input: &str) -> Result<String> {
-    let data = input.lines().parse_to_vec(|line| {
-        let (on, xyz) = line.split_once(' ').context("No whitespace")?;
-        let on = match on {
-            "on" => true,
-            "off" => false,
-            _ => bail!("Not on and not off but {}", on),
-        };
-        let (x, y, z) = xyz.splitn(3, ',').collect_tuple().context("Not x,y,z")?;
-        let cuboid = Cuboid {
-            x: x.strip_prefix("x=").context("not x=")?.parse()?,
-            y: y.strip_prefix("y=").context("not y=")?.parse()?,
-            z: z.strip_prefix("z=").context("not z=")?.parse()?,
-        };
-        Ok((on, cuboid))
-    })?;
+    let data = input
+        .lines()
+        .map(|line| {
+            let (on, xyz) = line.split_once(' ').context("No whitespace")?;
+            let on = match on {
+                "on" => true,
+                "off" => false,
+                _ => bail!("Not on and not off but {}", on),
+            };
+            let (x, y, z) = xyz.splitn(3, ',').collect_tuple().context("Not x,y,z")?;
+            let cuboid = Cuboid {
+                x: x.strip_prefix("x=").context("not x=")?.parse()?,
+                y: y.strip_prefix("y=").context("not y=")?.parse()?,
+                z: z.strip_prefix("z=").context("not z=")?.parse()?,
+            };
+            Ok((on, cuboid))
+        })
+        .ok_collect_vec()?;
     let mut cuboids = vec![];
     for (on, new) in data {
         // Divide all cuboids with `new`, retain only non-intersecting parts with it.

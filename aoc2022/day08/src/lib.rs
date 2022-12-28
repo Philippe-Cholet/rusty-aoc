@@ -3,7 +3,7 @@ use std::{fmt::Display, iter::repeat};
 use itertools::iproduct;
 
 use common::{Context, Part, Part1, Part2, Result};
-use utils::{char10, FromIterStr};
+use utils::{char10, parse_to_grid};
 
 struct VisibleTrees<'a> {
     grid: &'a [Vec<u8>],
@@ -122,7 +122,7 @@ impl<'a> TreeHouse<'a> {
 
 /// Treetop Tree House
 pub fn solver(part: Part, input: &str) -> Result<String> {
-    let grid = input.lines().parse_to_grid(char10::<u8>)?;
+    let grid = parse_to_grid(input.lines(), char10::<u8>)?;
     Ok(match part {
         Part1 => {
             let mut vis_trees = VisibleTrees::new(&grid);
@@ -160,11 +160,11 @@ use std::iter::repeat;
 use itertools::iproduct;
 
 use common::{Part, Part1, Part2, Result};
-use utils::{char10, FromIterStr};
+use utils::{char10, parse_to_grid};
 
 /// Treetop Tree House
 pub fn solver(part: Part, input: &str) -> Result<String> {
-    let grid = input.lines().parse_to_grid(char10::<u8>)?;
+    let grid = parse_to_grid(input.lines(), char10::<u8>)?;
     let (nrows, ncols) = (grid.len(), grid[0].len());
     Ok(match part {
         Part1 => {

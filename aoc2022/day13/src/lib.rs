@@ -3,7 +3,7 @@ use std::{cmp::Ordering, str::FromStr};
 use itertools::{EitherOrBoth, Itertools};
 
 use common::{ensure, Context, Error, Part, Part1, Part2, Result};
-use utils::FromIterStr;
+use utils::OkIterator;
 
 #[derive(Debug, Clone, PartialEq, Eq)]
 enum Packet {
@@ -31,7 +31,8 @@ impl FromStr for Packet {
                     }
                     false
                 })
-                .parse_str_to_vec()?
+                .map(str::parse)
+                .ok_collect_vec()?
             })
         } else {
             Self::Int(s.parse()?)
@@ -72,10 +73,11 @@ pub fn solver(part: Part, input: &str) -> Result<String> {
     Ok(match part {
         Part1 => input
             .split("\n\n")
-            .parse_to_vec(|s| {
+            .map(|s| {
                 let (left, right) = s.lines().collect_tuple().context("Not a pair")?;
                 Ok((left.parse::<Packet>()?, right.parse::<Packet>()?))
-            })?
+            })
+            .ok_collect_vec()?
             .into_iter()
             .enumerate()
             .filter_map(|(idx, (left, right))| (left < right).then_some(idx + 1))
@@ -84,7 +86,8 @@ pub fn solver(part: Part, input: &str) -> Result<String> {
             let mut lines = input
                 .lines()
                 .filter(|line| !line.is_empty())
-                .parse_str_to_vec()?;
+                .map(str::parse)
+                .ok_collect_vec()?;
             let packet2: Packet = "[[2]]".parse()?;
             let packet6: Packet = "[[6]]".parse()?;
             lines.push(packet2.clone());

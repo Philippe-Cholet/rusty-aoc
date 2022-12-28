@@ -1,11 +1,11 @@
 use common::{ensure, Context, Part, Part1, Part2, Result};
-use utils::FromIterStr;
+use utils::{str_parse, OkIterator};
 
 const DECRYPTION_KEY: i64 = 811_589_153;
 
 /// Grove Positioning System
 pub fn solver(part: Part, input: &str) -> Result<String> {
-    let mut file = input.lines().parse_str_to_vec::<i64>()?;
+    let mut file: Vec<i64> = input.lines().map(str_parse).ok_collect()?;
     let nb = file.len();
     // Otherwise, `nb - 1` would overflow or `rem_euclid(modulus)` below would panic.
     ensure!(nb >= 2, "Not enough numbers");

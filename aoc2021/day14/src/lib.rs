@@ -1,22 +1,25 @@
 use itertools::Itertools;
 
 use common::{Context, Part, Part1, Part2, Result};
-use utils::FromIterStr;
+use utils::OkIterator;
 
 /// Extended Polymerization
 pub fn solver(part: Part, input: &str) -> Result<String> {
     let (template, rules) = input
         .split_once("\n\n")
         .context("No empty line before the rules")?;
-    let rules = rules.lines().parse_to_hmap(|line| {
-        let (from, to) = line.split_once(" -> ").context("No arrow?!")?;
-        let pair = from
-            .chars()
-            .collect_tuple::<(_, _)>()
-            .context("Not 2 chars")?;
-        let (middle,) = to.chars().collect_tuple().context("Not 1 char")?;
-        Ok((pair, middle))
-    })?;
+    let rules = rules
+        .lines()
+        .map(|line| {
+            let (from, to) = line.split_once(" -> ").context("No arrow?!")?;
+            let pair = from
+                .chars()
+                .collect_tuple::<(_, _)>()
+                .context("Not 2 chars")?;
+            let (middle,) = to.chars().collect_tuple().context("Not 1 char")?;
+            Ok((pair, middle))
+        })
+        .ok_collect_hmap()?;
     let steps = match part {
         Part1 => 10,
         Part2 => 40,

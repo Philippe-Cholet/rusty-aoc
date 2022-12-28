@@ -5,7 +5,7 @@ use std::{
 };
 
 use common::{bail, Context, Error, Part, Part1, Part2, Result};
-use utils::FromIterStr;
+use utils::parse_to_grid;
 
 #[derive(Debug, Clone, Copy)]
 enum Direction {
@@ -55,7 +55,7 @@ impl std::str::FromStr for BlizzardGrid {
     type Err = Error;
 
     fn from_str(s: &str) -> Result<Self> {
-        let initial_grid = s.lines().parse_to_grid(|ch| match ch {
+        let initial_grid = parse_to_grid(s.lines(), |ch| match ch {
             '#' => Ok(Cell::Wall),
             '.' => Ok(Cell::Blizzard(None)),
             '<' => Ok(Cell::Blizzard(Some(Direction::Left))),

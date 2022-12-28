@@ -5,26 +5,29 @@ use itertools::Itertools;
 use petgraph::{algo::floyd_warshall, graph::NodeIndex, Graph, Undirected};
 
 use common::{ensure, Context, Part, Part1, Part2, Result};
-use utils::FromIterStr;
+use utils::OkIterator;
 
 /// Proboscidea Volcanium
 pub fn solver(part: Part, input: &str) -> Result<String> {
-    let data = input.lines().parse_to_vec(|line| {
-        let (start, s) = line
-            .strip_prefix("Valve ")
-            .context("prefix")?
-            .split_once(" has flow rate=")
-            .context("separator 1")?;
-        let (rate, ends) = if s.contains("valves") {
-            s.split_once("; tunnels lead to valves ")
-                .context("separator 2")?
-        } else {
-            s.split_once("; tunnel leads to valve ")
-                .context("separator 3")?
-        };
-        let ends = ends.split(", ").collect_vec();
-        Ok((start, rate.parse::<u32>()?, ends))
-    })?;
+    let data = input
+        .lines()
+        .map(|line| {
+            let (start, s) = line
+                .strip_prefix("Valve ")
+                .context("prefix")?
+                .split_once(" has flow rate=")
+                .context("separator 1")?;
+            let (rate, ends) = if s.contains("valves") {
+                s.split_once("; tunnels lead to valves ")
+                    .context("separator 2")?
+            } else {
+                s.split_once("; tunnel leads to valve ")
+                    .context("separator 3")?
+            };
+            let ends = ends.split(", ").collect_vec();
+            Ok((start, rate.parse::<u32>()?, ends))
+        })
+        .ok_collect_vec()?;
     let (rates, distances) = valuable_valves(&data)?;
     Ok(match part {
         Part1 => best_pressure::<1>(&rates, &distances, 30),

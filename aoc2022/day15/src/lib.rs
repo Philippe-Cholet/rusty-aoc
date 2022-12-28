@@ -1,5 +1,5 @@
 use common::{Context, Error, Part, Part1, Part2, Result};
-use utils::FromIterStr;
+use utils::OkIterator;
 
 #[derive(Debug)]
 struct SensorData {
@@ -80,7 +80,7 @@ impl SensorData {
 
 /// Beacon Exclusion Zone
 pub fn solver(part: Part, input: &str) -> Result<String> {
-    let datas = input.lines().parse_str_to_vec::<SensorData>()?;
+    let datas: Vec<SensorData> = input.lines().map(str::parse).ok_collect()?;
     // NOTE: tricky, but since some parameters are not provided in inputs...
     let small = datas
         .iter()

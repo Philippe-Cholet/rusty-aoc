@@ -3,7 +3,7 @@ use std::iter::repeat;
 use itertools::Itertools;
 
 use common::{bail, Context, Part, Part1, Part2, Result};
-use utils::FromIterStr;
+use utils::{parse_to_grid, OkIterator};
 
 #[derive(Debug, Clone, Copy)]
 enum Direction {
@@ -229,7 +229,7 @@ pub fn solver(part: Part, input: &str) -> Result<String> {
         .trim_end()
         .split_once("\n\n")
         .context("No empty line")?;
-    let mut grid = grid.lines().parse_to_grid(|ch| match ch {
+    let mut grid = parse_to_grid(grid.lines(), |ch| match ch {
         '#' => Ok(Tile::Wall),
         '.' => Ok(Tile::Open),
         ' ' => Ok(Tile::Void),
@@ -261,7 +261,7 @@ pub fn solver(part: Part, input: &str) -> Result<String> {
                 bail!("Wrong instruction: {:?}", t);
             })
         })
-        .collect::<Result<Vec<_>>>()?;
+        .ok_collect_vec()?;
     let (r, c, d) = match part {
         Part1 => follow_instructions(&instructions, &grid)?,
         Part2 => follow_instructions_v2(&instructions, &grid)?,

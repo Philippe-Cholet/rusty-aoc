@@ -3,7 +3,7 @@ use std::str::FromStr;
 use itertools::Itertools;
 
 use common::{bail, ensure, Context, Error, Part, Part1, Part2, Result};
-use utils::FromIterStr;
+use utils::{str_parse, OkIterator};
 
 type Worry = u64;
 
@@ -46,7 +46,8 @@ impl FromStr for Monkey {
                 .strip_prefix("  Starting items: ")
                 .context("Starting")?
                 .split(", ")
-                .parse_str_to_vec()?,
+                .map(str_parse)
+                .ok_collect_vec()?,
             inspection: inspection
                 .strip_prefix("  Operation: new = old ")
                 .context("Operation")?
@@ -128,7 +129,7 @@ impl WorryManagement {
 
 /// Monkey in the Middle
 pub fn solver(part: Part, input: &str) -> Result<String> {
-    let mut monkeys = input.split("\n\n").parse_str_to_vec::<Monkey>()?;
+    let mut monkeys: Vec<Monkey> = input.split("\n\n").map(str::parse).ok_collect()?;
     ensure!(
         monkeys.iter().enumerate().all(|(i, m)| i == m.index),
         "Unordered monkey indexes",
