@@ -41,6 +41,13 @@ impl FromStr for Year {
     }
 }
 
+impl Year {
+    pub const ALL: [Self; 10] = [
+        Year2015, Year2016, Year2017, Year2018, Year2019, Year2020, Year2021, Year2022, Year2023,
+        Year2024,
+    ];
+}
+
 #[derive(Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Hash)]
 pub enum Day {
     Day1,
@@ -105,6 +112,13 @@ impl FromStr for Day {
     }
 }
 
+impl Day {
+    pub const ALL: [Self; 25] = [
+        Day1, Day2, Day3, Day4, Day5, Day6, Day7, Day8, Day9, Day10, Day11, Day12, Day13, Day14,
+        Day15, Day16, Day17, Day18, Day19, Day20, Day21, Day22, Day23, Day24, Day25,
+    ];
+}
+
 #[derive(Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Hash)]
 pub enum Part {
     Part1,
@@ -121,4 +135,8 @@ impl FromStr for Part {
             v => bail!("Failed to parse part (1..=2): {}", v),
         })
     }
+}
+
+impl Part {
+    pub const ALL: [Self; 2] = [Part1, Part2];
 }

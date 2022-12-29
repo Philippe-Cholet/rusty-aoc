@@ -43,10 +43,9 @@ enum Cell {
 
 #[derive(Debug)]
 struct BlizzardGrid {
-    modulo_grid: Vec<Vec<HashSet<usize>>>,
+    time_grid: [Vec<Vec<Vec<bool>>>; 2],
     nrows: usize,
     ncols: usize,
-    period: usize,
     start: (usize, usize),
     goal: (usize, usize),
 }
@@ -66,8 +65,10 @@ impl std::str::FromStr for BlizzardGrid {
         })?;
         let nrows = initial_grid.len();
         let ncols = initial_grid[0].len();
-        let period = (nrows - 2) * (ncols - 2); // the lcm would be better.
-        let mut modulo_grid = vec![vec![(0..period).collect::<HashSet<_>>(); ncols - 2]; nrows - 2];
+        let mut time_grid = [
+            vec![vec![vec![true; nrows - 2]; ncols - 2]; nrows - 2],
+            vec![vec![vec![true; ncols - 2]; ncols - 2]; nrows - 2],
+        ];
         for (r, row) in initial_grid.into_iter().enumerate() {
             for (c, cell) in row.into_iter().enumerate() {
                 if 0 < r && 0 < c && r < nrows - 1 && c < ncols - 1 {
@@ -84,18 +85,21 @@ impl std::str::FromStr for BlizzardGrid {
                                 .zip(repeat(c))
                                 .collect(),
                         };
-                        for (minute, (r, c)) in path.into_iter().cycle().take(period).enumerate() {
-                            modulo_grid[r - 1][c - 1].remove(&minute);
+                        let grid = match d {
+                            Direction::Down | Direction::Up => &mut time_grid[0],
+                            Direction::Left | Direction::Right => &mut time_grid[1],
+                        };
+                        for (minute, (r, c)) in path.into_iter().enumerate() {
+                            grid[r - 1][c - 1][minute] = false;
                         }
                     }
                 }
             }
         }
         Ok(Self {
-            modulo_grid,
+            time_grid,
             nrows,
             ncols,
-            period,
             start: (0, 1),
             goal: (nrows - 1, ncols - 2),
         })
@@ -108,7 +112,8 @@ impl BlizzardGrid {
             && 0 < loc.1
             && loc.0 < self.nrows - 1
             && loc.1 < self.ncols - 1
-            && self.modulo_grid[loc.0 - 1][loc.1 - 1].contains(&(minutes % self.period))
+            && self.time_grid[0][loc.0 - 1][loc.1 - 1][minutes % (self.nrows - 2)]
+            && self.time_grid[1][loc.0 - 1][loc.1 - 1][minutes % (self.ncols - 2)]
     }
 
     const fn dist2goal(&self, loc: (usize, usize)) -> usize {
@@ -117,7 +122,7 @@ impl BlizzardGrid {
 
     fn find_path(&self, starting_minute: usize) -> Result<usize> {
         let mut heap = BinaryHeap::from([HeuristicItem {
-            heuristic: Reverse(self.dist2goal(self.start)),
+            heuristic: Reverse(0), // This first heuristic does not matter.
             item: (self.start, starting_minute),
         }]);
         let mut been = HashSet::new();
