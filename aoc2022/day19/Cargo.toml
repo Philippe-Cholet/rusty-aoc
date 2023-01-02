@@ -11,6 +11,6 @@ license.workspace = true
 doctest = false
 
 [dependencies]
-good_lp = { version = "1.3.2", features = ["lp-solvers"], default-features = false }
+good_lp.workspace = true
 common = { path="../../common" }
 utils = { path="../../utils" }

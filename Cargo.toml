@@ -15,10 +15,11 @@ license = "MIT OR Apache-2.0"
 
 [workspace.dependencies]
 # Common dependencies to my solvers
-anyhow = "1.0.66"
+anyhow = "1.0.68"
+good_lp = { version = "1.3.2", features = ["lp-solvers"], default-features = false }
 itertools = "0.10.5"
 petgraph = "0.6.2"
 # Dependencies to create procedural macros
-cargo_toml = "0.13.0"
-quote = "1.0.21"
-syn = "1.0.105"
+cargo_toml = "0.14.0"
+quote = "1.0.23"
+syn = "1.0.107"
