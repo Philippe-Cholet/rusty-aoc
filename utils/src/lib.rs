@@ -41,8 +41,7 @@ where
 /// Neighbors of `(r, c)` in a `nrows` x `ncols` grid.
 #[must_use]
 pub fn neighbors(
-    r: usize,
-    c: usize,
+    (r, c): (usize, usize),
     nrows: usize,
     ncols: usize,
     diagonally: bool,

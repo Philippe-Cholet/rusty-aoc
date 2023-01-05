@@ -35,7 +35,7 @@ pub fn solver(part: Part, input: &str) -> Result<String> {
             };
             been.insert((r, c));
             grid[r][c] = 0;
-            for (r1, c1) in neighbors(r, c, nrows, ncols, true) {
+            for (r1, c1) in neighbors((r, c), nrows, ncols, true) {
                 if !been.contains(&(r1, c1)) {
                     grid[r1][c1] += 1;
                     if grid[r1][c1] > 9 {

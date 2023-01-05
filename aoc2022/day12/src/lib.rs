@@ -28,7 +28,7 @@ pub fn solver(part: Part, input: &str) -> Result<String> {
         dist2end[end.0][end.1] = Some(0u32);
         while let Some((r1, c1)) = frontier.pop_front() {
             let dist = dist2end[r1][c1].context("A frontier element has a distance")?;
-            for (r0, c0) in neighbors(r1, c1, nrows, ncols, false) {
+            for (r0, c0) in neighbors((r1, c1), nrows, ncols, false) {
                 if grid[r1][c1] <= grid[r0][c0] + 1 && dist2end[r0][c0].is_none() {
                     if part == Part1 && (r0, c0) == start {
                         break 'job dist + 1;

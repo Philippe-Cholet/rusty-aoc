@@ -228,7 +228,7 @@ impl State {
                     continue; // another amphipod occupies this location.
                 }
                 been.insert(loc);
-                for loc2 in neighbors(loc.0, loc.1, nrows, ncols, false) {
+                for loc2 in neighbors(loc, nrows, ncols, false) {
                     if been.contains(&loc2) {
                         continue; // already visited
                     }

@@ -34,9 +34,9 @@ pub fn solver(part: Part, input: &str) -> Result<String> {
     let (start, end) = ((0, 0), (nrows - 1, ncols - 1));
     let mut risks = HashMap::from([(start, 0)]);
     let mut queue = VecDeque::from([start]);
-    while let Some((r, c)) = queue.pop_front() {
-        for rc in neighbors(r, c, nrows, ncols, false) {
-            let new_risk = risks[&(r, c)] + grid[rc.0][rc.1];
+    while let Some(loc) = queue.pop_front() {
+        for rc in neighbors(loc, nrows, ncols, false) {
+            let new_risk = risks[&loc] + grid[rc.0][rc.1];
             match risks.get_mut(&rc) {
                 Some(risk) if *risk > new_risk => {
                     *risk = new_risk;
