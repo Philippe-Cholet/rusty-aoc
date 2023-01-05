@@ -22,7 +22,7 @@ pub fn solver(part: Part, input: &str) -> Result<String> {
             .lines()
             .map(|line| {
                 let n = line.len();
-                ensure!(n % 2 == 0);
+                ensure!(n % 2 == 0, "A rucksack should have an even number of items");
                 let h1 = line[0..n / 2].chars().collect();
                 let h2 = line[n / 2..n].chars().collect();
                 priority(common_item(h1, h2)?)

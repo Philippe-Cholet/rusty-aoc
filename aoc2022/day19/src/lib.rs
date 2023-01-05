@@ -26,7 +26,7 @@ impl std::str::FromStr for Blueprint {
             .split_whitespace()
             .filter_map(|t| t.parse::<i32>().ok())
             .collect();
-        ensure!(v.len() == 7);
+        ensure!(v.len() == 7, "A blueprint line should have 7 integers");
         Ok(Self {
             id: v[0],
             ore_robot_cost: v[1],

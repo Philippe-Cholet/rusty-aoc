@@ -93,7 +93,7 @@ impl<'a> Job<'a> {
         let (name, new_value) = match self {
             Self::Unknown => (&"humn", value),
             Self::Number(n) => {
-                ensure!(n == &value);
+                ensure!(n == &value, "{} != {}", n, value);
                 return Ok(());
             }
             Self::Operation { left, op, right } => {
@@ -166,8 +166,14 @@ pub fn solver(part: Part, input: &str) -> Result<String> {
     //     "Ordered names: {:?}",
     //     order.iter().map(|idx| data[*idx].0).collect::<Vec<_>>()
     // );
-    ensure!(data[*order.first().context("No data")?].0 == "humn");
-    ensure!(data[*order.last().context("No data")?].0 == "root");
+    ensure!(
+        data[*order.first().context("No data")?].0 == "humn",
+        "Human should be first",
+    );
+    ensure!(
+        data[*order.last().context("No data")?].0 == "root",
+        "Root should be last",
+    );
 
     let mut monkey_values: HashMap<&str, Option<i64>> = HashMap::new();
     for idx in &order {
@@ -182,7 +188,7 @@ pub fn solver(part: Part, input: &str) -> Result<String> {
         };
         monkey_values.insert(name, v);
     }
-    ensure!(part == Part2);
+    ensure!(part == Part2, "Root being last, part 1 should be solved!");
     for idx in order.iter().rev() {
         let (name, job) = &data[*idx];
         if name == &"root" {
