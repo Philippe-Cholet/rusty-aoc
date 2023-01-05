@@ -1,5 +1,5 @@
 use std::{
-    cmp::{self, Ord},
+    cmp::{max_by, min_by, Ordering},
     collections::{BTreeMap, BTreeSet, BinaryHeap, HashMap, HashSet, LinkedList, VecDeque},
     hash::Hash,
     iter::{Product, Sum},
@@ -27,11 +27,11 @@ where
     // #[inline]
     // fn ok_nth(&mut self, n: usize) -> Result<Option<T>> {
     //     for _ in 0..n {
-    //         if self.next().transpose()?.is_none() {
+    //         if self.next().transpose().map_err(Into::into)?.is_none() {
     //             return Ok(None);
     //         }
     //     }
-    //     self.next().transpose()
+    //     self.next().transpose().map_err(Into::into)
     // }
 
     // Like the (unstable) `try_collect` method but only for results,
@@ -169,7 +169,7 @@ where
     where
         F: FnMut(T) -> bool,
     {
-        let mut err: Option<Error> = None;
+        let mut err = None;
         let res_all = self.all(|res| match res {
             Ok(value) => f(value),
             Err(e) => {
@@ -185,7 +185,7 @@ where
     where
         F: FnMut(T) -> bool,
     {
-        let mut err: Option<Error> = None;
+        let mut err = None;
         let res_any = self.any(|res| match res {
             Ok(value) => f(value),
             Err(e) => {
@@ -201,7 +201,7 @@ where
     where
         P: FnMut(&T) -> bool,
     {
-        let mut err: Option<Error> = None;
+        let mut err = None;
         let res_pos = self.find_map(|res| match res {
             Ok(value) => predicate(&value).then_some(value),
             Err(e) => {
@@ -217,7 +217,7 @@ where
     where
         F: FnMut(T) -> Option<B>,
     {
-        let mut err: Option<Error> = None;
+        let mut err = None;
         let res_pos = self.find_map(|res| match res {
             Ok(value) => f(value),
             Err(e) => {
@@ -233,7 +233,7 @@ where
     where
         P: FnMut(T) -> bool,
     {
-        let mut err: Option<Error> = None;
+        let mut err = None;
         let res_pos = self.position(|res| match res {
             Ok(value) => predicate(value),
             Err(e) => {
@@ -250,7 +250,7 @@ where
         Self: ExactSizeIterator + DoubleEndedIterator,
         P: FnMut(T) -> bool,
     {
-        let mut err: Option<Error> = None;
+        let mut err = None;
         let res_rpos = self.rposition(|res| match res {
             Ok(value) => predicate(value),
             Err(e) => {
@@ -287,9 +287,9 @@ where
     #[inline]
     fn ok_max_by<F>(self, mut compare: F) -> Result<Option<T>>
     where
-        F: FnMut(&T, &T) -> cmp::Ordering,
+        F: FnMut(&T, &T) -> Ordering,
     {
-        self.ok_reduce(|x, y| cmp::max_by(x, y, &mut compare))
+        self.ok_reduce(|x, y| max_by(x, y, &mut compare))
     }
 
     #[inline]
@@ -318,9 +318,9 @@ where
     #[inline]
     fn ok_min_by<F>(self, mut compare: F) -> Result<Option<T>>
     where
-        F: FnMut(&T, &T) -> cmp::Ordering,
+        F: FnMut(&T, &T) -> Ordering,
     {
-        self.ok_reduce(|x, y| cmp::min_by(x, y, &mut compare))
+        self.ok_reduce(|x, y| min_by(x, y, &mut compare))
     }
 
     // ok_unzip
