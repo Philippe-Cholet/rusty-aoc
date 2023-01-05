@@ -1,5 +1,5 @@
 use common::{ensure, Part, Part1, Part2, Result};
-use utils::{str_parse, OkIterator};
+use utils::OkIterator;
 
 /// Lanternfish
 pub fn solver(part: Part, input: &str) -> Result<String> {
@@ -7,7 +7,7 @@ pub fn solver(part: Part, input: &str) -> Result<String> {
         Part1 => 80,
         Part2 => 256,
     };
-    let ages: Vec<usize> = input.split(',').map(str_parse).ok_collect()?;
+    let ages: Vec<usize> = input.split(',').map(str::parse).ok_collect()?;
     let mut state = [0usize; 9];
     for age in ages {
         ensure!(

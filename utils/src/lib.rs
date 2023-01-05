@@ -3,15 +3,6 @@ use common::{Context, Error, Result};
 mod ok_iterator;
 pub use ok_iterator::OkIterator;
 
-/// Like `str::parse` but return `anyhow::Result`.
-pub fn str_parse<T>(s: &str) -> Result<T>
-where
-    T: std::str::FromStr,
-    T::Err: Into<Error>,
-{
-    s.parse().map_err(Into::into)
-}
-
 pub fn parse_to_grid<'a, It, T, F>(s: It, mut parser: F) -> Result<Vec<Vec<T>>>
 where
     It: IntoIterator<Item = &'a str>,

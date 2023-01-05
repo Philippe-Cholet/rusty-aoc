@@ -1,6 +1,6 @@
 use std::str::FromStr;
 
-pub use anyhow::{bail, ensure, format_err, Context, Error, Result};
+pub use anyhow::{bail, ensure, format_err, Context, Error, Ok, Result};
 
 pub use self::{Day::*, Part::*, Year::*};
 

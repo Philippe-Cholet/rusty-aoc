@@ -1,11 +1,11 @@
 use itertools::Itertools;
 
 use common::{Part, Part2, Result};
-use utils::{str_parse, OkIterator};
+use utils::OkIterator;
 
 /// Sonar Sweep
 pub fn solver(part: Part, input: &str) -> Result<String> {
-    let mut v: Vec<u32> = input.lines().map(str_parse).ok_collect()?;
+    let mut v: Vec<u32> = input.lines().map(str::parse).ok_collect()?;
     if part == Part2 {
         v = v
             .iter()

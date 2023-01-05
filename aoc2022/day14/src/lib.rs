@@ -1,6 +1,6 @@
 use itertools::{iproduct, Itertools};
 
-use common::{ensure, Context, Part, Part1, Part2, Result};
+use common::{ensure, Context, Ok, Part, Part1, Part2, Result};
 use utils::OkIterator;
 
 type Loc = (usize, usize);

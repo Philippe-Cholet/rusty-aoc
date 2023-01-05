@@ -2,7 +2,7 @@ use std::collections::HashSet;
 
 use itertools::Itertools;
 
-use common::{Context, Part, Part1, Part2, Result};
+use common::{Context, Ok, Part, Part1, Part2, Result};
 use utils::OkIterator;
 
 const fn neighbors((x, y, z): (i32, i32, i32)) -> [(i32, i32, i32); 6] {

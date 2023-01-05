@@ -3,7 +3,7 @@ use std::str::FromStr;
 use itertools::Itertools;
 
 use common::{bail, ensure, Context, Error, Part, Part1, Part2, Result};
-use utils::{str_parse, OkIterator};
+use utils::OkIterator;
 
 type Worry = u64;
 
@@ -46,7 +46,7 @@ impl FromStr for Monkey {
                 .strip_prefix("  Starting items: ")
                 .context("Starting")?
                 .split(", ")
-                .map(str_parse)
+                .map(str::parse)
                 .ok_collect_vec()?,
             inspection: inspection
                 .strip_prefix("  Operation: new = old ")

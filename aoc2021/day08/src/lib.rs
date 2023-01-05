@@ -2,7 +2,7 @@ use std::collections::{HashMap, HashSet};
 
 use itertools::Itertools;
 
-use common::{Context, Part, Part1, Part2, Result};
+use common::{Context, Ok, Part, Part1, Part2, Result};
 use utils::OkIterator;
 
 /// Seven Segment Search

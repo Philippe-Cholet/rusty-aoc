@@ -1,11 +1,11 @@
 use common::{Context, Part, Part1, Part2, Result};
-use utils::{str_parse, OkIterator};
+use utils::OkIterator;
 
 /// Calorie Counting
 pub fn solver(part: Part, input: &str) -> Result<String> {
     let mut counts = input
         .split("\n\n")
-        .map(|snacks| snacks.lines().map(str_parse::<u32>).ok_sum::<u32>())
+        .map(|snacks| snacks.lines().map(str::parse::<u32>).ok_sum::<u32>())
         .ok_collect_heap()?;
     // No need to pop when peek is enough.
     Ok(match part {

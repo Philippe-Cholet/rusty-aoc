@@ -8,7 +8,11 @@ use std::{
 use common::{Error, Result};
 
 /// An interface for dealing with iterators of results and shortcuts to collect into usual types.
-pub trait OkIterator<T>: Sized + Iterator<Item = Result<T>> {
+pub trait OkIterator<T, E>
+where
+    Self: Sized + Iterator<Item = Result<T, E>>,
+    E: Into<Error>,
+{
     #[inline]
     fn ok_count(self) -> Result<usize> {
         self.ok_fold(0, |count, _value| count + 1)
@@ -37,13 +41,13 @@ pub trait OkIterator<T>: Sized + Iterator<Item = Result<T>> {
     where
         B: FromIterator<T>,
     {
-        self.collect()
+        self.map(|res| res.map_err(Into::into)).collect()
     }
 
     // Let's make some shortcuts to usual types...
     #[inline]
     fn ok_collect_vec(self) -> Result<Vec<T>> {
-        self.collect()
+        self.map(|res| res.map_err(Into::into)).collect()
     }
 
     #[inline]
@@ -51,17 +55,17 @@ pub trait OkIterator<T>: Sized + Iterator<Item = Result<T>> {
     where
         String: FromIterator<T>,
     {
-        self.collect()
+        self.map(|res| res.map_err(Into::into)).collect()
     }
 
     #[inline]
     fn ok_collect_vecd(self) -> Result<VecDeque<T>> {
-        self.collect()
+        self.map(|res| res.map_err(Into::into)).collect()
     }
 
     #[inline]
     fn ok_collect_list(self) -> Result<LinkedList<T>> {
-        self.collect()
+        self.map(|res| res.map_err(Into::into)).collect()
     }
 
     #[inline]
@@ -69,7 +73,7 @@ pub trait OkIterator<T>: Sized + Iterator<Item = Result<T>> {
     where
         T: Ord,
     {
-        self.collect()
+        self.map(|res| res.map_err(Into::into)).collect()
     }
 
     #[inline]
@@ -77,7 +81,7 @@ pub trait OkIterator<T>: Sized + Iterator<Item = Result<T>> {
     where
         T: Eq + Hash,
     {
-        self.collect()
+        self.map(|res| res.map_err(Into::into)).collect()
     }
 
     #[inline]
@@ -85,7 +89,7 @@ pub trait OkIterator<T>: Sized + Iterator<Item = Result<T>> {
     where
         T: Eq + Hash + Ord,
     {
-        self.collect()
+        self.map(|res| res.map_err(Into::into)).collect()
     }
 
     #[inline]
@@ -94,7 +98,8 @@ pub trait OkIterator<T>: Sized + Iterator<Item = Result<T>> {
         T: Into<(K, V)>,
         K: Eq + Hash,
     {
-        self.map(|res| Ok(res?.into())).collect()
+        self.map(|res| res.map(Into::into).map_err(Into::into))
+            .collect()
     }
 
     #[inline]
@@ -103,7 +108,8 @@ pub trait OkIterator<T>: Sized + Iterator<Item = Result<T>> {
         T: Into<(K, V)>,
         K: Eq + Hash + Ord,
     {
-        self.map(|res| Ok(res?.into())).collect()
+        self.map(|res| res.map(Into::into).map_err(Into::into))
+            .collect()
     }
 
     fn ok_partition<B, F>(self, f: F) -> Result<(B, B)>
@@ -138,8 +144,8 @@ pub trait OkIterator<T>: Sized + Iterator<Item = Result<T>> {
         F: FnMut(B, T) -> B,
     {
         let mut accum = init;
-        for x in self {
-            accum = f(accum, x?);
+        for res in self {
+            accum = f(accum, res.map_err(Into::into)?);
         }
         Ok(accum)
     }
@@ -149,7 +155,7 @@ pub trait OkIterator<T>: Sized + Iterator<Item = Result<T>> {
     where
         F: FnMut(T, T) -> T,
     {
-        let first = match self.next().transpose()? {
+        let first = match self.next().transpose().map_err(Into::into)? {
             None => return Ok(None),
             Some(value) => value,
         };
@@ -167,7 +173,7 @@ pub trait OkIterator<T>: Sized + Iterator<Item = Result<T>> {
         let res_all = self.all(|res| match res {
             Ok(value) => f(value),
             Err(e) => {
-                err = Some(e);
+                err = Some(e.into());
                 false
             }
         });
@@ -183,7 +189,7 @@ pub trait OkIterator<T>: Sized + Iterator<Item = Result<T>> {
         let res_any = self.any(|res| match res {
             Ok(value) => f(value),
             Err(e) => {
-                err = Some(e);
+                err = Some(e.into());
                 false
             }
         });
@@ -199,7 +205,7 @@ pub trait OkIterator<T>: Sized + Iterator<Item = Result<T>> {
         let res_pos = self.find_map(|res| match res {
             Ok(value) => predicate(&value).then_some(value),
             Err(e) => {
-                err = Some(e);
+                err = Some(e.into());
                 None
             }
         });
@@ -215,7 +221,7 @@ pub trait OkIterator<T>: Sized + Iterator<Item = Result<T>> {
         let res_pos = self.find_map(|res| match res {
             Ok(value) => f(value),
             Err(e) => {
-                err = Some(e);
+                err = Some(e.into());
                 None
             }
         });
@@ -231,7 +237,7 @@ pub trait OkIterator<T>: Sized + Iterator<Item = Result<T>> {
         let res_pos = self.position(|res| match res {
             Ok(value) => predicate(value),
             Err(e) => {
-                err = Some(e);
+                err = Some(e.into());
                 false
             }
         });
@@ -248,7 +254,7 @@ pub trait OkIterator<T>: Sized + Iterator<Item = Result<T>> {
         let res_rpos = self.rposition(|res| match res {
             Ok(value) => predicate(value),
             Err(e) => {
-                err = Some(e);
+                err = Some(e.into());
                 false
             }
         });
@@ -271,8 +277,8 @@ pub trait OkIterator<T>: Sized + Iterator<Item = Result<T>> {
     {
         Ok(self
             .map(|res| {
-                let value = res?;
-                Ok((f(&value), value))
+                let value = res.map_err(Into::into)?;
+                common::Ok((f(&value), value))
             })
             .ok_max_by(|(key1, _value1), (key2, _value2)| key1.cmp(key2))?
             .map(|(_key, value)| value))
@@ -302,8 +308,8 @@ pub trait OkIterator<T>: Sized + Iterator<Item = Result<T>> {
     {
         Ok(self
             .map(|res| {
-                let value = res?;
-                Ok((f(&value), value))
+                let value = res.map_err(Into::into)?;
+                common::Ok((f(&value), value))
             })
             .ok_min_by(|(key1, _value1), (key2, _value2)| key1.cmp(key2))?
             .map(|(_key, value)| value))
@@ -324,7 +330,7 @@ pub trait OkIterator<T>: Sized + Iterator<Item = Result<T>> {
     where
         S: Sum<T>,
     {
-        self.sum()
+        self.sum::<Result<_, _>>().map_err(Into::into)
     }
 
     #[inline]
@@ -332,10 +338,15 @@ pub trait OkIterator<T>: Sized + Iterator<Item = Result<T>> {
     where
         P: Product<T>,
     {
-        self.product()
+        self.product::<Result<_, _>>().map_err(Into::into)
     }
 
     // cmp cmp_by partial_cmp partial_cmp_by eq eq_by ne lt le gt ge
 }
 
-impl<T, It> OkIterator<T> for It where It: Sized + Iterator<Item = Result<T>> {}
+impl<T, E, It> OkIterator<T, E> for It
+where
+    It: Sized + Iterator<Item = Result<T, E>>,
+    E: Into<Error>,
+{
+}

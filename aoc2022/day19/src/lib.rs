@@ -5,7 +5,7 @@
 // The command line failed for some reason, maybe its version, I don't know.
 use good_lp::{default_solver, variable, variables, Expression, Solution, SolverModel};
 
-use common::{ensure, Error, Part, Part1, Part2, Result};
+use common::{ensure, Error, Ok, Part, Part1, Part2, Result};
 use utils::OkIterator;
 
 #[derive(Debug)]

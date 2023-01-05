@@ -8,7 +8,7 @@ use syn::{parse_macro_input, LitStr};
 
 /// Create a function to get the `solver` and `INPUTS` for a given `year` and `day`.
 ///
-/// Requires `use common::*;` and `aoc**-**` dependencies.
+/// Requires `common` and `aoc**-**` dependencies.
 ///
 /// ## Example: `make_aoc!("project-path")`
 /// If "project-path/Cargo.toml" have the following dependencies:
@@ -44,7 +44,8 @@ pub fn make_aoc(input: TokenStream) -> TokenStream {
         })
         .collect();
     quote! {
-        fn aoc(year: Year, day: Day) -> Result<(AocSolver, &'static [&'static str])> {
+        fn aoc(year: common::Year, day: common::Day) -> common::Result<(common::AocSolver, &'static [&'static str])> {
+            use common::*;
             Ok(match (year, day) {
                 #(#matched_lines)*
                 _ => bail!("You have not solved AoC {:?} {:?}, what are you waiting for?!", year, day),

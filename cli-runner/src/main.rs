@@ -3,8 +3,7 @@ use std::{
     time::{Duration, Instant},
 };
 
-#[allow(clippy::wildcard_imports)]
-use common::*;
+use common::{ensure, AocSolver, Context, Day, Part, Part1, Part2, Result, Year};
 
 aoc_macro::make_aoc!("cli-runner");
 
