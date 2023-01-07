@@ -11,9 +11,10 @@ const AZAZ: &str = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
 pub fn solver(part: Part, input: &str) -> Result<String> {
     let priority = |ch| Ok(AZAZ.find(ch).context("Not a-zA-Z")? + 1);
     let common_item = |h1: HashSet<_>, h2| -> Result<_> {
-        let (item,) = h1
+        let item = h1
             .intersection(&h2)
-            .collect_tuple()
+            .exactly_one()
+            .ok()
             .context("The intersection is not of a single item")?;
         Ok(*item)
     };
@@ -37,8 +38,7 @@ pub fn solver(part: Part, input: &str) -> Result<String> {
                     .map(|line| line.chars().collect::<HashSet<_>>())
                     .collect_tuple()
                     .context("Not a chunk of 3 lines")?;
-                let h2_3 = h2.intersection(&h3).copied().collect();
-                priority(common_item(h1, h2_3)?)
+                priority(common_item(h1, &h2 & &h3)?)
             })
             .ok_sum()?,
     }
