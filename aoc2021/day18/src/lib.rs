@@ -2,7 +2,7 @@ use std::{fmt, iter::Sum, ops::Add, str::FromStr};
 
 use itertools::Itertools;
 
-use common::{format_err, Context, Error, Part, Part1, Part2, Result};
+use common::{Context, Error, Part, Part1, Part2, Result};
 use utils::OkIterator;
 
 // I avoided to derive Clone on purpose.
@@ -315,15 +315,9 @@ pub fn solver(part: Part, input: &str) -> Result<String> {
             .lines()
             .tuple_combinations()
             .flat_map(|(a, b)| [(a, b), (b, a)])
-            .map(|(a, b)| {
-                let (a, b): (Snailfish, _) = (a.parse().or(Err(a))?, b.parse().or(Err(b))?);
-                Ok::<_, &str>((a + b).magnitude())
-            })
-            .max()
-            .context("empty input")?
-            .map_err(|s| format_err!("Could not parse into Snailfish: {}", s))?,
-        // Could not apply `max` method on `anyhow::Result`s.
-        // Therefore, it is a bit more complicated than before.
+            .map(|(a, b)| common::Ok((a.parse::<Snailfish>()? + b.parse()?).magnitude()))
+            .ok_max()?
+            .context("empty input")?,
     };
     Ok(result.to_string())
 }

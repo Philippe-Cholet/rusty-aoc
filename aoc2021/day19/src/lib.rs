@@ -5,7 +5,7 @@ use std::{
 
 use itertools::{iproduct, Itertools};
 
-use common::{ensure, Context, Error, Part, Part1, Part2, Result};
+use common::{ensure, Context, Ok, Part, Part1, Part2, Result};
 
 #[derive(Debug, PartialEq, Hash, Eq)]
 struct Xyz(i32, i32, i32);
@@ -79,7 +79,7 @@ pub fn solver(part: Part, input: &str) -> Result<String> {
                     .map(str::parse)
                     .collect_tuple()
                     .context("Not x,y,z")?;
-                Ok::<_, Error>(Xyz(x?, y?, z?))
+                Ok(Xyz(x?, y?, z?))
             })
     });
     let mut beacons: HashSet<_> = data.next().context("No scanner")?.try_collect()?;
