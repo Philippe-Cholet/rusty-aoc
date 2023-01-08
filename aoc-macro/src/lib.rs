@@ -39,16 +39,15 @@ pub fn make_aoc(input: TokenStream) -> TokenStream {
             let day = format_ident!("Day{}", d);
             let dependency = format_ident!("aoc{}_{:0>2}", y, d);
             quote! {
-                (#year, #day) => (#dependency::solver, &#dependency::INPUTS),
+                (::common::#year, ::common::#day) => (::#dependency::solver, &::#dependency::INPUTS),
             }
         })
         .collect();
     quote! {
-        fn aoc(year: common::Year, day: common::Day) -> common::Result<(common::AocSolver, &'static [&'static str])> {
-            use common::*;
-            Ok(match (year, day) {
+        fn aoc(year: ::common::Year, day: ::common::Day) -> ::common::Result<(::common::AocSolver, &'static [&'static str])> {
+            ::common::Result::Ok(match (year, day) {
                 #(#matched_lines)*
-                _ => bail!("You have not solved AoC {:?} {:?}, what are you waiting for?!", year, day),
+                _ => ::common::bail!("You have not solved AoC {:?} {:?}, what are you waiting for?!", year, day),
             })
         }
     }.into()
