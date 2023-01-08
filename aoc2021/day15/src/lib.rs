@@ -1,4 +1,4 @@
-use std::collections::{HashMap, VecDeque};
+use std::collections::VecDeque;
 
 use itertools::iproduct;
 
@@ -31,27 +31,23 @@ pub fn solver(part: Part, input: &str) -> Result<String> {
         }
         (grid, nrows, ncols)
     }; // now immutables
-    let (start, end) = ((0, 0), (nrows - 1, ncols - 1));
-    let mut risks = HashMap::from([(start, 0)]);
-    let mut queue = VecDeque::from([start]);
+    let mut risks = vec![vec![None; ncols]; nrows];
+    risks[0][0] = Some(0);
+    let mut queue = VecDeque::from([(0, 0)]);
     while let Some(loc) = queue.pop_front() {
-        for rc in neighbors(loc, nrows, ncols, false) {
-            let new_risk = risks[&loc] + grid[rc.0][rc.1];
-            match risks.get_mut(&rc) {
-                Some(risk) if *risk > new_risk => {
-                    *risk = new_risk;
-                    queue.push_back(rc);
-                }
-                None => {
-                    risks.insert(rc, new_risk);
-                    queue.push_back(rc);
-                }
-                _ => {}
+        for (r, c) in neighbors(loc, nrows, ncols, false) {
+            let new_risk = grid[r][c]
+                + risks[loc.0][loc.1].context("The risk should exist for elements of the queue")?;
+            if !matches!(risks[r][c], Some(old_risk) if old_risk <= new_risk) {
+                risks[r][c].replace(new_risk);
+                queue.push_back((r, c));
             }
         }
     }
-    debug_assert_eq!(risks.len(), nrows * ncols);
-    Ok(risks[&end].to_string())
+    debug_assert!(risks.iter().flatten().all(Option::is_some));
+    Ok(risks[nrows - 1][ncols - 1]
+        .context("Did not reach the end")?
+        .to_string())
 }
 
 pub const INPUTS: [&str; 2] = [
