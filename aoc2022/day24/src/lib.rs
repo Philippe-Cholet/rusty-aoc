@@ -5,7 +5,7 @@ use std::{
 };
 
 use common::{bail, Context, Error, Part, Part1, Part2, Result};
-use utils::parse_to_grid;
+use utils::{parse_to_grid, HeuristicItem};
 
 #[derive(Debug, Clone, Copy)]
 enum Direction {
@@ -166,32 +166,6 @@ pub fn solver(part: Part, input: &str) -> Result<String> {
         Part2 => 1,
     };
     Ok(bgrid.find_multi_path(times)?.to_string())
-}
-
-#[derive(Debug)]
-struct HeuristicItem<H: Ord, T> {
-    heuristic: H,
-    item: T,
-}
-
-impl<H: Ord, T> PartialEq for HeuristicItem<H, T> {
-    fn eq(&self, other: &Self) -> bool {
-        self.heuristic == other.heuristic
-    }
-}
-
-impl<H: Ord, T> Eq for HeuristicItem<H, T> {}
-
-impl<H: Ord, T> PartialOrd for HeuristicItem<H, T> {
-    fn partial_cmp(&self, other: &Self) -> Option<std::cmp::Ordering> {
-        Some(self.cmp(other))
-    }
-}
-
-impl<H: Ord, T> Ord for HeuristicItem<H, T> {
-    fn cmp(&self, other: &Self) -> std::cmp::Ordering {
-        self.heuristic.cmp(&other.heuristic)
-    }
 }
 
 pub const INPUTS: [&str; 2] = [

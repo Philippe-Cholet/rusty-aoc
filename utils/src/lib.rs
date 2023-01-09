@@ -78,6 +78,35 @@ pub fn neighbors(
     res
 }
 
+/// Arbitrary item that can be compared by its heuristic.
+///
+/// Meant to be used in a priority queue, where only the heuristic matter.
+#[derive(Debug)]
+pub struct HeuristicItem<H: Ord, T> {
+    pub heuristic: H,
+    pub item: T,
+}
+
+impl<H: Ord, T> PartialEq for HeuristicItem<H, T> {
+    fn eq(&self, other: &Self) -> bool {
+        self.heuristic == other.heuristic
+    }
+}
+
+impl<H: Ord, T> Eq for HeuristicItem<H, T> {}
+
+impl<H: Ord, T> PartialOrd for HeuristicItem<H, T> {
+    fn partial_cmp(&self, other: &Self) -> Option<std::cmp::Ordering> {
+        Some(self.cmp(other))
+    }
+}
+
+impl<H: Ord, T> Ord for HeuristicItem<H, T> {
+    fn cmp(&self, other: &Self) -> std::cmp::Ordering {
+        self.heuristic.cmp(&other.heuristic)
+    }
+}
+
 /// Convert a char representing a decimal digit to any type that can come from `u32`.
 pub fn char10<T>(ch: char) -> Result<T>
 where

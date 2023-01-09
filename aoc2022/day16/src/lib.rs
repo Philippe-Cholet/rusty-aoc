@@ -5,7 +5,7 @@ use itertools::Itertools;
 use petgraph::{algo::floyd_warshall, graph::NodeIndex, Graph, Undirected};
 
 use common::{ensure, Context, Ok, Part, Part1, Part2, Result};
-use utils::OkIterator;
+use utils::{HeuristicItem, OkIterator};
 
 /// Proboscidea Volcanium
 pub fn solver(part: Part, input: &str) -> Result<String> {
@@ -82,11 +82,11 @@ fn best_pressure<const N: usize>(rates: &[u32], distances: &[Vec<u32>], minutes_
     //     println!("{:?}", d);
     // }
     let start = State::<N>::new(distances.len(), minutes_left);
-    let mut pqueue = BinaryHeap::from([start]);
+    let mut pqueue = BinaryHeap::from([start.h_item()]);
     let mut max_pressure = 0;
     let mut n = minutes_left;
     let mut top = TOP;
-    while let Some(item) = pqueue.pop() {
+    while let Some(HeuristicItem { item, .. }) = pqueue.pop() {
         let min_left = item.minutes_left();
         match min_left.cmp(&n) {
             std::cmp::Ordering::Equal => top -= 1,
@@ -142,7 +142,18 @@ impl<const N: usize> State<N> {
             .expect("N != 0")
     }
 
-    fn neighbors(&self, distances: &[Vec<u32>], rates: &[u32]) -> Vec<Self> {
+    fn h_item(self) -> HeuristicItem<(u32, u32), Self> {
+        HeuristicItem {
+            heuristic: (self.minutes_left(), self.pressure),
+            item: self,
+        }
+    }
+
+    fn neighbors(
+        &self,
+        distances: &[Vec<u32>],
+        rates: &[u32],
+    ) -> Vec<HeuristicItem<(u32, u32), Self>> {
         self.actives
             .map(|active| {
                 self.visited
@@ -178,31 +189,9 @@ impl<const N: usize> State<N> {
                         new.pressure += active.minutes_left * rates[active.loc];
                     }
                 }
-                res
+                res.map(Self::h_item)
             })
             .collect()
-    }
-}
-
-impl<const N: usize> PartialEq for State<N> {
-    fn eq(&self, other: &Self) -> bool {
-        self.pressure == other.pressure && self.minutes_left() == other.minutes_left()
-    }
-}
-
-impl<const N: usize> Eq for State<N> {}
-
-impl<const N: usize> PartialOrd for State<N> {
-    fn partial_cmp(&self, other: &Self) -> Option<std::cmp::Ordering> {
-        Some(self.cmp(other))
-    }
-}
-
-impl<const N: usize> Ord for State<N> {
-    fn cmp(&self, other: &Self) -> std::cmp::Ordering {
-        self.minutes_left()
-            .cmp(&other.minutes_left())
-            .then(self.pressure.cmp(&other.pressure))
     }
 }
 

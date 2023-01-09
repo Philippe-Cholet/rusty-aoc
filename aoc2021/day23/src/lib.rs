@@ -3,14 +3,14 @@
 #![allow(clippy::expect_used)]
 
 use std::{
-    cmp::Ordering,
+    cmp::Reverse,
     collections::{BinaryHeap, HashMap, HashSet, VecDeque},
 };
 
 use itertools::{iproduct, Itertools};
 
 use common::{bail, Context, Part, Part1, Part2, Result};
-use utils::{neighbors, parse_to_grid_with_loc};
+use utils::{neighbors, parse_to_grid_with_loc, HeuristicItem};
 
 type Location = (usize, usize);
 
@@ -134,26 +134,6 @@ impl Grid {
 struct State {
     places: HashMap<Location, Amphipod>,
     energy: usize,
-    heuristic: usize, // energy + "estimation of the distance to the goal"
-}
-
-// Note the use of reverse in below implementations, to make the heap a min-heap.
-// Only consider heuristic to order those states.
-impl PartialEq for State {
-    fn eq(&self, other: &Self) -> bool {
-        self.heuristic.eq(&other.heuristic)
-    }
-}
-impl PartialOrd for State {
-    fn partial_cmp(&self, other: &Self) -> Option<Ordering> {
-        Some(self.heuristic.partial_cmp(&other.heuristic)?.reverse())
-    }
-}
-impl Eq for State {}
-impl Ord for State {
-    fn cmp(&self, other: &Self) -> Ordering {
-        self.heuristic.cmp(&other.heuristic).reverse()
-    }
 }
 
 impl State {
@@ -184,7 +164,7 @@ impl State {
         total
     }
 
-    fn moving(&self, src: Location, dst: Location, nb_moves: usize, grid: &Grid) -> Self {
+    fn moving(&self, src: Location, dst: Location, nb_moves: usize, grid: &Grid) -> (Self, usize) {
         let mut new = self.clone();
         let amphipod = new
             .places
@@ -193,11 +173,11 @@ impl State {
         new.energy += amphipod.energy() * nb_moves;
         assert!(!new.places.contains_key(&dst));
         new.places.insert(dst, amphipod);
-        new.heuristic = new.energy + new.energy_lower_bound(grid);
-        new
+        let heuristic = new.energy + new.energy_lower_bound(grid);
+        (new, heuristic)
     }
 
-    fn neighbors(&self, grid: &Grid) -> Vec<Self> {
+    fn neighbors(&self, grid: &Grid) -> Vec<(Self, usize)> {
         let (nrows, ncols) = grid.shape();
         let mut result = vec![];
         for (src, amphipod) in &self.places {
@@ -307,21 +287,26 @@ pub fn solver(part: Part, input: &str) -> Result<String> {
     })?;
     let grid = Grid::new(grid, amphipods_per_room);
     let mut been = HashSet::from([AmphipodLocations::from(&init_places)]);
-    let mut pqueue = BinaryHeap::from([State {
-        energy: 0,
-        heuristic: 0,
-        places: init_places,
+    let mut pqueue = BinaryHeap::from([HeuristicItem {
+        heuristic: Reverse(0), // energy + "estimation of the distance to the goal"
+        item: State {
+            energy: 0,
+            places: init_places,
+        },
     }]);
     Ok(loop {
-        let state = pqueue.pop().context("Failed to find a way")?;
+        let state = pqueue.pop().context("Failed to find a way")?.item;
         if state.is_organized(&grid) {
             break state.energy;
         }
-        for next in state.neighbors(&grid) {
+        for (next, heuristic) in state.neighbors(&grid) {
             let locs = AmphipodLocations::from(&next.places);
             if !been.contains(&locs) {
                 been.insert(locs);
-                pqueue.push(next);
+                pqueue.push(HeuristicItem {
+                    heuristic: Reverse(heuristic),
+                    item: next,
+                });
             }
         }
     }
