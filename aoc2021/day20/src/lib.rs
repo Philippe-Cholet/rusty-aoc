@@ -22,13 +22,7 @@ pub fn solver(part: Part, input: &str) -> Result<String> {
     let (enhancement, input_image) = input
         .split_once("\n\n")
         .context("no empty line between sections")?;
-    let enhancement: [bool; 512] = enhancement
-        .chars()
-        .map(char2bool)
-        .ok_collect_vec()?
-        .try_into()
-        .ok()
-        .context("Not 512 long")?;
+    let enhancement: [bool; 512] = enhancement.chars().map(char2bool).ok_collect_array()?;
     let nrows = input_image.lines().count();
     let ncols = input_image
         .lines()

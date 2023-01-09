@@ -5,7 +5,7 @@ use std::{
     iter::{Product, Sum},
 };
 
-use common::{Error, Result};
+use common::{format_err, Error, Result};
 
 /// An interface for dealing with iterators of results and shortcuts to collect into usual types.
 pub trait OkIterator<T, E>
@@ -48,6 +48,13 @@ where
     #[inline]
     fn ok_collect_vec(self) -> Result<Vec<T>> {
         self.map(|res| res.map_err(Into::into)).collect()
+    }
+
+    #[inline]
+    fn ok_collect_array<const N: usize>(self) -> Result<[T; N]> {
+        self.ok_collect_vec()?
+            .try_into()
+            .map_err(|err: Vec<_>| format_err!("Not {} long but {}", N, err.len()))
     }
 
     #[inline]

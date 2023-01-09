@@ -21,10 +21,7 @@ pub fn solver(part: Part, input: &str) -> Result<String> {
             }
             .context("empty range")
         })
-        .ok_collect_vec()?
-        .try_into()
-        .ok()
-        .context("Not 7 long")?;
+        .ok_collect_array()?;
     let [d4, d6, d7, d8, d10, d13, d14] = [d3 - 8, d5 - 3, d2, d1 - 7, d9 + 5, d12 - 6, d11 + 3];
     let model_digits = [d1, d2, d3, d4, d5, d6, d7, d8, d9, d10, d11, d12, d13, d14];
     let model_number = model_digits
