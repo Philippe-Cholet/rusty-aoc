@@ -437,6 +437,7 @@ name = "aoc22-25"
 version = "0.1.0"
 dependencies = [
  "common",
+ "utils",
 ]
 
 [[package]]

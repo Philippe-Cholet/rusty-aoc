@@ -1,20 +1,19 @@
 use common::{bail, Part, Part1, Part2, Result};
+use utils::OkIterator;
 
 /// Full of Hot Air
 pub fn solver(part: Part, input: &str) -> Result<String> {
     Ok(match part {
-        Part1 => {
-            let fuel: Result<_, _> = input.lines().map(snafu_to_int).sum();
-            int_to_snafu(fuel?)
-        }
+        Part1 => int_to_snafu(input.lines().map(snafu_to_int).ok_sum()?),
         Part2 => SUCCESS.to_owned(),
     })
 }
 
 fn snafu_to_int(snafu: &str) -> Result<i64> {
-    snafu.chars().fold(Ok(0_i64), |res, ch| {
-        Ok(res? * 5
-            + match ch {
+    snafu
+        .chars()
+        .map(|ch| {
+            Ok(match ch {
                 '2' => 2,
                 '1' => 1,
                 '0' => 0,
@@ -22,7 +21,8 @@ fn snafu_to_int(snafu: &str) -> Result<i64> {
                 '=' => -2,
                 _ => bail!("Wrong char for a SNAFU number: {}", ch),
             })
-    })
+        })
+        .ok_fold(0, |res, ch| res * 5 + ch)
 }
 
 fn int_to_snafu(mut n: i64) -> String {
