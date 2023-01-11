@@ -89,8 +89,8 @@ fn enlarge(
     }
 }
 
-fn all_empty<const N: usize>(grid: &[Vec<bool>], locs: [(usize, usize); N]) -> bool {
-    locs.into_iter().all(|(r, c)| !grid[r][c])
+fn all_empty(grid: &[Vec<bool>], locs: &[(usize, usize)]) -> bool {
+    locs.iter().all(|(r, c)| !grid[*r][*c])
 }
 
 fn display_grid(grid: &[Vec<bool>]) {
@@ -123,7 +123,7 @@ pub fn solver(part: Part, input: &str) -> Result<String> {
                 }
                 if all_empty(
                     &grid,
-                    [
+                    &[
                         (r - 1, c - 1),
                         (r - 1, c),
                         (r - 1, c + 1),
@@ -138,7 +138,7 @@ pub fn solver(part: Part, input: &str) -> Result<String> {
                 }
                 if let Some(d) = dirs
                     .into_iter()
-                    .find(|d| all_empty(&grid, d.adjacent_positions(r, c)))
+                    .find(|d| all_empty(&grid, &d.adjacent_positions(r, c)))
                 {
                     let (r, c) = d.get_position(r, c);
                     counts[r][c] |= d.opposite().bitmask();

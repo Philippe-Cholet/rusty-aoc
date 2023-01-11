@@ -1,5 +1,5 @@
 use std::{
-    collections::HashSet,
+    collections::{HashMap, HashSet},
     ops::{Add, Sub},
 };
 
@@ -48,23 +48,21 @@ impl Sub for &Xyz {
 }
 
 // All 48 changes are considered here...
-fn merge12(positions: &mut HashSet<Xyz>, group: &[Xyz]) -> Option<Xyz> {
-    for (sx, sy, sz, p) in iproduct!([false, true], [false, true], [false, true], 0..6) {
+fn merge12(positions: &HashSet<Xyz>, group: &[Xyz]) -> Option<(Xyz, Vec<Xyz>)> {
+    iproduct!([false, true], [false, true], [false, true], 0..6).find_map(|(sx, sy, sz, p)| {
         let aligned = group
             .iter()
             .map(|xyz| xyz.arrange(sx, sy, sz, p))
             .collect_vec();
-        let offsets = iproduct!(positions.iter(), aligned.iter())
-            .map(|(pos, align)| pos - align)
-            .counts();
-        for (offset, count) in offsets {
-            if count >= 12 {
-                positions.extend(aligned.into_iter().map(|p| &p + &offset));
-                return Some(offset);
-            }
-        }
-    }
-    None
+        let mut offsets = HashMap::<_, usize>::with_capacity(positions.len() * aligned.len());
+        iproduct!(positions.iter(), aligned.iter())
+            .find_map(|(pos, align)| {
+                let count = offsets.entry(pos - align).or_default();
+                *count += 1;
+                (*count >= 12).then_some(pos - align)
+            })
+            .map(|offset| (offset, aligned))
+    })
 }
 
 /// Beacon Scanner
@@ -88,7 +86,8 @@ pub fn solver(part: Part, input: &str) -> Result<String> {
     while !groups.is_empty() {
         let mut no_reunion = true;
         groups.retain(|group| {
-            merge12(&mut beacons, group).map_or(true, |offset| {
+            merge12(&beacons, group).map_or(true, |(offset, aligned)| {
+                beacons.extend(aligned.into_iter().map(|p| &p + &offset));
                 scanners.push(offset);
                 no_reunion = false;
                 false
