@@ -1,22 +1,18 @@
-// I would simplify things if I did not already spent too much time on it
-// (mostly because of a stupid error in `neighbors` method of `State`).
-#![allow(clippy::expect_used)]
-
 use std::{
     cmp::Reverse,
-    collections::{BinaryHeap, HashMap, HashSet, VecDeque},
+    collections::{BinaryHeap, HashSet, VecDeque},
+    fmt,
+    ops::{Index, IndexMut},
+    str::FromStr,
 };
 
-use itertools::{iproduct, Itertools};
+use itertools::{chain, iproduct, Either, Itertools};
 
-use common::{bail, Context, Part, Part1, Part2, Result};
-use utils::{neighbors, parse_to_grid_with_loc, HeuristicItem};
+use common::{bail, ensure, Context, Error, Part, Part1, Part2, Result};
+use utils::HeuristicItem;
 
-type Location = (usize, usize);
-
-const fn manhattan(a: Location, b: Location) -> usize {
-    a.0.abs_diff(b.0) + a.1.abs_diff(b.1)
-}
+use Amphipod::{Amber, Bronze, Copper, Desert};
+use Loc::{Hallway, Room, RoomEntrance};
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
 enum Amphipod {
@@ -26,301 +22,408 @@ enum Amphipod {
     Desert,
 }
 
-impl Amphipod {
-    const fn energy(self) -> usize {
-        match self {
-            Self::Amber => 1,
-            Self::Bronze => 10,
-            Self::Copper => 100,
-            Self::Desert => 1000,
-        }
-    }
+// Hallway and Room are used to nicely index states.
+#[derive(Debug, Clone, Copy)]
+enum Loc {
+    Hallway(usize),
+    RoomEntrance(Amphipod),
+    Room(Amphipod, usize),
 }
 
-#[derive(Debug, PartialEq)]
-enum Cell {
-    Wall,
-    Hallway { entry: bool },
-    Room { target: Amphipod },
+#[derive(Debug, PartialEq, Eq, Hash, Clone)]
+struct State<const N: usize> {
+    hallway: [Option<Amphipod>; 7],
+    rooms: [[Option<Amphipod>; N]; 4],
 }
 
-impl Cell {
-    fn is_room(&self, amphipod: Amphipod) -> bool {
-        matches!(self, Self::Room { target } if target == &amphipod)
-    }
-}
-
-#[derive(Debug)]
-struct Grid {
-    inner: Vec<Vec<Cell>>,
-    rooms: HashMap<Amphipod, Vec<Location>>,
-    distances: HashMap<(Location, Location), usize>,
-}
-
-impl Grid {
-    fn new(grid: Vec<Vec<Cell>>, amphipods_per_room: usize) -> Self {
-        let ncols = grid.iter().map(Vec::len).max().expect("Empty grid");
-        let grid = {
-            let mut rect = grid;
-            // Ensure the grid is rectangular.
-            for row in &mut rect {
-                for _ in 0..ncols - row.len() {
-                    row.push(Cell::Wall);
-                }
-            }
-            rect
-        };
-        let rooms = HashMap::from([
-            (
-                Amphipod::Amber,
-                (0..amphipods_per_room).map(|r| (r + 2, 3)).collect_vec(),
-            ),
-            (
-                Amphipod::Bronze,
-                (0..amphipods_per_room).map(|r| (r + 2, 5)).collect_vec(),
-            ),
-            (
-                Amphipod::Copper,
-                (0..amphipods_per_room).map(|r| (r + 2, 7)).collect_vec(),
-            ),
-            (
-                Amphipod::Desert,
-                (0..amphipods_per_room).map(|r| (r + 2, 9)).collect_vec(),
-            ),
-        ]);
-        let cells = grid
-            .iter()
-            .enumerate()
-            .flat_map(|(r, row)| {
-                row.iter()
-                    .enumerate()
-                    .filter_map(move |(c, cell)| match cell {
-                        Cell::Wall => None,
-                        _ => Some(((r, c), cell)),
-                    })
-            })
-            .collect_vec();
-        let distances = iproduct!(cells.iter(), cells.iter())
-            .map(|((loc1, cell1), (loc2, cell2))| {
-                let dist = match (cell1, cell2) {
-                    (Cell::Room { target: a }, Cell::Room { target: b }) if a != b => {
-                        let (r1, c1) = loc1;
-                        let (r2, c2) = loc2;
-                        r1 - 1 + c1.abs_diff(*c2) + r2 - 1
-                        // Move up, move left or right, move down
-                    }
-                    _ => manhattan(*loc1, *loc2),
-                };
-                ((*loc1, *loc2), dist)
-            })
-            .collect();
-        Self {
-            inner: grid,
-            rooms,
-            distances,
-        }
-    }
-
-    fn shape(&self) -> Location {
-        (self.inner.len(), self.inner[0].len())
-    }
-
-    fn get(&self, loc: &Location) -> &Cell {
-        &self.inner[loc.0][loc.1]
-    }
-}
-
-#[derive(Debug, Clone)]
-struct State {
-    places: HashMap<Location, Amphipod>,
-    energy: usize,
-}
-
-impl State {
-    fn energy_lower_bound(&self, grid: &Grid) -> usize {
-        let mut amp2locs = HashMap::new();
-        for (loc, amphi) in &self.places {
-            amp2locs.entry(amphi).or_insert_with(Vec::new).push(*loc);
-        }
-        // If an amphipod could go through an occupied cell, the solution would be
-        // obvious, the energy it would take is an obvious lower bound.
-        let mut total = 0;
-        for (amphi, room) in &grid.rooms {
-            let locs = amp2locs.get(amphi).expect("Missing amphipod?!");
-            assert_eq!(room.len(), locs.len());
-            let min_dist: usize = locs
-                .iter()
-                .permutations(locs.len())
-                .map(|v| {
-                    room.iter()
-                        .zip(v.into_iter())
-                        .map(|(a, b)| grid.distances.get(&(*a, *b)).expect("Missing distance?!"))
-                        .sum()
-                })
-                .min()
-                .expect("Missing amphipod?!");
-            total += min_dist * amphi.energy();
-        }
-        total
-    }
-
-    fn moving(&self, src: Location, dst: Location, nb_moves: usize, grid: &Grid) -> (Self, usize) {
-        let mut new = self.clone();
-        let amphipod = new
-            .places
-            .remove(&src)
-            .expect("Can not move from an empty place");
-        new.energy += amphipod.energy() * nb_moves;
-        assert!(!new.places.contains_key(&dst));
-        new.places.insert(dst, amphipod);
-        let heuristic = new.energy + new.energy_lower_bound(grid);
-        (new, heuristic)
-    }
-
-    fn neighbors(&self, grid: &Grid) -> Vec<(Self, usize)> {
-        let (nrows, ncols) = grid.shape();
-        let mut result = vec![];
-        for (src, amphipod) in &self.places {
-            let in_my_room = grid.get(src).is_room(*amphipod);
-            let my_room_has_no_stranger = grid
-                .rooms
-                .get(amphipod)
-                .expect("Missing room?!")
-                .iter()
-                .all(|loc| self.places.get(loc).map_or(true, |amp| amp == amphipod));
-            let last_free_place_in_my_room = grid.rooms[amphipod]
-                .iter()
-                .filter(|loc| !self.places.contains_key(*loc))
-                .max_by_key(|loc| loc.0);
-            let can_move_to_hallway = match grid.get(src) {
-                Cell::Wall => unreachable!("You are in a wall really?!"),
-                Cell::Hallway { .. } => false,
-                Cell::Room { target } if target == amphipod => !my_room_has_no_stranger,
-                Cell::Room { .. } => true,
-            };
-            let mut queue = VecDeque::from([(0, *src)]);
-            let mut been = HashSet::new();
-            while let Some((nb_moves, loc)) = queue.pop_front() {
-                if been.contains(&loc) {
-                    continue; // already visited
-                }
-                if &loc != src && self.places.contains_key(&loc) {
-                    continue; // another amphipod occupies this location.
-                }
-                been.insert(loc);
-                for loc2 in neighbors(loc, nrows, ncols, false) {
-                    if been.contains(&loc2) {
-                        continue; // already visited
-                    }
-                    if self.places.contains_key(&loc2) {
-                        continue; // already occupied
-                    }
-                    let can_stop_at = match &grid.get(&loc2) {
-                        Cell::Wall => continue,
-                        Cell::Hallway { entry } => !entry && can_move_to_hallway,
-                        // Stop if it is my room, if I am not already in it,
-                        // if it has no stranger and if I would not block the way in my room.
-                        Cell::Room { target } => {
-                            target == amphipod
-                                && !in_my_room
-                                && my_room_has_no_stranger
-                                && last_free_place_in_my_room == Some(&loc2)
-                        }
-                    };
-                    if can_stop_at {
-                        result.push(self.moving(*src, loc2, nb_moves + 1, grid));
-                    }
-                    queue.push_back((nb_moves + 1, loc2));
-                }
-            }
-        }
-        result
-    }
-
-    fn is_organized(&self, grid: &Grid) -> bool {
-        self.places
-            .iter()
-            .all(|(loc, amphipod)| grid.get(loc).is_room(*amphipod))
-    }
-}
+// (Precomputed) paths and distances between all locations.
+type AmphipodMap = Vec<Vec<(Vec<Loc>, u32)>>;
 
 /// Amphipod
 pub fn solver(part: Part, input: &str) -> Result<String> {
-    let mut lines = input.lines().collect_vec();
-    let amphipods_per_room = match part {
-        Part1 => 2,
+    Ok(match part {
+        Part1 => input.parse::<State<2>>()?.minimize_energy()?,
         Part2 => {
+            let mut lines: Vec<_> = input.lines().collect();
             lines.insert(3, "  #D#C#B#A#");
             lines.insert(4, "  #D#B#A#C#");
-            4
-        }
-    };
-    let column2amphipod = |c| match c {
-        3 => Some(Amphipod::Amber),
-        5 => Some(Amphipod::Bronze),
-        7 => Some(Amphipod::Copper),
-        9 => Some(Amphipod::Desert),
-        _ => None,
-    };
-    let mut init_places = HashMap::new();
-    let grid = parse_to_grid_with_loc(lines, |(r, c), ch| {
-        Ok(match ch {
-            '#' | ' ' => Cell::Wall,
-            '.' => Cell::Hallway {
-                entry: column2amphipod(c).is_some(),
-            },
-            'A' | 'B' | 'C' | 'D' => {
-                let amphipod = match ch {
-                    'A' => Amphipod::Amber,
-                    'B' => Amphipod::Bronze,
-                    'C' => Amphipod::Copper,
-                    'D' => Amphipod::Desert,
-                    _ => bail!("Not an amphipod: {}", ch),
-                };
-                init_places.insert((r, c), amphipod);
-                Cell::Room {
-                    target: column2amphipod(c).context("Amphipod in hallway")?,
-                }
-            }
-            _ => bail!("Wrong char: {}", ch),
-        })
-    })?;
-    let grid = Grid::new(grid, amphipods_per_room);
-    let mut been = HashSet::from([AmphipodLocations::from(&init_places)]);
-    let mut pqueue = BinaryHeap::from([HeuristicItem {
-        heuristic: Reverse(0), // energy + "estimation of the distance to the goal"
-        item: State {
-            energy: 0,
-            places: init_places,
-        },
-    }]);
-    Ok(loop {
-        let state = pqueue.pop().context("Failed to find a way")?.item;
-        if state.is_organized(&grid) {
-            break state.energy;
-        }
-        for (next, heuristic) in state.neighbors(&grid) {
-            let locs = AmphipodLocations::from(&next.places);
-            if !been.contains(&locs) {
-                been.insert(locs);
-                pqueue.push(HeuristicItem {
-                    heuristic: Reverse(heuristic),
-                    item: next,
-                });
-            }
+            let new_input = lines.join("\n");
+            new_input.parse::<State<4>>()?.minimize_energy()?
         }
     }
     .to_string())
 }
 
-#[derive(Debug, PartialEq, Eq, Hash)]
-struct AmphipodLocations(Vec<(Location, Amphipod)>);
+impl Amphipod {
+    const ALL: [Self; 4] = [Amber, Bronze, Copper, Desert];
 
-impl AmphipodLocations {
-    fn from(places: &HashMap<Location, Amphipod>) -> Self {
-        let mut locs = places.iter().map(|(&loc, &amp)| (loc, amp)).collect_vec();
-        locs.sort_by(|(a, _), (b, _)| a.0.cmp(&b.0).then(a.1.cmp(&b.1)));
-        Self(locs)
+    const fn energy(self) -> u32 {
+        match self {
+            Amber => 1,
+            Bronze => 10,
+            Copper => 100,
+            Desert => 1000,
+        }
+    }
+
+    const fn room_id(self) -> usize {
+        match self {
+            Amber => 0,
+            Bronze => 1,
+            Copper => 2,
+            Desert => 3,
+        }
+    }
+}
+
+impl Loc {
+    const fn prev_in_room(self) -> Option<Self> {
+        match self {
+            Hallway(_) | RoomEntrance(_) | Room(_, 0) => None,
+            Room(amp, i) => Some(Room(amp, i - 1)),
+        }
+    }
+
+    fn valid_move(self, other: Self) -> bool {
+        match (self, other) {
+            (Room(a1, _), Room(a2, _)) => a1 != a2,
+            (Room(_, _), Hallway(_)) | (Hallway(_), Room(_, _)) => true,
+            _ => false,
+        }
+    }
+
+    fn neighbors(self, room_size: usize) -> Vec<Self> {
+        match self {
+            Hallway(0) => vec![Hallway(1)],
+            Hallway(1) => vec![Hallway(0), RoomEntrance(Amber)],
+            Hallway(2) => [Amber, Bronze].map(RoomEntrance).to_vec(),
+            Hallway(3) => [Bronze, Copper].map(RoomEntrance).to_vec(),
+            Hallway(4) => [Copper, Desert].map(RoomEntrance).to_vec(),
+            Hallway(5) => vec![RoomEntrance(Desert), Hallway(6)],
+            Hallway(6) => vec![Hallway(5)],
+            RoomEntrance(amphipod) => vec![
+                Hallway(amphipod.room_id() + 1),
+                Hallway(amphipod.room_id() + 2),
+                Room(amphipod, 0),
+            ],
+            Room(amp, index) if index < room_size => {
+                let mut res = vec![if index == 0 {
+                    RoomEntrance(amp)
+                } else {
+                    Room(amp, index - 1)
+                }];
+                if index + 1 < room_size {
+                    res.push(Room(amp, index + 1));
+                }
+                res
+            }
+            _ => unreachable!(),
+        }
+    }
+
+    // 0..7    hallways ;
+    // 7..11   room entrances ;
+    // 11..15  rooms first places ;
+    // 15..19  rooms second places ;
+    // ...
+    const fn as_usize(self) -> usize {
+        match self {
+            Hallway(i) => i,
+            RoomEntrance(amp) => 7 + amp.room_id(),
+            Room(amp, i) => 11 + (4 * i + amp.room_id()),
+        }
+    }
+
+    const fn from_usize(index: usize) -> Self {
+        match index {
+            0..=6 => Hallway(index),
+            7..=10 => RoomEntrance(Amphipod::ALL[index - 7]),
+            _ => Room(Amphipod::ALL[(index - 11) % 4], (index - 11) / 4),
+        }
+    }
+}
+
+impl<const N: usize> State<N> {
+    const GOAL: Self = Self {
+        hallway: [None; 7],
+        rooms: [
+            [Some(Amber); N],
+            [Some(Bronze); N],
+            [Some(Copper); N],
+            [Some(Desert); N],
+        ],
+    };
+
+    #[allow(clippy::cast_possible_truncation)] // Path lengths are really small!
+    fn amphipod_map() -> Result<AmphipodMap> {
+        let size = 7 + 4 * (1 + N);
+        (0..size)
+            .map(|start| {
+                let mut res = vec![None; size];
+                let mut queue = VecDeque::from([(vec![], start)]);
+                while let Some((path, u)) = queue.pop_front() {
+                    if res[u].is_some() {
+                        continue;
+                    }
+                    let mut new_path = path.clone();
+                    new_path.pop(); // Do not consider the end of it.
+                    new_path.retain(|loc| !matches!(loc, RoomEntrance(_))); // Ignore (empty) entrances.
+                    res[u] = Some((new_path, path.len() as u32));
+                    for neighbor in Loc::from_usize(u).neighbors(N) {
+                        let v = neighbor.as_usize();
+                        if res[v].is_some() {
+                            continue;
+                        }
+                        let mut new_path = path.clone();
+                        new_path.push(neighbor);
+                        queue.push_back((new_path, v));
+                    }
+                }
+                res.into_iter()
+                    .map(|opt| opt.context("Missing loc"))
+                    .collect()
+            })
+            .collect()
+    }
+
+    fn energy_to_goal_lower_bound(&self, amphipod_map: &AmphipodMap) -> u32 {
+        chain!(
+            iproduct!(Amphipod::ALL, 0..N).flat_map(|(owner, index)| {
+                let loc = Room(owner, index);
+                match self[loc] {
+                    Some(amp) if amp != owner => vec![(amp, loc), (owner, loc)],
+                    None => vec![(owner, loc)],
+                    Some(_) => vec![],
+                }
+            }),
+            (0..7)
+                .map(Hallway)
+                .filter_map(|start| self[start].map(|amp| (amp, start))),
+        )
+        .map(|(amp, loc)| {
+            amphipod_map[loc.as_usize()][RoomEntrance(amp).as_usize()].1 * amp.energy()
+        })
+        .sum()
+    }
+
+    fn possible_moves(&self) -> Vec<(Loc, Loc)> {
+        let (mut starts, mut ends): (Vec<_>, Vec<_>) = (0..7).map(Hallway).partition_map(|loc| {
+            self[loc].map_or(Either::Right((loc, None)), |amp| Either::Left((loc, amp)))
+        });
+        for owner in Amphipod::ALL {
+            let mut locs = (0..N).filter_map(|index| {
+                let loc = Room(owner, index);
+                self[loc].map(|amphipod| (loc, amphipod))
+            });
+            match locs.next() {
+                // Nobody in this room, yet. Place an owner at the bottom of its room.
+                None => ends.push((Room(owner, N - 1), Some(owner))),
+                Some((start, moving_amp)) => {
+                    if moving_amp != owner || locs.any(|(_, amp)| amp != owner) {
+                        // Amphipod candidate to move.
+                        starts.push((start, moving_amp));
+                    } else if let Some(end) = start.prev_in_room() {
+                        // Amphipods here are rightfully placed, but not full yet.
+                        ends.push((end, Some(owner)));
+                    }
+                    // else the room is full of its owners.
+                }
+            }
+        }
+        iproduct!(starts.into_iter(), ends.into_iter())
+            .filter_map(|((start, a1), (end, a2))| {
+                (a2.is_none() || a2 == Some(a1)).then_some((start, end))
+            })
+            .filter(|(start, end)| start.valid_move(*end))
+            .collect()
+    }
+
+    fn neighbors(&self, amphipod_map: &AmphipodMap) -> Result<Vec<(Self, u32)>> {
+        let mut res = vec![];
+        for (start, end) in self.possible_moves() {
+            let (path, distance) = &amphipod_map[start.as_usize()][end.as_usize()];
+            if path.iter().all(|loc| self[*loc].is_none()) {
+                // The path is clear between the start and the end.
+                let mut new = self.clone();
+                let amp = new[start].take().context("Taking from an empty place")?;
+                let old = new[end].replace(amp);
+                ensure!(old.is_none(), "Piling amphipods");
+                let candidate = (new, amp.energy() * distance);
+                if matches!((start, end), (Hallway(_), Room(_, _))) {
+                    // Some amphipod can be ranged in its room, prioritize that!
+                    return Ok(vec![candidate]);
+                }
+                res.push(candidate);
+            }
+        }
+        Ok(res)
+    }
+
+    fn minimize_energy(self) -> Result<u32> {
+        let amphipod_map = Self::amphipod_map()?;
+        // for row in &amphipod_map {
+        //     for (_, distance) in row {
+        //         print!("  {distance: >2}");
+        //     }
+        //     println!();
+        // }
+        let mut heap = BinaryHeap::from([HeuristicItem {
+            heuristic: Reverse(0), // This first heuristic is inaccurate but unused.
+            item: (self, 0),
+        }]);
+        let mut been = HashSet::new();
+        Ok(loop {
+            let (state, energy_so_far) = heap.pop().context("Failed to solve!")?.item;
+            if state == Self::GOAL {
+                break energy_so_far;
+            }
+            if been.contains(&state) {
+                continue;
+            }
+            let neighbors = state.neighbors(&amphipod_map)?;
+            been.insert(state);
+            for (neighbor, energy_to_neighbor) in neighbors {
+                if been.contains(&neighbor) {
+                    continue;
+                }
+                heap.push(HeuristicItem {
+                    heuristic: Reverse(
+                        energy_so_far
+                            + energy_to_neighbor
+                            + neighbor.energy_to_goal_lower_bound(&amphipod_map),
+                    ),
+                    item: (neighbor, energy_so_far + energy_to_neighbor),
+                });
+            }
+        })
+    }
+}
+
+impl<const N: usize> Index<Loc> for State<N> {
+    type Output = Option<Amphipod>;
+
+    fn index(&self, loc: Loc) -> &Self::Output {
+        match loc {
+            RoomEntrance(_) => panic!("Room entrances are empty"),
+            Hallway(index) => &self.hallway[index],
+            Room(amphipod, index) => &self.rooms[amphipod.room_id()][index],
+        }
+    }
+}
+
+impl<const N: usize> IndexMut<Loc> for State<N> {
+    fn index_mut(&mut self, loc: Loc) -> &mut Self::Output {
+        match loc {
+            RoomEntrance(_) => panic!("Room entrances are empty"),
+            Hallway(index) => &mut self.hallway[index],
+            Room(amphipod, index) => &mut self.rooms[amphipod.room_id()][index],
+        }
+    }
+}
+
+impl FromStr for Amphipod {
+    type Err = Error;
+
+    fn from_str(s: &str) -> Result<Self> {
+        Ok(match s {
+            "A" => Amber,
+            "B" => Bronze,
+            "C" => Copper,
+            "D" => Desert,
+            _ => bail!("Wrong amphipod: {}", s),
+        })
+    }
+}
+
+impl<const N: usize> FromStr for State<N> {
+    type Err = Error;
+
+    fn from_str(s: &str) -> Result<Self> {
+        let mut lines = s.lines();
+        ensure!(lines.next() == Some("#############"), "First walls");
+        ensure!(lines.next() == Some("#...........#"), "Second hallway");
+        let mut rooms = [[None; N]; 4];
+        for j in 0..N {
+            let line = lines.next().context("Missing line")?;
+            if j == 0 {
+                ensure!(line.len() == 13, "Line 0");
+                ensure!(
+                    &line[..2] == "##" && &line[11..] == "##",
+                    "Start/end with ##"
+                );
+            } else {
+                ensure!(line.len() == 11, "Line 1..N");
+                ensure!(&line[..2] == "  ", "Start with two spaces");
+            }
+            for w in [2, 4, 6, 8, 10] {
+                ensure!(&line[w..=w] == "#", "Walls");
+            }
+            for (i, w) in (0..4).zip([3, 5, 7, 9]) {
+                rooms[i][j] = Some(line[w..=w].parse()?);
+            }
+        }
+        ensure!(lines.next() == Some("  #########"), "Last walls");
+        ensure!(lines.next().is_none(), "Nothing after last walls");
+        Ok(Self {
+            hallway: [None; 7],
+            rooms,
+        })
+    }
+}
+
+impl fmt::Display for Amphipod {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        let ch = match self {
+            Amber => 'A',
+            Bronze => 'B',
+            Copper => 'C',
+            Desert => 'D',
+        };
+        write!(f, "{ch}")
+    }
+}
+
+impl<const N: usize> fmt::Display for State<N> {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        macro_rules! opamp {
+            ($opt_amp:expr) => {
+                match $opt_amp {
+                    None => write!(f, ".")?,
+                    Some(amp) => amp.fmt(f)?,
+                }
+            };
+        }
+        writeln!(f, "#############")?;
+        write!(f, "#")?;
+        opamp!(&self.hallway[0]);
+        opamp!(&self.hallway[1]);
+        write!(f, "+")?;
+        opamp!(&self.hallway[2]);
+        write!(f, "+")?;
+        opamp!(&self.hallway[3]);
+        write!(f, "+")?;
+        opamp!(&self.hallway[4]);
+        write!(f, "+")?;
+        opamp!(&self.hallway[5]);
+        opamp!(&self.hallway[6]);
+        writeln!(f, "#")?;
+        for i in 0..N {
+            if i == 0 {
+                write!(f, "##")?;
+            } else {
+                write!(f, "  ")?;
+            };
+            for j in 0..4 {
+                write!(f, "#")?;
+                opamp!(&self.rooms[j][i]);
+            }
+            if i == 0 {
+                writeln!(f, "###")?;
+            } else {
+                writeln!(f, "#")?;
+            };
+        }
+        write!(f, "  #########")
     }
 }
 
