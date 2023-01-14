@@ -1,114 +1,83 @@
-use std::cmp::{max, min};
-
-use itertools::Itertools;
+use itertools::{iproduct, Itertools};
 
 use common::{Context, Part, Part1, Part2, Result};
-
-#[derive(Debug, Clone)]
-struct Game {
-    turn1: bool,
-    player1: Player,
-    player2: Player,
-}
-
-impl Game {
-    fn forward(&mut self, moves: u8) {
-        if self.turn1 {
-            self.player1.forward(moves);
-        } else {
-            self.player2.forward(moves);
-        }
-        self.turn1 = !self.turn1;
-    }
-}
-
-#[derive(Debug, Clone)]
-struct Player {
-    position: u8,
-    score: usize,
-}
-
-impl Player {
-    fn forward(&mut self, moves: u8) {
-        debug_assert!(self.position > 0 && self.position <= 10);
-        self.position = (self.position + moves - 1) % 10 + 1;
-        self.score += self.position as usize;
-    }
-}
-
-#[derive(Debug, Default)]
-struct Dice100 {
-    value: u8,
-    nb_roll: usize,
-}
-
-impl Dice100 {
-    fn roll(&mut self) -> u8 {
-        self.value = (self.value % 100) + 1;
-        self.nb_roll += 1;
-        self.value % 10
-    }
-
-    fn roll3(&mut self) -> u8 {
-        (self.roll() + self.roll() + self.roll()) % 10
-    }
-}
-
-// Rolling a 3-sided dice 3 times have the followed (outputs, number of universes).
-const DICE3_OPTIONS: [(u8, usize); 7] = [(3, 1), (4, 3), (5, 6), (6, 7), (7, 6), (8, 3), (9, 1)];
 
 /// Dirac Dice
 pub fn solver(part: Part, input: &str) -> Result<String> {
     let (line1, line2) = input.lines().collect_tuple().context("Not 2 lines")?;
-    let mut game = Game {
-        turn1: true,
-        player1: Player {
-            position: line1
-                .strip_prefix("Player 1 starting position: ")
-                .context("Wrong prefix")?
-                .parse()?,
-            score: 0,
-        },
-        player2: Player {
-            position: line2
-                .strip_prefix("Player 2 starting position: ")
-                .context("Wrong prefix")?
-                .parse()?,
-            score: 0,
-        },
-    };
-    Ok(match part {
+    let pos1: usize = line1
+        .strip_prefix("Player 1 starting position: ")
+        .context("Wrong prefix")?
+        .parse()?;
+    let pos2: usize = line2
+        .strip_prefix("Player 2 starting position: ")
+        .context("Wrong prefix")?
+        .parse()?;
+    match part {
         Part1 => {
-            let mut dice = Dice100::default();
-            loop {
-                game.forward(dice.roll3());
-                if max(game.player1.score, game.player2.score) >= 1000 {
-                    let low_score = min(game.player1.score, game.player2.score);
-                    break low_score * dice.nb_roll;
+            let (mut positions, mut scores) = ([pos1, pos2], [0, 0]);
+            let mut deterministic_dice = (1..=100).cycle().enumerate();
+            for idx in [0, 1].into_iter().cycle() {
+                let moves: usize = deterministic_dice
+                    .by_ref()
+                    .take(3)
+                    .map(|(_step, mov)| mov)
+                    .sum();
+                let new_position = (positions[idx] + moves - 1) % 10 + 1;
+                positions[idx] = new_position;
+                scores[idx] += new_position;
+                if scores[idx] >= 1000 {
+                    let losing_score = scores[1 - idx];
+                    let nb_rolls = deterministic_dice.next().context("Broken dice?!")?.0;
+                    return Ok((losing_score * nb_rolls).to_string());
                 }
             }
+            unreachable!("Endless loop...");
         }
         Part2 => {
-            let (mut player1wins, mut player2wins) = (0, 0);
-            let mut stack = vec![(1, game)];
-            while let Some((count, game)) = stack.pop() {
-                for (moves, nb_universes) in DICE3_OPTIONS {
-                    let mut new_game = game.clone();
-                    new_game.forward(moves);
-                    let new_count = count * nb_universes;
-                    if new_game.player1.score >= 21 {
-                        player1wins += new_count;
-                    } else if new_game.player2.score >= 21 {
-                        player2wins += new_count;
-                    } else {
-                        stack.push((new_count, new_game));
-                    }
-                }
+            let (player1, mut wins1) = (player_universes(pos1), 0);
+            let (player2, mut wins2) = (player_universes(pos2), 0);
+            for turn in 1..=MAX_TURN {
+                // player2 still loses at the previous turn AND player1 finally wins
+                wins1 += player2[turn - 1].0 * player1[turn].1;
+                // player1 still loses AND player2 finally wins
+                wins2 += player1[turn].0 * player2[turn].1;
             }
-            max(player1wins, player2wins)
+            let most_wins = wins1.max(wins2);
+            Ok(most_wins.to_string())
+            // The only times player 2 wins in more universes than player 1 is when player 2
+            // starts at position 1 and player 1 starts in a positions 3..=8 (so 6 cases on 100).
         }
     }
-    .to_string())
+}
+
+// Rolling a 3-sided dice 3 times have the followed (outputs, number of universes).
+const DICE3_OPTIONS: [(usize, usize); 7] = [(3, 1), (4, 3), (5, 6), (6, 7), (7, 6), (8, 3), (9, 1)];
+// No matter what position we start from, we reach a score of 21 at most at turn 10.
+const MAX_SCORE: usize = 21;
+const MAX_TURN: usize = 10;
+
+/// `[turn: (nb universes where score < MAX_SCORE, nb universes where player wins)]`
+fn player_universes(start: usize) -> [(usize, usize); MAX_TURN + 1] {
+    // nb_universes = all_universes[turn][score][position - 1]
+    let mut all_universes = [[[0; 10]; MAX_SCORE + 1]; MAX_TURN + 1];
+    // Turn 0: Only 1 universe, with position `start` and score 0.
+    all_universes[0][0][start - 1] = 1;
+    // Get a turn based on the previous one.
+    for (turn, losing_score, pos, (moves, nb_universes)) in
+        iproduct!(1..=MAX_TURN, 0..MAX_SCORE, 1..=10, DICE3_OPTIONS)
+    {
+        let new_pos = (pos + moves - 1) % 10 + 1;
+        let new_score = MAX_SCORE.min(losing_score + new_pos);
+        all_universes[turn][new_score][new_pos - 1] +=
+            all_universes[turn - 1][losing_score][pos - 1] * nb_universes;
+    }
+    all_universes.map(|at_turn| {
+        (
+            at_turn[..MAX_SCORE].iter().flatten().sum(),
+            at_turn[MAX_SCORE].into_iter().sum(),
+        )
+    })
 }
 
 pub const INPUTS: [&str; 2] = [
