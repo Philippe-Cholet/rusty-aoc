@@ -1,9 +1,9 @@
-use std::collections::VecDeque;
+use std::{cmp::Reverse, collections::BinaryHeap};
 
 use itertools::iproduct;
 
 use common::{Context, Part, Part2, Result};
-use utils::{char10, neighbors, parse_to_grid};
+use utils::{char10, neighbors, parse_to_grid, HeuristicItem};
 
 /// Chiton
 pub fn solver(part: Part, input: &str) -> Result<String> {
@@ -33,18 +33,29 @@ pub fn solver(part: Part, input: &str) -> Result<String> {
     }; // now immutables
     let mut risks = vec![vec![None; ncols]; nrows];
     risks[0][0] = Some(0);
-    let mut queue = VecDeque::from([(0, 0)]);
-    while let Some(loc) = queue.pop_front() {
+    let mut heap = BinaryHeap::from([HeuristicItem {
+        heuristic: Reverse(0),
+        item: (0, 0),
+    }]);
+    let end = (nrows - 1, ncols - 1);
+    // Minimize the risk to the end.
+    while let Some(HeuristicItem { item: loc, .. }) = heap.pop() {
+        if loc == end {
+            break; // early exit
+        }
         for (r, c) in neighbors(loc, nrows, ncols, false) {
             let new_risk = grid[r][c]
-                + risks[loc.0][loc.1].context("The risk should exist for elements of the queue")?;
+                + risks[loc.0][loc.1].context("The risk should exist for elements of the heap")?;
             if !matches!(risks[r][c], Some(old_risk) if old_risk <= new_risk) {
                 risks[r][c].replace(new_risk);
-                queue.push_back((r, c));
+                heap.push(HeuristicItem {
+                    // The manhattan distance to the end is a lower bound of the remaining risk.
+                    heuristic: Reverse(new_risk as usize + end.0 - r + end.1 - c),
+                    item: (r, c),
+                });
             }
         }
     }
-    debug_assert!(risks.iter().flatten().all(Option::is_some));
     Ok(risks[nrows - 1][ncols - 1]
         .context("Did not reach the end")?
         .to_string())
