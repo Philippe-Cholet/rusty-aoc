@@ -1,5 +1,4 @@
 use std::{
-    cmp::Reverse,
     collections::{BinaryHeap, HashSet, VecDeque},
     fmt,
     ops::{Index, IndexMut},
@@ -267,10 +266,8 @@ impl<const N: usize> State<N> {
         //     }
         //     println!();
         // }
-        let mut heap = BinaryHeap::from([HeuristicItem {
-            heuristic: Reverse(0), // This first heuristic is inaccurate but unused.
-            item: (self, 0),
-        }]);
+        // This first heuristic is inaccurate but unused.
+        let mut heap = BinaryHeap::from([HeuristicItem::rev(0, (self, 0))]);
         let mut been = HashSet::new();
         Ok(loop {
             let (state, energy_so_far) = heap.pop().context("Failed to solve!")?.item;
@@ -286,14 +283,12 @@ impl<const N: usize> State<N> {
                 if been.contains(&neighbor) {
                     continue;
                 }
-                heap.push(HeuristicItem {
-                    heuristic: Reverse(
-                        energy_so_far
-                            + energy_to_neighbor
-                            + neighbor.energy_to_goal_lower_bound(&amphipod_map),
-                    ),
-                    item: (neighbor, energy_so_far + energy_to_neighbor),
-                });
+                heap.push(HeuristicItem::rev(
+                    energy_so_far
+                        + energy_to_neighbor
+                        + neighbor.energy_to_goal_lower_bound(&amphipod_map),
+                    (neighbor, energy_so_far + energy_to_neighbor),
+                ));
             }
         })
     }

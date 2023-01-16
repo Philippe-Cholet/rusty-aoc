@@ -1,4 +1,4 @@
-use std::{cmp::Reverse, collections::BinaryHeap};
+use std::collections::BinaryHeap;
 
 use itertools::iproduct;
 
@@ -33,10 +33,7 @@ pub fn solver(part: Part, input: &str) -> Result<String> {
     }; // now immutables
     let mut risks = vec![vec![None; ncols]; nrows];
     risks[0][0] = Some(0);
-    let mut heap = BinaryHeap::from([HeuristicItem {
-        heuristic: Reverse(0),
-        item: (0, 0),
-    }]);
+    let mut heap = BinaryHeap::from([HeuristicItem::rev(0, (0, 0))]);
     let end = (nrows - 1, ncols - 1);
     // Minimize the risk to the end.
     while let Some(HeuristicItem { item: loc, .. }) = heap.pop() {
@@ -48,11 +45,11 @@ pub fn solver(part: Part, input: &str) -> Result<String> {
                 + risks[loc.0][loc.1].context("The risk should exist for elements of the heap")?;
             if !matches!(risks[r][c], Some(old_risk) if old_risk <= new_risk) {
                 risks[r][c].replace(new_risk);
-                heap.push(HeuristicItem {
+                heap.push(HeuristicItem::rev(
                     // The manhattan distance to the end is a lower bound of the remaining risk.
-                    heuristic: Reverse(new_risk as usize + end.0 - r + end.1 - c),
-                    item: (r, c),
-                });
+                    new_risk as usize + end.0 - r + end.1 - c,
+                    (r, c),
+                ));
             }
         }
     }

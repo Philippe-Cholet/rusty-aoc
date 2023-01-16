@@ -81,10 +81,27 @@ pub fn neighbors(
 /// Arbitrary item that can be compared by its heuristic.
 ///
 /// Meant to be used in a priority queue, where only the heuristic matter.
+///
+/// `std::collections::BinaryHeap` being a **max**-heap,
+/// the method "new" is meant for elements of **max**-heaps
+/// while the method "rev" is meant for elements of **min**-heaps.
 #[derive(Debug)]
 pub struct HeuristicItem<H: Ord, T> {
     pub heuristic: H,
     pub item: T,
+}
+
+impl<H: Ord, T> HeuristicItem<H, T> {
+    pub const fn new(heuristic: H, item: T) -> Self {
+        Self { heuristic, item }
+    }
+}
+
+impl<H: Ord, T> HeuristicItem<std::cmp::Reverse<H>, T> {
+    /// New instance, wrapping the heuristic in `std::cmp::Reverse`.
+    pub const fn rev(heuristic: H, item: T) -> Self {
+        Self::new(std::cmp::Reverse(heuristic), item)
+    }
 }
 
 impl<H: Ord, T> PartialEq for HeuristicItem<H, T> {

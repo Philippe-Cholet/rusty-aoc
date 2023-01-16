@@ -1,5 +1,4 @@
 use std::{
-    cmp::Reverse,
     collections::{BinaryHeap, HashSet},
     iter::repeat,
 };
@@ -121,10 +120,10 @@ impl BlizzardGrid {
     }
 
     fn find_path(&self, starting_minute: usize) -> Result<usize> {
-        let mut heap = BinaryHeap::from([HeuristicItem {
-            heuristic: Reverse(0), // This first heuristic does not matter.
-            item: (self.start, starting_minute),
-        }]);
+        let mut heap = BinaryHeap::from([HeuristicItem::rev(
+            0, // This first heuristic does not matter.
+            (self.start, starting_minute),
+        )]);
         let mut been = HashSet::new();
         Ok(loop {
             let (loc, mut minutes) = heap.pop().context("Should be impossible")?.item;
@@ -139,10 +138,10 @@ impl BlizzardGrid {
                 let loc2 = opt_dir.map_or(Some(loc), |d| d.get(loc.0, loc.1));
                 let Some(loc2) = loc2 else { continue; };
                 if loc2 == self.start || loc2 == self.goal || self.blizzard_free(loc2, minutes) {
-                    heap.push(HeuristicItem {
-                        heuristic: Reverse(minutes + self.dist2goal(loc2)),
-                        item: (loc2, minutes),
-                    });
+                    heap.push(HeuristicItem::rev(
+                        minutes + self.dist2goal(loc2),
+                        (loc2, minutes),
+                    ));
                 }
             }
         })

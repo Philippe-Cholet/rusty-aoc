@@ -143,10 +143,7 @@ impl<const N: usize> State<N> {
     }
 
     fn h_item(self) -> HeuristicItem<(u32, u32), Self> {
-        HeuristicItem {
-            heuristic: (self.minutes_left(), self.pressure),
-            item: self,
-        }
+        HeuristicItem::new((self.minutes_left(), self.pressure), self)
     }
 
     fn neighbors(
