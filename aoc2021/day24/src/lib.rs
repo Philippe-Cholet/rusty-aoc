@@ -309,9 +309,9 @@ mod deductions {
         fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
             match self {
                 Self::Value(n) => write!(f, "{n}"),
-                Self::Stuff(digit, n) if n < &0 => write!(f, "{digit} - {}", -n),
-                Self::Stuff(digit, n) if n == &0 => write!(f, "{digit}"),
-                Self::Stuff(digit, n) => write!(f, "{digit} + {n}"),
+                Self::Stuff(digit, n @ 1..) => write!(f, "{digit} + {n}"),
+                Self::Stuff(digit, 0) => write!(f, "{digit}"),
+                Self::Stuff(digit, n) => write!(f, "{digit} - {}", -n),
             }
         }
     }

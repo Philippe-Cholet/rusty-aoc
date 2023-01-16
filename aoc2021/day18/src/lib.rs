@@ -117,7 +117,7 @@ impl Snailfish {
 
     fn split(&mut self) -> bool {
         match self {
-            Self::Value(n) if *n >= 10 => {
+            Self::Value(n @ 10..) => {
                 *self = Self::new_pair(Self::Value(*n / 2), Self::Value(*n - *n / 2));
                 true
             }
