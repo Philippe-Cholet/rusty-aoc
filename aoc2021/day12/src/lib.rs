@@ -1,81 +1,138 @@
-use std::collections::{HashMap, HashSet};
+use std::collections::HashMap;
 
-use common::{ensure, Context, Part, Part2, Result};
+use itertools::Itertools;
 
-type Graph<'a> = HashMap<&'a str, HashSet<&'a str>>;
-
-fn is_big(name: &str) -> bool {
-    name.chars().all(char::is_uppercase)
-}
-
-#[derive(Debug)]
-struct Path<'a> {
-    points: Vec<&'a str>,
-    bonus: bool,
-}
-
-impl<'a> Path<'a> {
-    fn unvisited(&self, name: &str) -> bool {
-        !self.points.contains(&name)
-    }
-
-    #[allow(clippy::expect_used)]
-    fn neighbors(&self, graph: &'a Graph) -> Vec<&'a str> {
-        let last = self.points.last().expect("points is never empty");
-        graph[last]
-            .iter()
-            .filter(|next| self.bonus || is_big(next) || self.unvisited(next))
-            .copied()
-            .collect()
-    }
-
-    fn push(&self, name: &'a str) -> Option<Self> {
-        let mut points = self.points.clone();
-        points.push(name);
-        if is_big(name) || self.unvisited(name) {
-            Some(Self {
-                points,
-                bonus: self.bonus,
-            })
-        } else if self.bonus && name != "start" && name != "end" {
-            Some(Self {
-                points,
-                bonus: false,
-            })
-        } else {
-            None
-        }
-    }
-}
+use common::{Context, Error, Part, Part2, Result};
+use utils::OkIterator;
 
 /// Passage Pathing
 pub fn solver(part: Part, input: &str) -> Result<String> {
-    let mut graph: Graph = HashMap::new();
-    for line in input.lines() {
-        let (u, v) = line.split_once('-').context("No delimiter")?;
-        graph.entry(u).or_insert_with(HashSet::new).insert(v);
-        graph.entry(v).or_insert_with(HashSet::new).insert(u);
+    Ok(input
+        .parse::<CaveGraph>()?
+        .nb_paths(part == Part2)
+        .to_string())
+}
+
+#[derive(Debug)]
+struct CaveGraph {
+    // "i -- j" is an edge of the (undirected) graph when `adjacency[i]` contains `j`.
+    adjacency: Vec<Vec<usize>>,
+    // `0..first_big` for small caves, `first_big..` for big caves.
+    first_big: usize,
+    start: usize,
+    end: usize,
+}
+
+#[derive(Debug)]
+struct PathCounter {
+    visited: Vec<bool>,
+    // path: Vec<usize>,
+    current: usize,
+    bonus: bool,
+    nb_paths: usize,
+}
+
+impl CaveGraph {
+    const fn is_big(&self, index: usize) -> bool {
+        index >= self.first_big
     }
-    ensure!(
-        graph.contains_key("start") && graph.contains_key("end"),
-        "The graph does not contain an endpoint"
-    );
-    let mut stack = vec![Path {
-        points: vec!["start"],
-        bonus: part == Part2,
-    }];
-    let mut nb_paths = 0;
-    while let Some(path) = stack.pop() {
-        for neighbor in path.neighbors(&graph) {
-            if neighbor == "end" {
-                // println!("{},end (bonus={})", path.points.join(","), path.bonus);
-                nb_paths += 1;
-            } else if let Some(new_path) = path.push(neighbor) {
-                stack.push(new_path);
+
+    const fn is_endpoint(&self, index: usize) -> bool {
+        index == self.start || index == self.end
+    }
+
+    fn nb_paths(&self, bonus: bool) -> usize {
+        let mut visited = vec![false; self.adjacency.len()];
+        visited[self.start] = true;
+        let mut path_counter = PathCounter {
+            visited,
+            // path: vec![self.start],
+            current: self.start,
+            bonus,
+            nb_paths: 0,
+        };
+        path_counter.backtrack(self);
+        path_counter.nb_paths
+    }
+}
+
+impl PathCounter {
+    fn backtrack(&mut self, graph: &CaveGraph) {
+        if self.current == graph.end {
+            self.nb_paths += 1;
+        } else {
+            let current = self.current;
+            for &next in &graph.adjacency[current] {
+                let unvisited = !self.visited[next];
+                let use_bonus = if unvisited || graph.is_big(next) {
+                    false
+                } else if self.bonus && !graph.is_endpoint(next) {
+                    true
+                } else {
+                    continue;
+                };
+                self.visited[next] = true;
+                // self.path.push(next);
+                self.current = next;
+                if use_bonus {
+                    self.bonus = false;
+                }
+                self.backtrack(graph);
+                if use_bonus {
+                    self.bonus = true;
+                }
+                self.current = current;
+                // let last = self.path.pop();
+                // debug_assert_eq!(last, Some(next), "next was just visited");
+                if unvisited {
+                    self.visited[next] = false;
+                }
             }
         }
     }
-    Ok(nb_paths.to_string())
+}
+
+impl std::str::FromStr for CaveGraph {
+    type Err = Error;
+
+    fn from_str(s: &str) -> Result<Self> {
+        let edges = s
+            .lines()
+            .map(|line| line.split_once('-').context("No delimiter"))
+            .ok_collect_vec()?;
+        let mut caves = edges
+            .iter()
+            .flat_map(|(u, v)| [u, v])
+            .unique()
+            .collect_vec();
+        let nb_caves = caves.len();
+        let is_big = |cave: &&&str| cave.chars().all(char::is_uppercase);
+        caves.sort_by_key(is_big); // small caves then big caves
+        let name2idx: HashMap<_, _> = caves
+            .iter()
+            .enumerate()
+            .map(|(idx, cave)| (**cave, idx))
+            .collect();
+        let first_big = caves
+            .into_iter()
+            .find_position(is_big)
+            .context("context")?
+            .0;
+        let start = *name2idx.get("start").context("missing start")?;
+        let end = *name2idx.get("end").context("missing end")?;
+        let mut adjacency = vec![vec![]; nb_caves];
+        for (u, v) in edges {
+            let (i, j) = (name2idx[u], name2idx[v]);
+            adjacency[i].push(j);
+            adjacency[j].push(i);
+        }
+        Ok(Self {
+            adjacency,
+            first_big,
+            start,
+            end,
+        })
+    }
 }
 
 pub const INPUTS: [&str; 4] = [

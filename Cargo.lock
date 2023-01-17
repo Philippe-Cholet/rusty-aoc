@@ -113,6 +113,8 @@ name = "aoc21-12"
 version = "0.1.0"
 dependencies = [
  "common",
+ "itertools",
+ "utils",
 ]
 
 [[package]]
