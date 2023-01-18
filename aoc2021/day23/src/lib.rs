@@ -205,7 +205,7 @@ impl<const N: usize> State<N> {
         .sum()
     }
 
-    fn possible_moves(&self) -> Vec<(Loc, Loc)> {
+    fn possible_moves(&self) -> impl Iterator<Item = (Loc, Loc)> {
         let (mut starts, mut ends): (Vec<_>, Vec<_>) = (0..7).map(Hallway).partition_map(|loc| {
             self[loc].map_or(Either::Right((loc, None)), |amp| Either::Left((loc, amp)))
         });
@@ -234,7 +234,6 @@ impl<const N: usize> State<N> {
                 (a2.is_none() || a2 == Some(a1)).then_some((start, end))
             })
             .filter(|(start, end)| start.valid_move(*end))
-            .collect()
     }
 
     fn neighbors(&self, amphipod_map: &AmphipodMap) -> Result<Vec<(Self, u32)>> {
