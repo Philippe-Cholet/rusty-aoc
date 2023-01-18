@@ -114,6 +114,7 @@ pub fn solver(part: Part, input: &str) -> Result<String> {
                                 None
                             }
                         })?;
+                    #[cfg(debug_assertions)]
                     println!("{:?}", (x, y));
                     // NOTE: The type i64 is required for this multiplication:
                     Some(4_000_000 * x + y)

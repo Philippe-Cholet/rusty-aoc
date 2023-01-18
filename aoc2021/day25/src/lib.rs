@@ -68,6 +68,9 @@ pub fn solver(part: Part, input: &str) -> Result<String> {
 }
 
 fn display_grid(grid: &Vec<Vec<Option<SeaCucumberKind>>>) {
+    if !cfg!(debug_assertions) {
+        return;
+    }
     for row in grid {
         for c in row {
             let ch = match c {

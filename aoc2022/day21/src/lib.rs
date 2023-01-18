@@ -207,6 +207,7 @@ pub fn solver(part: Part, input: &str) -> Result<String> {
             job.solve(&mut monkey_values, value)?;
         }
     }
+    #[cfg(debug_assertions)]
     println!("{:?}", monkey_values["humn"]);
     let result = monkey_values["humn"].context("Failed to solve")?;
     Ok(result.to_string())

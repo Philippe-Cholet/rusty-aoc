@@ -14,6 +14,9 @@ pub fn solver(part: Part, input: &str) -> Result<String> {
     };
     let bool2char = |b| if b { '#' } else { '.' };
     let display_image = |image: &Vec<Vec<bool>>| {
+        if !cfg!(debug_assertions) {
+            return;
+        }
         for row in image {
             println!("{}", row.iter().map(|p| bool2char(*p)).join(""));
         }

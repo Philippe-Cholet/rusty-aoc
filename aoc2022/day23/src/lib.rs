@@ -94,6 +94,9 @@ fn all_empty(grid: &[Vec<bool>], locs: &[(usize, usize)]) -> bool {
 }
 
 fn display_grid(grid: &[Vec<bool>]) {
+    if !cfg!(debug_assertions) {
+        return;
+    }
     for row in grid {
         for b in row {
             print!("{}", if *b { '#' } else { '.' });

@@ -8,6 +8,7 @@ pub fn solver(part: Part, input: &str) -> Result<String> {
     // TODO: use the deduced result to define digit ranges and digits... I did it manually while I would prefer it automatic.
     // d4 == d3 - 8 && d6 == d5 - 3 && d7 == d2 && d8 == d1 - 7 && d10 == d9 + 5 && d13 == d12 - 6 && d14 == d11 + 3
     let ds = [8..=9, 1..=9, 9..=9, 4..=9, 1..=4, 1..=6, 7..=9];
+    #[cfg(debug_assertions)]
     println!(
         "There are {} model numbers accepted by MONAD.",
         2*9 /* *1 */ *6*4*6*3, // == 7776 (product of the range lengths in `ds`).
@@ -384,6 +385,7 @@ mod deductions {
                 .collect();
         }
         possibilities.retain(Possibility::is_zero);
+        #[cfg(debug_assertions)]
         for possibility in possibilities {
             println!("{possibility}");
         }

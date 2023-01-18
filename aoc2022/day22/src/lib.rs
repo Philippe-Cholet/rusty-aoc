@@ -67,6 +67,7 @@ fn follow_instructions(
     instructions: &[Instruction],
     grid: &[Vec<Tile>],
 ) -> Result<(usize, usize, Direction)> {
+    #[cfg(debug_assertions)]
     for row in grid.iter() {
         for tile in row.iter() {
             match tile {
@@ -138,6 +139,7 @@ fn follow_instructions_v2(
     instructions: &[Instruction],
     grid: &[Vec<Tile>],
 ) -> Result<(usize, usize, Direction)> {
+    #[cfg(debug_assertions)]
     for row in grid {
         for tile in row {
             match tile {

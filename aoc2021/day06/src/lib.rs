@@ -17,12 +17,14 @@ pub fn solver(part: Part, input: &str) -> Result<String> {
         );
         state[age] += 1;
     }
+    #[cfg(debug_assertions)]
     println!("Initial state: {state:?}");
     for day in 1..=days {
         let nb_new_fish = state[0];
         state.rotate_left(1);
         state[6] += nb_new_fish;
         if day <= 18 || day == days {
+            #[cfg(debug_assertions)]
             println!("After {day: >2} days: {state:?}");
         }
     }

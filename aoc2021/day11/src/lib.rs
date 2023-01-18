@@ -45,6 +45,7 @@ pub fn solver(part: Part, input: &str) -> Result<String> {
             }
         };
         nb_flashes += nb_new_flashes;
+        #[cfg(debug_assertions)]
         if step <= 10 || step % 10 == 0 || nb_new_flashes == nrows * ncols {
             println!("----------");
             for row in &grid {
