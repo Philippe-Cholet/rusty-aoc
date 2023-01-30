@@ -162,9 +162,8 @@ where
     where
         F: FnMut(T, T) -> T,
     {
-        let first = match self.next().transpose().map_err(Into::into)? {
-            None => return Ok(None),
-            Some(value) => value,
+        let Some(first) = self.next().transpose().map_err(Into::into)? else {
+            return Ok(None);
         };
         self.ok_fold(first, f).map(Some)
     }

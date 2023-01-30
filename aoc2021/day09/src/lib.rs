@@ -26,9 +26,8 @@ pub fn solver(part: Part, input: &str) -> Result<String> {
                     let mut stack = vec![low];
                     let mut been = HashSet::new();
                     loop {
-                        let (r, c) = match stack.pop() {
-                            Some(u) => u,
-                            None => break been.len(),
+                        let Some((r, c)) = stack.pop() else {
+                            break been.len();
                         };
                         if been.insert((r, c)) {
                             for (r1, c1) in neighbors((r, c), nrows, ncols, false) {

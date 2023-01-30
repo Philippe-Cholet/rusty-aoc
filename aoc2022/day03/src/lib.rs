@@ -10,13 +10,12 @@ const AZAZ: &str = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
 /// Rucksack Reorganization
 pub fn solver(part: Part, input: &str) -> Result<String> {
     let priority = |ch| Ok(AZAZ.find(ch).context("Not a-zA-Z")? + 1);
-    let common_item = |h1: HashSet<_>, h2| -> Result<_> {
-        let item = h1
-            .intersection(&h2)
+    let common_item = |h1: HashSet<_>, h2| {
+        h1.intersection(&h2)
             .exactly_one()
             .ok()
-            .context("The intersection is not of a single item")?;
-        Ok(*item)
+            .copied()
+            .context("The intersection is not of a single item")
     };
     Ok(match part {
         Part1 => input

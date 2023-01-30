@@ -55,8 +55,7 @@ pub fn solver(part: Part, input: &str) -> Result<String> {
                 println!();
             }
             println!(
-                "{:?} new flashes at step {:?} (total of {:?} flashes)",
-                nb_new_flashes, step, nb_flashes
+                "{nb_new_flashes:?} new flashes at step {step:?} (total of {nb_flashes:?} flashes)"
             );
         }
         match part {
