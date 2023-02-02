@@ -118,7 +118,7 @@ pub fn solver(part: Part, input: &str) -> Result<String> {
     let (mut nrows, mut ncols) = (grid.len(), grid[0].len());
     enlarge(&mut grid, &mut nrows, &mut ncols, [true; 4]);
     for (round, dirs) in DIRS.into_iter().cycle().enumerate() {
-        let mut counts = vec![vec![0_u8; ncols]; ncols];
+        let mut counts = vec![vec![0_u8; ncols]; nrows];
         for (r, row) in grid.iter().enumerate() {
             for (c, has_elf) in row.iter().enumerate() {
                 if !*has_elf {

@@ -73,7 +73,7 @@ fn valuable_valves(data: &[(&str, u32, Vec<&str>)]) -> Result<(Vec<u32>, Vec<Vec
     Ok((rates, distances))
 }
 
-const TOP: i32 = 10; // I first solved it with 100_000 but 10 is enough.
+const TOP: i32 = 300;
 
 fn best_pressure<const N: usize>(rates: &[u32], distances: &[Vec<u32>], minutes_left: u32) -> u32 {
     // println!("Flow rates: {:?}", rates);
