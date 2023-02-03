@@ -4,14 +4,15 @@ use std::path::PathBuf;
 use cargo_toml::Manifest;
 use proc_macro::TokenStream;
 use quote::{format_ident, quote};
-use syn::{parse_macro_input, LitStr};
+use syn::{parse::Nothing, parse_macro_input};
 
+#[allow(clippy::expect_used)]
 /// Create a function to get the `solver` and `INPUTS` for a given `year` and `day`.
 ///
 /// Requires `common` and `aoc**-**` dependencies.
 ///
-/// ## Example: `make_aoc!("project-path")`
-/// If "project-path/Cargo.toml" have the following dependencies:
+/// ## Example: `make_aoc!()`
+/// If the project has the following dependencies:
 /// - aoc21-01 ... aoc21-25
 /// - aoc22-01 ... aoc22-05
 ///
@@ -31,7 +32,8 @@ use syn::{parse_macro_input, LitStr};
 /// ```
 #[proc_macro]
 pub fn make_aoc(input: TokenStream) -> TokenStream {
-    let path = parse_macro_input!(input as LitStr).value();
+    parse_macro_input!(input as Nothing);
+    let path = std::env::var("CARGO_MANIFEST_DIR").expect("CARGO_MANIFEST_DIR is missing");
     let matched_lines: Vec<_> = all_years_and_days(&path)
         .iter()
         .map(|(y, d)| {

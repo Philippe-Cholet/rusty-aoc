@@ -5,7 +5,7 @@ use std::{
 
 use common::{ensure, AocSolver, Context, Day, Part, Part1, Part2, Result, Year};
 
-aoc_macro::make_aoc!("cli-runner");
+aoc_macro::make_aoc!();
 
 fn timed_solve(solver: AocSolver, part: Part, input: &str) -> Result<(String, Duration)> {
     let now = Instant::now();
