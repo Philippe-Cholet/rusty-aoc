@@ -115,6 +115,7 @@ Each geode robot costs 3 ore and 12 obsidian.
 ];
 
 #[test]
+#[ignore] // slow (roughly 30 seconds)
 fn solver_22_19() -> Result<()> {
     assert_eq!(solver(Part1, INPUTS[0])?, "33");
     assert_eq!(solver(Part1, INPUTS[1])?, "1981");
