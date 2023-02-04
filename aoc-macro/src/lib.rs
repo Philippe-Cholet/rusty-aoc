@@ -1,4 +1,3 @@
-// TODO: We could probably do it without "syn" as we only have to get a simple string argument.
 use std::path::PathBuf;
 
 use cargo_toml::Manifest;
@@ -6,7 +5,8 @@ use proc_macro::TokenStream;
 use quote::{format_ident, quote};
 use syn::{parse::Nothing, parse_macro_input};
 
-#[allow(clippy::expect_used)]
+mod aoc_tests;
+
 /// Create a function to get the `solver` and `INPUTS` for a given `year` and `day`.
 ///
 /// Requires `common` and `aoc**-**` dependencies.
@@ -33,8 +33,7 @@ use syn::{parse::Nothing, parse_macro_input};
 #[proc_macro]
 pub fn make_aoc(input: TokenStream) -> TokenStream {
     parse_macro_input!(input as Nothing);
-    let path = std::env::var("CARGO_MANIFEST_DIR").expect("CARGO_MANIFEST_DIR is missing");
-    let matched_lines: Vec<_> = all_years_and_days(&path)
+    let matched_lines: Vec<_> = all_years_and_days()
         .iter()
         .map(|(y, d)| {
             let year = format_ident!("Year20{}", y);
@@ -55,11 +54,13 @@ pub fn make_aoc(input: TokenStream) -> TokenStream {
     }.into()
 }
 
-#[allow(clippy::unwrap_used)] // The compiler already say the provided path is wrong.
-fn all_years_and_days(path: &str) -> Vec<(u8, u8)> {
+#[allow(clippy::expect_used)]
+fn all_years_and_days() -> Vec<(u8, u8)> {
+    let path = std::env::var("CARGO_MANIFEST_DIR")
+        .expect("Environment variable CARGO_MANIFEST_DIR is missing");
     let cargo_path = PathBuf::from(path).join("Cargo.toml");
     Manifest::from_path(cargo_path)
-        .unwrap()
+        .expect("The path to the manifest file is wrong, sorry")
         .dependencies
         .into_keys()
         .filter_map(|dep| {
@@ -68,4 +69,105 @@ fn all_years_and_days(path: &str) -> Vec<(u8, u8)> {
             Some((year.parse().ok()?, day.parse().ok()?))
         })
         .collect()
+}
+
+#[allow(clippy::cast_possible_truncation)] // "d > u8::MAX" will not happen.
+/// Create tests on other inputs, by year.
+///
+/// ## Example:
+/// ```
+/// make_aoc_tests!(
+///     username,
+///     21 => (
+///         ("Day1 Part1 answer", "Day1 Part2 answer"),
+///         _, // Missing answers for Day2.
+///         (_, "Day3 Part2 answer"), // Missing answer to Part1.
+///         _, // Missing input file for Day4.
+///         // ...
+///         "Day25 Part1 answer",
+///     ),
+///     22 => (
+///         ("Day1 Part1 answer", 1),
+///         (2, 3),
+///         (4, 5),
+///         (6, 7),
+///         (8, "AB"),
+///         (_, "CD"),
+///         9,
+///         _,
+///         (10, _),
+///         // It may stop before Day25.
+///     ),
+/// )
+/// ```
+/// will expand (for the available dependencies) to:
+/// ```
+/// #[allow(non_snake_case)]
+/// #[test]
+/// fn username21() -> Result<()> {
+///     let input = include_str!("username/2021/01.txt");
+///     assert_eq!(aoc21_01::solver(Part1, input)?, "Day1 Part1 answer", "username: year 2021 day 1 part 1");
+///     // day1 part2
+///     // days 2 to 25...
+///     Ok(())
+/// }
+///
+/// #[allow(non_snake_case)]
+/// #[test]
+/// fn username22() -> Result<()> {
+///     let input = include_str!("username/2022/01.txt");
+///     assert_eq!(aoc22_01::solver(Part1, input)?, "Day1 Part1 answer", "username: year 2022 day 1 part 1");
+///     // ...
+///     Ok(())
+/// }
+/// ```
+#[proc_macro]
+pub fn make_aoc_tests(input: TokenStream) -> TokenStream {
+    let aoc_tests::AocTests { name, year_tests } = parse_macro_input!(input);
+    let years_days = all_years_and_days();
+    let parts = [quote! { ::common::Part1 }, quote! { ::common::Part2 }];
+    let funcs = year_tests.into_iter().filter_map(|(year, year_answers)| {
+        let all_tests: Vec<_> = year_answers
+            .into_iter()
+            .enumerate()
+            .filter_map(|(d, answers)| {
+                if answers[0].is_none() && answers[1].is_none() {
+                    return None;
+                }
+                let day = d as u8 + 1;
+                years_days.contains(&(year, day)).then(|| {
+                    let file = format!("{name}/20{year}/{day:0>2}.txt");
+                    let assertions = answers.into_iter().enumerate().filter_map(|(idx, answer)| {
+                        answer.map(|answer| {
+                            let dep = format_ident!("aoc{}_{:0>2}", year, day);
+                            let part = &parts[idx];
+                            let expl = format!("{name}: year 20{year} day {day} part {}", idx + 1);
+                            quote! {
+                                assert_eq!(::#dep::solver(#part, input)?, #answer, #expl);
+                            }
+                        })
+                    });
+                    quote! {
+                        let input = include_str!(#file);
+                        #(#assertions)*
+                    }
+                })
+            })
+            .collect();
+        (!all_tests.is_empty()).then(|| {
+            let test_name = format_ident!("{}{}", name, year);
+            quote! {
+                #[allow(non_snake_case)]
+                #[test]
+                fn #test_name() -> ::common::Result<()> {
+                    #(#all_tests)*
+                    ::common::Result::Ok(())
+                }
+            }
+        })
+    });
+    quote! {
+        #(#funcs)*
+    }
+    .into()
 }
