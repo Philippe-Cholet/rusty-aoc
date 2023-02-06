@@ -3,7 +3,7 @@ use std::{
     time::{Duration, Instant},
 };
 
-use common::{ensure, AocSolver, Context, Day, Part, Part1, Part2, Result, Year};
+use common::{ensure, AocSolver, Day, Part, Part1, Part2, Result, Year};
 
 aoc_macro::make_aoc!();
 
@@ -17,10 +17,15 @@ fn timed_solve(solver: AocSolver, part: Part, input: &str) -> Result<(String, Du
 fn main() -> Result<()> {
     let mut args = env::args().skip(1);
     // Get the solver for a given puzzle (year, day).
-    let year = args
-        .next()
-        .context("Missing argument: <year [20]15...>")?
-        .parse()?;
+    let year = match args.next() {
+        Some(s) => s.parse()?,
+        None => {
+            for year in Year::ALL {
+                run_big_inputs(year)?;
+            }
+            return Ok(());
+        }
+    };
     let day = match args.next() {
         Some(s) => s.parse()?,
         None => return run_big_inputs(year),
@@ -68,17 +73,19 @@ fn run_big_inputs(year: Year) -> Result<()> {
             results.push((day, t1, t2));
         }
     }
-    results.sort_by_key(|(_, t0, t1)| *t0 + *t1);
-    println!("========== {year:?} ==========");
-    for (day, t0, t1) in &results {
-        println!("{day:?}: {t0:?} + {t1:?}");
+    results.sort_by_key(|(_, t1, t2)| *t1 + *t2);
+    if !results.is_empty() {
+        println!("========== {year:?} ==========");
+        for (day, t1, t2) in &results {
+            println!("{day:?}: {t1:?} + {t2:?}");
+        }
+        let t1s: Duration = results.iter().map(|(_, t1, _)| t1).sum();
+        let t2s: Duration = results.iter().map(|(_, _, t2)| t2).sum();
+        println!(
+            "{} days: {t1s:?} + {t2s:?} == {:?}\n",
+            results.len(),
+            t1s + t2s
+        );
     }
-    let t1s: Duration = results.iter().map(|(_, t1, _)| t1).sum();
-    let t2s: Duration = results.iter().map(|(_, _, t2)| t2).sum();
-    println!(
-        "{} days: {t1s:?} + {t2s:?} == {:?}",
-        results.len(),
-        t1s + t2s
-    );
     Ok(())
 }
