@@ -19,16 +19,11 @@ fn main() -> Result<()> {
     // Get the solver for a given puzzle (year, day).
     let year = match args.next() {
         Some(s) => s.parse()?,
-        None => {
-            for year in Year::ALL {
-                run_big_inputs(year)?;
-            }
-            return Ok(());
-        }
+        None => return run_big_inputs(None),
     };
     let day = match args.next() {
         Some(s) => s.parse()?,
-        None => return run_big_inputs(year),
+        None => return run_big_inputs(Some(year)),
     };
     let (solver, inputs) = aoc(year, day)?;
     // Given part or both.
@@ -64,7 +59,13 @@ fn main() -> Result<()> {
     Ok(())
 }
 
-fn run_big_inputs(year: Year) -> Result<()> {
+fn run_big_inputs(year: Option<Year>) -> Result<()> {
+    let Some(year) = year else {
+        for year in Year::ALL {
+            run_big_inputs(Some(year))?;
+        }
+        return Ok(());
+    };
     let mut results = vec![];
     for day in Day::ALL {
         if let Ok((solver, [.., big_input])) = aoc(year, day) {
