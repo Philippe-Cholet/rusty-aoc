@@ -1,99 +1,74 @@
 use itertools::iproduct;
+use ndarray::prelude::*;
 
 use common::{bail, Part, Part1, Part2, Result};
 use utils::parse_to_grid;
 
 const N: usize = 6;
 
+fn count_actives<'a>(it: impl IntoIterator<Item = &'a bool>) -> usize {
+    it.into_iter().filter(|&active| *active).count()
+}
+
 /// Conway Cubes
 pub fn solver(part: Part, input: &str) -> Result<String> {
-    let mut initial_grid = parse_to_grid(input.lines(), |ch| match ch {
+    let initial_grid = parse_to_grid(input.lines(), |ch| match ch {
         '#' => Ok(true),
         '.' => Ok(false),
         _ => bail!("Wrong char: {}", ch),
     })?;
     let (nrows, ncols) = (initial_grid.len(), initial_grid[0].len());
-    for row in &mut initial_grid {
-        for _ in 0..N {
-            row.insert(0, false);
-            row.push(false);
-        }
-    }
-    for _ in 0..N {
-        initial_grid.insert(0, vec![false; N + ncols + N]);
-        initial_grid.push(vec![false; N + ncols + N]);
-    }
-    Ok(match part {
+    let flaten_array = match part {
         Part1 => {
             let shape = (N + 1 + N, N + nrows + N, N + ncols + N);
-            let mut grid = vec![vec![vec![false; shape.2]; shape.1]; shape.0];
-            grid[N] = initial_grid;
-            for k in 1..=N {
-                let mut new_grid = grid.clone();
-                for (x, y, z) in
-                    iproduct!(N - k..=N + k, N - k..N + k + nrows, N - k..N + k + ncols)
-                {
-                    let count = iproduct!(-1..=1, -1..=1, -1..=1)
-                        .filter(|xyz| xyz != &(0, 0, 0))
-                        .filter_map(|(dx, dy, dz)| {
-                            let x0 = x.checked_add_signed(dx)?;
-                            let y0 = y.checked_add_signed(dy)?;
-                            let z0 = z.checked_add_signed(dz)?;
-                            (x0 < shape.0 && y0 < shape.1 && z0 < shape.2).then_some((x0, y0, z0))
-                        })
-                        .filter(|&(x, y, z)| grid[x][y][z])
-                        .take(4)
-                        .count();
-                    new_grid[x][y][z] =
-                        matches!((grid[x][y][z], count), (true, 2 | 3) | (false, 3));
-                }
-                grid = new_grid;
+            let mut array = Array::default(shape);
+            for (r, c) in iproduct!(0..nrows, 0..ncols) {
+                array[(N, N + r, N + c)] = initial_grid[r][c];
             }
-            grid.into_iter()
-                .flatten()
-                .flatten()
-                .filter(|&active| active)
-                .count()
+            for k in 1..=N {
+                let mut new_array = Array::default(shape);
+                for xyz in iproduct!(N - k..=N + k, N - k..N + k + nrows, N - k..N + k + ncols) {
+                    let count = count_actives(array.slice(s![
+                        xyz.0.saturating_sub(1)..shape.0.min(xyz.0 + 2),
+                        xyz.1.saturating_sub(1)..shape.1.min(xyz.1 + 2),
+                        xyz.2.saturating_sub(1)..shape.2.min(xyz.2 + 2),
+                    ]));
+                    // NOTE: "3 or 4" when active instead of "2 or 3" because `xyz` is counted.
+                    new_array[xyz] = matches!((array[xyz], count), (true, 3 | 4) | (false, 3));
+                }
+                array = new_array;
+            }
+            array.into_raw_vec()
         }
         Part2 => {
             let shape = (N + 1 + N, N + 1 + N, N + nrows + N, N + ncols + N);
-            let mut grid = vec![vec![vec![vec![false; shape.3]; shape.2]; shape.1]; shape.0];
-            grid[N][N] = initial_grid;
+            let mut array = Array::default(shape);
+            for (r, c) in iproduct!(0..nrows, 0..ncols) {
+                array[(N, N, N + r, N + c)] = initial_grid[r][c];
+            }
             for k in 1..=N {
-                let mut new_grid = grid.clone();
-                for (x, y, z, w) in iproduct!(
+                let mut new_array = Array::default(shape);
+                for xyzw in iproduct!(
                     N - k..=N + k,
                     N - k..=N + k,
                     N - k..N + k + nrows,
                     N - k..N + k + ncols
                 ) {
-                    let count = iproduct!(-1..=1, -1..=1, -1..=1, -1..=1)
-                        .filter(|xyzt| xyzt != &(0, 0, 0, 0))
-                        .filter_map(|(dx, dy, dz, dw)| {
-                            let x0 = x.checked_add_signed(dx)?;
-                            let y0 = y.checked_add_signed(dy)?;
-                            let z0 = z.checked_add_signed(dz)?;
-                            let w0 = w.checked_add_signed(dw)?;
-                            (x0 < shape.0 && y0 < shape.1 && z0 < shape.2 && w0 < shape.3)
-                                .then_some((x0, y0, z0, w0))
-                        })
-                        .filter(|&(x, y, z, w)| grid[x][y][z][w])
-                        .take(4)
-                        .count();
-                    new_grid[x][y][z][w] =
-                        matches!((grid[x][y][z][w], count), (true, 2 | 3) | (false, 3));
+                    let count = count_actives(array.slice(s![
+                        xyzw.0.saturating_sub(1)..shape.0.min(xyzw.0 + 2),
+                        xyzw.1.saturating_sub(1)..shape.1.min(xyzw.1 + 2),
+                        xyzw.2.saturating_sub(1)..shape.2.min(xyzw.2 + 2),
+                        xyzw.3.saturating_sub(1)..shape.3.min(xyzw.3 + 2),
+                    ]));
+                    // NOTE: "3 or 4" when active instead of "2 or 3" because `xyzw` is counted.
+                    new_array[xyzw] = matches!((array[xyzw], count), (true, 3 | 4) | (false, 3));
                 }
-                grid = new_grid;
+                array = new_array;
             }
-            grid.into_iter()
-                .flatten()
-                .flatten()
-                .flatten()
-                .filter(|&active| active)
-                .count()
+            array.into_raw_vec()
         }
-    }
-    .to_string())
+    };
+    Ok(count_actives(&flaten_array).to_string())
 }
 
 pub const INPUTS: [&str; 2] = [".#.\n..#\n###\n", include_str!("input.txt")];
