@@ -80,3 +80,4 @@ aoc20-13 = { path="../aoc2020/day13" }
 aoc20-14 = { path="../aoc2020/day14" }
 aoc20-15 = { path="../aoc2020/day15" }
 aoc20-16 = { path="../aoc2020/day16" }
+aoc20-17 = { path="../aoc2020/day17" }
