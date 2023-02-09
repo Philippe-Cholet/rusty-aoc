@@ -22,3 +22,5 @@
 # to create a project for a new AoC puzzle and fully update "cli-runner" files.
 *.py
 *.exe
+# But accept exceptional scripts.
+!/aoc20*/day*/*.py
