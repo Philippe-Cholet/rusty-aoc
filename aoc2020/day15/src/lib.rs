@@ -1,26 +1,27 @@
-use common::{ensure, Context, Part, Part1, Part2, Result};
+use common::{ensure, Part, Part1, Part2, Result};
 use utils::OkIterator;
 
 /// Rambunctious Recitation
 pub fn solver(part: Part, input: &str) -> Result<String> {
-    let numbers: Vec<usize> = input.trim_end().split(',').map(str::parse).ok_collect()?;
+    let numbers: Vec<u32> = input.trim_end().split(',').map(str::parse).ok_collect()?;
     ensure!(!numbers.is_empty(), "No number provided");
     let nb_turns = match part {
         Part1 => 2020,
         Part2 => 30_000_000,
     };
     // Bruteforce to reserve that much memory but the alternative is to use even slower hashmaps.
-    let mut spoken = vec![None; nb_turns];
+    let mut spoken = vec![[0, 0]; nb_turns as usize];
     let mut n = 0;
+    let len = u32::try_from(numbers.len())?;
     for turn in 1..=nb_turns {
-        n = if turn <= numbers.len() {
-            numbers[turn - 1]
+        n = if turn <= len {
+            numbers[turn as usize - 1]
         } else {
-            let (penul, last) = spoken[n].context("n was not spoken before?!")?;
+            let [penul, last] = spoken[n as usize];
             last - penul
         };
-        let last = spoken[n].map_or(turn, |pair| pair.1);
-        spoken[n] = Some((last, turn));
+        let last = spoken[n as usize][1];
+        spoken[n as usize] = [if last == 0 { turn } else { last }, turn];
     }
     Ok(n.to_string())
 }
