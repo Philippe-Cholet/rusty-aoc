@@ -43,7 +43,7 @@ impl DeckGame {
     }
 
     fn recursive_combat(&mut self) -> bool {
-        let mut history = HashSet::new();
+        let mut history = HashSet::with_capacity(200);
         while !self.deck1.is_empty() && !self.deck2.is_empty() {
             if !history.insert(self.clone()) {
                 return true;
