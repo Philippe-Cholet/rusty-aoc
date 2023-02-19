@@ -104,7 +104,7 @@ fn all_years_and_days() -> Vec<(u8, u8)> {
 /// ```
 /// #[allow(non_snake_case)]
 /// #[test]
-/// fn username21() -> Result<()> {
+/// fn username_21() -> Result<()> {
 ///     let input = include_str!("username/2021/01.txt");
 ///     assert_eq!(aoc21_01::solver(Part1, input)?, "Day1 Part1 answer", "username: year 2021 day 1 part 1");
 ///     // day1 part2
@@ -114,7 +114,7 @@ fn all_years_and_days() -> Vec<(u8, u8)> {
 ///
 /// #[allow(non_snake_case)]
 /// #[test]
-/// fn username22() -> Result<()> {
+/// fn username_22() -> Result<()> {
 ///     let input = include_str!("username/2022/01.txt");
 ///     assert_eq!(aoc22_01::solver(Part1, input)?, "Day1 Part1 answer", "username: year 2022 day 1 part 1");
 ///     // ...
@@ -155,7 +155,7 @@ pub fn make_aoc_tests(input: TokenStream) -> TokenStream {
             })
             .collect();
         (!all_tests.is_empty()).then(|| {
-            let test_name = format_ident!("{}{}", name, year);
+            let test_name = format_ident!("{}_{}", name, year);
             quote! {
                 #[allow(non_snake_case)]
                 #[test]
