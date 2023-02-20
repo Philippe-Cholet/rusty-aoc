@@ -18,6 +18,14 @@ dependencies = [
 ]
 
 [[package]]
+name = "aoc15-01"
+version = "0.1.0"
+dependencies = [
+ "common",
+ "utils",
+]
+
+[[package]]
 name = "aoc20-01"
 version = "0.1.0"
 dependencies = [
@@ -699,6 +707,7 @@ name = "cli-runner"
 version = "0.1.0"
 dependencies = [
  "aoc-macro",
+ "aoc15-01",
  "aoc20-01",
  "aoc20-02",
  "aoc20-03",
