@@ -92,6 +92,15 @@ dependencies = [
 ]
 
 [[package]]
+name = "aoc15-10"
+version = "0.1.0"
+dependencies = [
+ "common",
+ "itertools",
+ "utils",
+]
+
+[[package]]
 name = "aoc20-01"
 version = "0.1.0"
 dependencies = [
@@ -782,6 +791,7 @@ dependencies = [
  "aoc15-07",
  "aoc15-08",
  "aoc15-09",
+ "aoc15-10",
  "aoc20-01",
  "aoc20-02",
  "aoc20-03",
