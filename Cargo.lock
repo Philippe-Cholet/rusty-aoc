@@ -42,6 +42,14 @@ dependencies = [
 ]
 
 [[package]]
+name = "aoc15-04"
+version = "0.1.0"
+dependencies = [
+ "common",
+ "md5",
+]
+
+[[package]]
 name = "aoc20-01"
 version = "0.1.0"
 dependencies = [
@@ -726,6 +734,7 @@ dependencies = [
  "aoc15-01",
  "aoc15-02",
  "aoc15-03",
+ "aoc15-04",
  "aoc20-01",
  "aoc20-02",
  "aoc20-03",
@@ -945,6 +954,12 @@ checksum = "add85d4dd35074e6fedc608f8c8f513a3548619a9024b751949ef0e8e45a4d84"
 dependencies = [
  "rawpointer",
 ]
+
+[[package]]
+name = "md5"
+version = "0.7.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "490cc448043f947bae3cbee9c203358d62dbee0db12107a74be5c30ccfd09771"
 
 [[package]]
 name = "ndarray"
