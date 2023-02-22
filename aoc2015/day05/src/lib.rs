@@ -2,7 +2,7 @@ use itertools::Itertools;
 
 use common::{Part, Part1, Part2, Result};
 
-/// Doesn&apos;t He Have Intern-Elves For This?
+/// Doesn't He Have Intern-Elves For This?
 pub fn solver(part: Part, input: &str) -> Result<String> {
     Ok(input
         .lines()
