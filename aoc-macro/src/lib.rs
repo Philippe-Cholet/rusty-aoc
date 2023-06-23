@@ -1,6 +1,7 @@
 use std::path::PathBuf;
 
 use cargo_toml::Manifest;
+use itertools::{Either, Itertools};
 use proc_macro::TokenStream;
 use quote::{format_ident, quote};
 use syn::{parse::Nothing, parse_macro_input};
@@ -74,6 +75,9 @@ fn all_years_and_days() -> Vec<(u8, u8)> {
 #[allow(clippy::cast_possible_truncation)] // "d > u8::MAX" will not happen.
 /// Create tests on other inputs, by year.
 ///
+/// By prefixing _one answer_ OR _one day_ with `ignore`, the associated assertion
+/// will be in a separated ignored test function.
+///
 /// ## Example:
 /// ```
 /// make_aoc_tests!(
@@ -87,7 +91,7 @@ fn all_years_and_days() -> Vec<(u8, u8)> {
 ///         "Day25 Part1 answer",
 ///     ),
 ///     22 => (
-///         ("Day1 Part1 answer", 1),
+///         ("Day1 Part1 answer", ignore "Day1 Part2 answer"),
 ///         (2, 3),
 ///         (4, 5),
 ///         (6, 7),
@@ -120,51 +124,83 @@ fn all_years_and_days() -> Vec<(u8, u8)> {
 ///     // ...
 ///     Ok(())
 /// }
+///
+/// #[allow(non_snake_case)]
+/// #[ignore]
+/// #[test]
+/// fn username_22_ignored() -> Result<()> {
+///     let input = include_str!("username/2022/01.txt");
+///     assert_eq!(aoc22_01::solver(Part2, input)?, "Day1 Part2 answer", "username: year 2022 day 1 part 2");
+///     // ...
+///     Ok(())
+/// }
 /// ```
 #[proc_macro]
 pub fn make_aoc_tests(input: TokenStream) -> TokenStream {
     let aoc_tests::AocTests { name, year_tests } = parse_macro_input!(input);
     let years_days = all_years_and_days();
     let parts = [quote! { ::common::Part1 }, quote! { ::common::Part2 }];
-    let funcs = year_tests.into_iter().filter_map(|(year, year_answers)| {
-        let all_tests: Vec<_> = year_answers
+    let funcs = year_tests.into_iter().flat_map(|(year, year_answers)| {
+        let (all_tests, all_ignored_tests): (Vec<_>, Vec<_>) = year_answers
             .into_iter()
             .enumerate()
-            .filter_map(|(d, answers)| {
-                if answers[0].is_none() && answers[1].is_none() {
-                    return None;
-                }
-                let day = d as u8 + 1;
-                years_days.contains(&(year, day)).then(|| {
-                    let file = format!("{name}/20{year}/{day:0>2}.txt");
-                    let assertions = answers.into_iter().enumerate().filter_map(|(idx, answer)| {
-                        answer.map(|answer| {
-                            let dep = format_ident!("aoc{}_{:0>2}", year, day);
-                            let part = &parts[idx];
-                            let expl = format!("{name}: year 20{year} day {day} part {}", idx + 1);
-                            quote! {
-                                assert_eq!(::#dep::solver(#part, input)?, #answer, #expl);
-                            }
-                        })
-                    });
-                    quote! {
-                        let input = include_str!(#file);
-                        #(#assertions)*
+            .flat_map(|(d, answers)| {
+                vec![false, true].into_iter().filter_map(|ignore| {
+                    if answers[0].skip(ignore) && answers[1].skip(ignore) {
+                        return None;
                     }
-                })
+                    let day = d as u8 + 1;
+                    years_days.contains(&(year, day)).then(|| {
+                        let file = format!("{name}/20{year}/{day:0>2}.txt");
+                        let assertions = answers.iter().enumerate().filter_map(|(idx, answer)| {
+                            if answer.skip(ignore) {
+                                return None;
+                            }
+                            answer.data.as_ref().map(|answer| {
+                                let dep = format_ident!("aoc{}_{:0>2}", year, day);
+                                let part = &parts[idx];
+                                let expl = format!("{name}: year 20{year} day {day} part {}", idx + 1);
+                                quote! {
+                                    assert_eq!(::#dep::solver(#part, input)?, #answer, #expl);
+                                }
+                            })
+                        });
+                        let tokens = quote! {
+                            let input = include_str!(#file);
+                            #(#assertions)*
+                        };
+                        (ignore, tokens)
+                    })
+                }).collect_vec()
             })
-            .collect();
-        (!all_tests.is_empty()).then(|| {
+            .partition_map(|(ignore, tokens)| {
+                if ignore { Either::Right(tokens) } else { Either::Left(tokens) }
+            });
+        let mut year_funcs = vec![];
+        if !all_tests.is_empty() {
             let test_name = format_ident!("{}_{}", name, year);
-            quote! {
+            year_funcs.push(quote! {
                 #[allow(non_snake_case)]
                 #[test]
                 fn #test_name() -> ::common::Result<()> {
                     #(#all_tests)*
                     ::common::Result::Ok(())
                 }
-            }
-        })
+            });
+        }
+        if !all_ignored_tests.is_empty() {
+            let test_name = format_ident!("{}_{}_ignored", name, year);
+            year_funcs.push(quote! {
+                #[allow(non_snake_case)]
+                #[ignore]
+                #[test]
+                fn #test_name() -> ::common::Result<()> {
+                    #(#all_ignored_tests)*
+                    ::common::Result::Ok(())
+                }
+            });
+        }
+        year_funcs
     });
     quote! {
         #(#funcs)*

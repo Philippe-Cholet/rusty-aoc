@@ -9,7 +9,21 @@ use syn::{
 /// The name, and for each year, two optional answers for each day.
 pub struct AocTests {
     pub name: String,
-    pub year_tests: Vec<(u8, Vec<[Option<String>; 2]>)>,
+    pub year_tests: Vec<(u8, Vec<[UnitTest; 2]>)>,
+}
+
+#[derive(Debug, Default)]
+pub struct Test<T> {
+    pub data: T,
+    pub ignore: bool,
+}
+
+type UnitTest = Test<Option<String>>;
+
+impl UnitTest {
+    pub const fn skip(&self, ignore: bool) -> bool {
+        self.data.is_none() || self.ignore != ignore
+    }
 }
 
 /// `_` OR `"some text"` standing for `Option<String>`.
@@ -19,10 +33,10 @@ enum Answer {
     OneInt(LitInt),
 }
 
-/// Answer OR `(_, "some text")` standing for `[Option<String>; 2]`.
+/// Answer OR `(_, "some text")` standing for `[UnitTest; 2]`.
 enum Answers {
-    MaxOne(Answer),
-    Multiple(Punctuated<Answer, Token![,]>),
+    MaxOne(Test<Answer>),
+    Multiple(Test<Punctuated<Test<Answer>, Token![,]>>),
 }
 
 /// `name, 21 => (/*tests21*/), 22 => (/*tests22*/), ...` standing for `AocTests`.
@@ -55,44 +69,70 @@ impl From<Answer> for Option<String> {
     }
 }
 
+impl Test<Answer> {
+    fn into_or(self, ignore: bool) -> UnitTest {
+        Test {
+            data: self.data.into(),
+            ignore: self.ignore || ignore,
+        }
+    }
+}
+
+impl<T> Test<T> {
+    fn parse<F>(input: ParseStream, func: F) -> Result<Self>
+    where
+        F: FnOnce(ParseStream) -> Result<T>,
+    {
+        let ignore = match input.fork().parse::<Ident>() {
+            Ok(ident) if ident.to_string().eq("ignore") => {
+                input.parse::<Ident>()?;
+                true
+            }
+            _ => false,
+        };
+        func(input).map(|data| Self { data, ignore })
+    }
+}
+
 impl Parse for Answers {
     fn parse(input: ParseStream) -> Result<Self> {
         let res = if input.fork().parse::<Answer>().is_ok() {
-            Self::MaxOne(input.parse::<Answer>()?)
+            Self::MaxOne(Test::parse(input, Answer::parse)?)
         } else {
-            let content;
-            parenthesized!(content in input);
-            let answers = content.parse_terminated(Answer::parse)?;
-            Self::Multiple(answers)
+            Self::Multiple(Test::parse(input, |input0| {
+                let content;
+                parenthesized!(content in input0);
+                content.parse_terminated(|input1| Test::parse(input1, Answer::parse))
+            })?)
         };
         input.parse::<Nothing>()?;
         Ok(res)
     }
 }
 
-impl TryFrom<Answers> for [Option<String>; 2] {
+impl TryFrom<Answers> for [UnitTest; 2] {
     type Error = Error;
 
     fn try_from(value: Answers) -> Result<Self> {
         Ok(match value {
-            Answers::MaxOne(a) => [a.into(), None],
-            Answers::Multiple(value) => {
-                let mut answers = value.into_iter();
+            Answers::MaxOne(a) => [a.into_or(false), Test::default()],
+            Answers::Multiple(Test { data, ignore }) => {
+                let mut answers = data.into_iter();
                 let Some(a1) = answers.next() else {
-                    return Ok([None, None]);
+                    return Ok([Test::default(), Test::default()]);
                 };
                 let Some(a2) = answers.next() else {
-                    return Ok([a1.into(), None]);
+                    return Ok([a1.into_or(ignore), Test::default()]);
                 };
                 if let Some(a3) = answers.next() {
-                    let span = match a3 {
+                    let span = match a3.data {
                         Answer::Zero(u) => u.span,
                         Answer::OneStr(s) => s.span(),
                         Answer::OneInt(i) => i.span(),
                     };
                     return Err(Error::new(span, "More than two answers?!"));
                 }
-                [a1.into(), a2.into()]
+                [a1.into_or(ignore), a2.into_or(ignore)]
             }
         })
     }
