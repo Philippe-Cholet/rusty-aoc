@@ -1,5 +1,3 @@
-use itertools::Itertools;
-
 use common::{ensure, Part, Part1, Part2, Result};
 use utils::{char10, OkIterator};
 
@@ -20,12 +18,27 @@ pub fn solver(part: Part, input: &str) -> Result<String> {
         "Look-and-say sequence consist of only 1s 2s and 3s.",
     );
     for _ in 0..nb_steps {
-        ns = ns
-            .into_iter()
-            .group_by(|n| *n)
-            .into_iter()
-            .flat_map(|(n, g)| [g.count().try_into().expect("1, 2 or 3"), n])
-            .collect();
+        ns = {
+            let mut it = ns.into_iter();
+            let Some(mut number) = it.next() else {
+                return Ok(0.to_string());
+            };
+            let mut ns = vec![];
+            let mut count = 1;
+            for n in it {
+                if n == number {
+                    count += 1;
+                } else {
+                    ns.push(count);
+                    ns.push(number);
+                    count = 1;
+                    number = n;
+                }
+            }
+            ns.push(count);
+            ns.push(number);
+            ns
+        };
     }
     Ok(ns.len().to_string())
 }
