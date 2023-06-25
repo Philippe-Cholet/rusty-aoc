@@ -1,4 +1,4 @@
-use common::{Context, Part, Part1, Part2, Result};
+use common::{Part, Part1, Part2, Result};
 
 /// The Ideal Stocking Stuffer
 pub fn solver(part: Part, input: &str) -> Result<String> {
@@ -9,16 +9,15 @@ pub fn solver(part: Part, input: &str) -> Result<String> {
     let mut context = md5::Context::new();
     context.consume(input.trim_end());
     let mut data = vec![b'0'];
-    Ok((1..)
-        .find_map(|n| {
-            let mut ctx = context.clone();
-            increment(&mut data);
-            ctx.consume(&data);
-            let digest = ctx.compute();
-            (&digest.0[..3] <= &max3).then_some(n)
-        })
-        .context("No solution")?
-        .to_string())
+    loop {
+        let mut ctx = context.clone();
+        increment(&mut data);
+        ctx.consume(&data);
+        let digest = ctx.compute();
+        if &digest.0[..3] <= &max3 {
+            return Ok(String::from_utf8(data)?);
+        }
+    }
 }
 
 fn increment(data: &mut Vec<u8>) {
@@ -49,11 +48,9 @@ fn solver_15_04() -> Result<()> {
 #[test]
 #[ignore]
 fn test_increment() {
+    let mut data = vec![b'0'];
     for n in 0..=100 {
-        let mut data = vec![b'0'];
-        for _ in 0..n {
-            increment(&mut data);
-        }
         assert_eq!(data, n.to_string().into_bytes(), "{}", n);
+        increment(&mut data);
     }
 }
