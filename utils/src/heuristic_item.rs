@@ -35,9 +35,9 @@ impl<H: PartialEq, T> PartialEq for HeuristicItem<H, T> {
 
 impl<H: PartialEq, T> Eq for HeuristicItem<H, T> {}
 
-impl<H: Ord, T> PartialOrd for HeuristicItem<H, T> {
+impl<H: PartialOrd, T> PartialOrd for HeuristicItem<H, T> {
     fn partial_cmp(&self, other: &Self) -> Option<Ordering> {
-        Some(self.cmp(other))
+        self.heuristic.partial_cmp(&other.heuristic)
     }
 }
 

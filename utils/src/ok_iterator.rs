@@ -41,13 +41,13 @@ where
     where
         B: FromIterator<T>,
     {
-        self.map(|res| res.map_err(Into::into)).collect()
+        self.collect::<Result<_, _>>().map_err(Into::into)
     }
 
     // Let's make some shortcuts to usual types...
     #[inline]
     fn ok_collect_vec(self) -> Result<Vec<T>> {
-        self.map(|res| res.map_err(Into::into)).collect()
+        self.ok_collect()
     }
 
     #[inline]
@@ -62,17 +62,17 @@ where
     where
         String: FromIterator<T>,
     {
-        self.map(|res| res.map_err(Into::into)).collect()
+        self.ok_collect()
     }
 
     #[inline]
     fn ok_collect_vecd(self) -> Result<VecDeque<T>> {
-        self.map(|res| res.map_err(Into::into)).collect()
+        self.ok_collect()
     }
 
     #[inline]
     fn ok_collect_list(self) -> Result<LinkedList<T>> {
-        self.map(|res| res.map_err(Into::into)).collect()
+        self.ok_collect()
     }
 
     #[inline]
@@ -80,7 +80,7 @@ where
     where
         T: Ord,
     {
-        self.map(|res| res.map_err(Into::into)).collect()
+        self.ok_collect()
     }
 
     #[inline]
@@ -88,7 +88,7 @@ where
     where
         T: Eq + Hash,
     {
-        self.map(|res| res.map_err(Into::into)).collect()
+        self.ok_collect()
     }
 
     #[inline]
@@ -96,7 +96,7 @@ where
     where
         T: Eq + Hash + Ord,
     {
-        self.map(|res| res.map_err(Into::into)).collect()
+        self.ok_collect()
     }
 
     #[inline]
@@ -105,8 +105,7 @@ where
         T: Into<(K, V)>,
         K: Eq + Hash,
     {
-        self.map(|res| res.map(Into::into).map_err(Into::into))
-            .collect()
+        self.map(|res| res.map(Into::into)).ok_collect()
     }
 
     #[inline]
@@ -115,8 +114,7 @@ where
         T: Into<(K, V)>,
         K: Eq + Hash + Ord,
     {
-        self.map(|res| res.map(Into::into).map_err(Into::into))
-            .collect()
+        self.map(|res| res.map(Into::into)).ok_collect()
     }
 
     fn ok_partition<B, F>(self, f: F) -> Result<(B, B)>
