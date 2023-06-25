@@ -19,7 +19,7 @@ pub fn solver(part: Part, input: &str) -> Result<String> {
     );
     Ok(match part {
         Part1 => replacements(molecule, &repls).unique().count(),
-        Part2 => beam_search("e", molecule, repls, 100).context("Too small beam width")?,
+        Part2 => beam_search("e", molecule, repls, 75).context("Too small beam width")?,
         // NOTE: The beam search does not guarantee an optimal solution.
     }
     .to_string())
@@ -56,8 +56,10 @@ fn beam_search<'a>(
                 }
                 !found
             })
-            .sorted_by_key(String::len)
-            .take(beam_width)
+            // TODO: Use `Itertools::k_largest_by` method if it exists in the future.
+            .map(|s| utils::HeuristicItem::new(s.len(), s))
+            .k_smallest(beam_width)
+            .map(|hi| hi.item)
             .collect();
         if found {
             return Some(nb_steps);
