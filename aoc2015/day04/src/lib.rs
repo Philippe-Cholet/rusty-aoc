@@ -2,10 +2,10 @@ use common::{Context, Part, Part1, Part2, Result};
 
 /// The Ideal Stocking Stuffer
 pub fn solver(part: Part, input: &str) -> Result<String> {
-    let digest_prefix = "0".repeat(match part {
-        Part1 => 5,
-        Part2 => 6,
-    });
+    let max3 = match part {
+        Part1 => [0, 0, 0x0F],
+        Part2 => [0, 0, 0],
+    };
     let mut context = md5::Context::new();
     context.consume(input.trim_end());
     Ok((1..)
@@ -13,9 +13,7 @@ pub fn solver(part: Part, input: &str) -> Result<String> {
             let mut ctx = context.clone();
             ctx.consume(n.to_string());
             let digest = ctx.compute();
-            format!("{digest:x}")
-                .starts_with(&digest_prefix)
-                .then_some(n)
+            (&digest.0[..3] <= &max3).then_some(n)
         })
         .context("No solution")?
         .to_string())
