@@ -21,18 +21,20 @@ pub fn solver(part: Part, input: &str) -> Result<String> {
 }
 
 fn increment(data: &mut Vec<u8>) {
-    if let Some(idx) = data.iter().rposition(|x| x != &b'9') {
-        for n in data.iter_mut().skip(idx + 1) {
-            *n = b'0';
-        }
-        data[idx] += 1;
-    } else {
-        for n in data.iter_mut() {
-            *n = b'0';
-        }
-        data.push(b'0');
-        data[0] += 1;
-    }
+    let idx = data
+        .iter_mut()
+        .rposition(|d| {
+            let nine = d == &b'9';
+            if nine {
+                *d = b'0';
+            }
+            !nine
+        })
+        .unwrap_or_else(|| {
+            data.push(b'0');
+            0
+        });
+    data[idx] += 1;
 }
 
 pub const INPUTS: [&str; 2] = ["abcdef", include_str!("input.txt")];
