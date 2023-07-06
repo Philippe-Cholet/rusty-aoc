@@ -49,21 +49,19 @@ impl SensorData {
     }
 
     fn x_intervals(datas: &[Self], y: i64, maxi: Option<i64>) -> Vec<(i64, i64)> {
-        let mut intervals: Vec<_> = datas
-            .iter()
-            .filter_map(|data| {
-                let x_int = data.x_interval(y)?;
-                match maxi {
-                    // No restriction to "0..=maxi".
-                    None => Some(x_int),
-                    // Outside "0..=maxi".
-                    Some(m) if x_int.1 < 0 || x_int.0 > m => None,
-                    // Restrain it to "0..=maxi".
-                    Some(m) => Some((x_int.0.max(0), x_int.1.min(m))),
-                }
-            })
-            .collect();
-        intervals.sort_by(|(xa, ya), (xb, yb)| xa.cmp(xb).then(ya.cmp(yb)));
+        let mut intervals = Vec::with_capacity(datas.len());
+        intervals.extend(datas.iter().filter_map(|data| {
+            let x_int = data.x_interval(y)?;
+            match maxi {
+                // No restriction to "0..=maxi".
+                None => Some(x_int),
+                // Outside "0..=maxi".
+                Some(m) if x_int.1 < 0 || x_int.0 > m => None,
+                // Restrain it to "0..=maxi".
+                Some(m) => Some((x_int.0.max(0), x_int.1.min(m))),
+            }
+        }));
+        intervals.sort_unstable();
         let mut cur_x = i64::MIN;
         intervals.retain(|x_int| {
             if x_int.1 <= cur_x {
