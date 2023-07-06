@@ -1,3 +1,5 @@
+use std::cmp::Ordering;
+
 use common::{ensure, Context, Part, Part1, Part2, Result};
 use utils::OkIterator;
 
@@ -25,9 +27,10 @@ pub fn solver(part: Part, input: &str) -> Result<String> {
                 .position(|(i, _)| i == &idx)
                 .context("Missing index")?;
             let i1 = ((i0 as i64 + data[i0].1 - 1).rem_euclid(modulus) + 1).try_into()?;
-            if i1 != i0 {
-                let elem = data.remove(i0);
-                data.insert(i1, elem);
+            match i0.cmp(&i1) {
+                Ordering::Less => data[i0..=i1].rotate_left(1),
+                Ordering::Equal => {}
+                Ordering::Greater => data[i1..=i0].rotate_right(1),
             }
         }
     }
