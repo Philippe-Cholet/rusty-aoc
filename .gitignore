@@ -1,4 +1,5 @@
 /target
+Cargo.lock
 
 # AoC 2022 day 19, I use the "good_lp" crate which require some external solver.
 # I downloaded it here from  https://github.com/coin-or/Cbc/releases
