@@ -28,8 +28,14 @@ pub fn solver(part: Part, input: &str) -> Result<String> {
 fn replacements<'a>(s: &'a str, repls: &'a [(&str, &str)]) -> impl Iterator<Item = String> + 'a {
     repls.iter().flat_map(move |(src, dst)| {
         let j = src.len();
-        s.match_indices(src)
-            .map(move |(i, _)| format!("{}{dst}{}", &s[..i], &s[i + j..]))
+        let capacity = s.len() + dst.len() - j;
+        s.match_indices(src).map(move |(i, _)| {
+            let mut t = String::with_capacity(capacity);
+            t.push_str(&s[..i]);
+            t.push_str(dst);
+            t.push_str(&s[i + j..]);
+            t
+        })
     })
 }
 
