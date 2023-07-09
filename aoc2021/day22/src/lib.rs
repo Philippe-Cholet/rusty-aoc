@@ -91,22 +91,23 @@ impl Cuboid {
         })
     }
 
-    fn divide(&self, other: Self) -> Vec<Self> {
+    fn divide_into(&self, other: Self, data: &mut Vec<Self>) {
         // The difference with the `Interval` method `divide` is that here,
         // the intersection (named `xyz` if any) is discarded.
         if let Some(xyz) = self.intersection(&other) {
-            iproduct!(
-                self.x.divide(&other.x).into_iter(),
-                self.y.divide(&other.y).into_iter(),
-                self.z.divide(&other.z).into_iter()
-            )
-            .filter_map(|(x, y, z)| {
-                let new = Self { x, y, z };
-                (new != xyz).then_some(new)
-            })
-            .collect()
+            data.extend(
+                iproduct!(
+                    self.x.divide(&other.x).into_iter(),
+                    self.y.divide(&other.y).into_iter(),
+                    self.z.divide(&other.z).into_iter()
+                )
+                .filter_map(|(x, y, z)| {
+                    let new = Self { x, y, z };
+                    (new != xyz).then_some(new)
+                }),
+            );
         } else {
-            vec![other]
+            data.push(other);
         }
     }
 }
@@ -134,10 +135,13 @@ pub fn solver(part: Part, input: &str) -> Result<String> {
     let mut cuboids = vec![];
     for (on, new) in data {
         // Divide all cuboids with `new`, retain only non-intersecting parts with it.
-        cuboids = cuboids
-            .into_iter()
-            .flat_map(|cuboid| new.divide(cuboid))
-            .collect();
+        cuboids = {
+            let mut new_cuboids = Vec::with_capacity(8 * cuboids.len());
+            for cuboid in cuboids {
+                new.divide_into(cuboid, &mut new_cuboids);
+            }
+            new_cuboids
+        };
         if on {
             cuboids.push(new);
         }
