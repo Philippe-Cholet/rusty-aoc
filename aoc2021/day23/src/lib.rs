@@ -5,7 +5,7 @@ use std::{
     str::FromStr,
 };
 
-use itertools::{chain, iproduct, Either, Itertools};
+use itertools::{iproduct, Either, Itertools};
 
 use common::{bail, ensure, Context, Error, Part, Part1, Part2, Result};
 use utils::HeuristicItem;
@@ -29,10 +29,32 @@ enum Loc {
     Room(Amphipod, usize),
 }
 
-#[derive(Debug, PartialEq, Eq, Hash, Clone)]
+#[derive(Debug, PartialEq, Eq, Clone)]
 struct State<const N: usize> {
     hallway: [Option<Amphipod>; 7],
     rooms: [[Option<Amphipod>; N]; 4],
+}
+
+impl<const N: usize> std::hash::Hash for State<N> {
+    #[allow(clippy::cast_possible_truncation)]
+    fn hash<H: std::hash::Hasher>(&self, state: &mut H) {
+        debug_assert!(N <= 10, "u32 does not have enough bits for this room size");
+        let mut hash_amps = |slice: &[Option<Amphipod>]| {
+            // 1 + 3 * slice.len() <= 32  (the biggest slice being the hallway: 7 long)
+            let mut n: u32 = 1;
+            for opt_amp in slice {
+                n <<= 3;
+                if let Some(amp) = opt_amp {
+                    n |= amp.room_id() as u32;
+                }
+            }
+            n.hash(state);
+        };
+        hash_amps(&self.hallway);
+        for room in &self.rooms {
+            hash_amps(room);
+        }
+    }
 }
 
 // (Precomputed) paths and distances between all locations.
@@ -186,26 +208,33 @@ impl<const N: usize> State<N> {
     }
 
     fn energy_to_goal_lower_bound(&self, amphipod_map: &AmphipodMap) -> u32 {
-        chain!(
-            iproduct!(Amphipod::ALL, 0..N).flat_map(|(owner, index)| {
-                let loc = Room(owner, index);
-                match self[loc] {
-                    Some(amp) if amp != owner => vec![(amp, loc), (owner, loc)],
-                    None => vec![(owner, loc)],
-                    Some(_) => vec![],
+        let mut wrong_locs = Vec::with_capacity(4 * N * 2 + 7);
+        for (owner, index) in iproduct!(Amphipod::ALL, 0..N) {
+            let loc = Room(owner, index);
+            match self[loc] {
+                Some(amp) if amp != owner => {
+                    wrong_locs.push((amp, loc));
+                    wrong_locs.push((owner, loc));
                 }
-            }),
+                None => wrong_locs.push((owner, loc)),
+                Some(_) => {}
+            }
+        }
+        wrong_locs.extend(
             (0..7)
                 .map(Hallway)
                 .filter_map(|start| self[start].map(|amp| (amp, start))),
-        )
-        .map(|(amp, loc)| {
-            amphipod_map[loc.as_usize()][RoomEntrance(amp).as_usize()].1 * amp.energy()
-        })
-        .sum()
+        );
+        wrong_locs
+            .into_iter()
+            .map(|(amp, loc)| {
+                amphipod_map[loc.as_usize()][RoomEntrance(amp).as_usize()].1 * amp.energy()
+            })
+            .sum()
     }
 
-    fn possible_moves(&self) -> impl Iterator<Item = (Loc, Loc)> {
+    #[allow(clippy::type_complexity)]
+    fn possible_endpoints(&self) -> (Vec<(Loc, Amphipod)>, Vec<(Loc, Option<Amphipod>)>) {
         let (mut starts, mut ends): (Vec<_>, Vec<_>) = (0..7).map(Hallway).partition_map(|loc| {
             self[loc].map_or(Either::Right((loc, None)), |amp| Either::Left((loc, amp)))
         });
@@ -229,16 +258,18 @@ impl<const N: usize> State<N> {
                 }
             }
         }
-        iproduct!(starts.into_iter(), ends.into_iter())
-            .filter_map(|((start, a1), (end, a2))| {
-                (a2.is_none() || a2 == Some(a1)).then_some((start, end))
-            })
-            .filter(|(start, end)| start.valid_move(*end))
+        (starts, ends)
     }
 
     fn neighbors(&self, amphipod_map: &AmphipodMap) -> Result<Vec<(Self, u32)>> {
+        let (starts, ends) = self.possible_endpoints();
+        let possible_moves = iproduct!(starts.iter(), ends.iter())
+            .filter_map(|((start, a1), (end, a2))| {
+                (a2.is_none() || a2.as_ref() == Some(a1)).then_some((*start, *end))
+            })
+            .filter(|(start, end)| start.valid_move(*end));
         let mut res = vec![];
-        for (start, end) in self.possible_moves() {
+        for (start, end) in possible_moves {
             let (path, distance) = &amphipod_map[start.as_usize()][end.as_usize()];
             if path.iter().all(|loc| self[*loc].is_none()) {
                 // The path is clear between the start and the end.
