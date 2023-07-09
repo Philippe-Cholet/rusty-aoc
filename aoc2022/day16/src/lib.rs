@@ -73,36 +73,50 @@ fn valuable_valves(data: &[(&str, u32, Vec<&str>)]) -> Result<(Vec<u32>, Vec<Vec
     Ok((rates, distances))
 }
 
-const TOP: i32 = 300;
+const TOP: u16 = 300;
 
-fn best_pressure<const N: usize>(rates: &[u32], distances: &[Vec<u32>], minutes_left: u32) -> u32 {
+fn best_pressure<const N: usize>(
+    rates: &[u32],
+    distances: &[Vec<u32>],
+    mut minutes_left: u32,
+) -> u32 {
     // println!("Flow rates: {:?}", rates);
     // println!("Distances between valuable valves:");
     // for d in distances {
     //     println!("{:?}", d);
     // }
     let start = State::<N>::new(distances.len(), minutes_left);
+    // The priority queue alone would consider all states with slowly decreasing `minutes_left`.
+    // I only consider up to `TOP` states for each `minutes_left` I encounter to fasten the search.
+    // That way, I ensure it only considers up to `(minutes_left + 1) * TOP` states.
     let mut pqueue = BinaryHeap::from([start.h_item()]);
     let mut max_pressure = 0;
-    let mut n = minutes_left;
-    let mut top = TOP;
-    while let Some(HeuristicItem { item, .. }) = pqueue.pop() {
-        let min_left = item.minutes_left();
-        match min_left.cmp(&n) {
-            std::cmp::Ordering::Equal => top -= 1,
-            std::cmp::Ordering::Less => {
-                n = min_left;
-                top = TOP;
-            }
-            std::cmp::Ordering::Greater => {}
+    let mut count = TOP;
+    while let Some(HeuristicItem {
+        heuristic: (min_left, pressure),
+        item,
+    }) = pqueue.pop()
+    {
+        debug_assert!(min_left <= minutes_left);
+        if min_left < minutes_left {
+            (minutes_left, count) = (min_left, TOP);
         }
-        if top < 0 {
-            continue;
+        if max_pressure < pressure {
+            max_pressure = pressure;
         }
-        if item.pressure > max_pressure {
-            max_pressure = item.pressure;
+        let mut new = item.neighbors(distances, rates);
+        count -= 1;
+        if count == 0 {
+            let keep = |hi: &HeuristicItem<(u32, _), _>| {
+                debug_assert!(hi.heuristic.0 <= minutes_left);
+                hi.heuristic.0 < minutes_left
+            };
+            pqueue.retain(keep);
+            new.retain(keep);
+            // NOTE: `count` will be reset to `TOP` next time
+            // because there is no item left with `minutes_left`.
         }
-        pqueue.extend(item.neighbors(distances, rates));
+        pqueue.extend(new);
     }
     max_pressure
 }
