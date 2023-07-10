@@ -1,6 +1,27 @@
 use common::{Context, Part, Part1, Part2, Result};
 
-const fn sum_divisors(n: u32, upper_bound: u32) -> u32 {
+const fn sum_divisors(mut n: u32) -> u32 {
+    let two = n.trailing_zeros();
+    n >>= two;
+    let mut total = (1 << (two + 1)) - 1;
+    let mut prime = 3;
+    let mut sum;
+    while prime * prime <= n {
+        sum = 1;
+        while n % prime == 0 {
+            n /= prime;
+            sum = 1 + prime * sum;
+        }
+        total *= sum;
+        prime += 2;
+    }
+    if n != 1 {
+        total *= 1 + n;
+    }
+    total
+}
+
+const fn sum_divisors_with_upperbound(n: u32, upper_bound: u32) -> u32 {
     let (mut sum, mut d) = (0, 1);
     let mut k;
     // `d * d <= n` so `d <= n / d == k`. Therefore, if `d > upper_bound`
@@ -26,14 +47,14 @@ pub fn solver(part: Part, input: &str) -> Result<String> {
     // Commented out code works just fine but is a bit slow.
     // Ok((0..=u32::MAX)
     //     .find(|&k| match part {
-    //         Part1 => 10 * sum_divisors(k, k),
-    //         Part2 => 11 * sum_divisors(k, 50),
+    //         Part1 => 10 * sum_divisors(k),
+    //         Part2 => 11 * sum_divisors_with_upperbound(k, 50),
     //     } >= n)
     //     .context("No u32 solution")?
     // .to_string())
-    let (divisor_upper_bound, sum_lower_bound) = match part {
-        Part1 => (None, n / 10),
-        Part2 => (Some(50), n / 11),
+    let sum_lower_bound = match part {
+        Part1 => n / 10,
+        Part2 => n / 11,
     };
     // Compute `solution_lower_bound` is fast and it cuts off
     // the section `0..solution_lower_bound` of the search below.
@@ -44,7 +65,10 @@ pub fn solver(part: Part, input: &str) -> Result<String> {
     // Part 2: 671_426 (for a solution below of 884_520).
     // So respectively 88% and 75% of the search is cut off.
     Ok((solution_lower_bound..=u32::MAX)
-        .find(|&k| sum_divisors(k, divisor_upper_bound.unwrap_or(k)) >= sum_lower_bound)
+        .find(|&k| match part {
+            Part1 => sum_divisors(k),
+            Part2 => sum_divisors_with_upperbound(k, 50),
+        } >= sum_lower_bound)
         .context("No u32 solution")?
         .to_string())
 }
