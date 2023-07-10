@@ -1,6 +1,7 @@
 use common::{ensure, Part, Part1, Part2, Result};
 use utils::OkIterator;
 
+#[allow(clippy::cast_possible_truncation)] // SAFETY: `idx < numbers.len() <= nb_turns <= 30_000_000 <= u32::MAX`
 /// Rambunctious Recitation
 pub fn solver(part: Part, input: &str) -> Result<String> {
     let numbers: Vec<u32> = input.trim_end().split(',').map(str::parse).ok_collect()?;
@@ -9,19 +10,22 @@ pub fn solver(part: Part, input: &str) -> Result<String> {
         Part1 => 2020,
         Part2 => 30_000_000,
     };
+    ensure!(
+        numbers.len() <= nb_turns as usize,
+        "I assumed there were less numbers than turns",
+    );
     // Bruteforce to reserve that much memory but the alternative is to use even slower hashmaps.
-    let mut spoken = vec![[0, 0]; nb_turns as usize];
+    let mut spoken = vec![u32::MAX; nb_turns as usize];
     let mut n = 0;
-    let len = u32::try_from(numbers.len())?;
-    for turn in 1..=nb_turns {
-        n = if turn <= len {
-            numbers[turn as usize - 1]
-        } else {
-            let [penul, last] = spoken[n as usize];
-            last - penul
-        };
-        let last = spoken[n as usize][1];
-        spoken[n as usize] = [if last == 0 { turn } else { last }, turn];
+    for (idx, &nb) in numbers.iter().enumerate() {
+        n = nb;
+        spoken[n as usize] = idx as u32 + 1;
+    }
+    for turn in numbers.len() as u32..nb_turns {
+        let last = std::mem::replace(&mut spoken[n as usize], turn);
+        // let last = spoken[n as usize];
+        // spoken[n as usize] = turn;
+        n = turn.saturating_sub(last);
     }
     Ok(n.to_string())
 }
