@@ -13,13 +13,24 @@ pub fn solver(part: Part, input: &str) -> Result<String> {
     Ok(ferris_combat.score(am_i_winning).to_string())
 }
 
-#[derive(Debug, Clone, PartialEq, Eq, Hash)]
+#[derive(Debug)]
 struct DeckGame {
     deck1: Vec<u8>,
     deck2: Vec<u8>,
 }
 
 impl DeckGame {
+    fn as_array(&self) -> [u8; 51] {
+        debug_assert!(
+            self.deck1.len() + self.deck2.len() < 51,
+            "51 is not big enough"
+        );
+        let mut arr = [u8::MAX; 51];
+        arr[..self.deck1.len()].copy_from_slice(&self.deck1);
+        arr[51 - self.deck2.len()..].copy_from_slice(&self.deck2);
+        arr
+    }
+
     fn score(&self, deck1: bool) -> usize {
         if deck1 { &self.deck1 } else { &self.deck2 }
             .iter()
@@ -45,7 +56,7 @@ impl DeckGame {
     fn recursive_combat(&mut self) -> bool {
         let mut history = HashSet::with_capacity(200);
         while !self.deck1.is_empty() && !self.deck2.is_empty() {
-            if !history.insert(self.clone()) {
+            if !history.insert(self.as_array()) {
                 return true;
             }
             let c1 = self.deck1.remove(0);
@@ -99,6 +110,10 @@ impl std::str::FromStr for DeckGame {
         ensure!(
             deck1.len() == deck2.len(),
             "Players must start with the same number of cards"
+        );
+        ensure!(
+            deck1.len() <= 25,
+            "as_array currently requires less cards to properly function"
         );
         Ok(Self { deck1, deck2 })
     }
