@@ -102,7 +102,7 @@ impl Parse for Answers {
             Self::Multiple(Test::parse(input, |input0| {
                 let content;
                 parenthesized!(content in input0);
-                content.parse_terminated(|input1| Test::parse(input1, Answer::parse))
+                content.parse_terminated(|input1| Test::parse(input1, Answer::parse), Token![,])
             })?)
         };
         input.parse::<Nothing>()?;
@@ -151,7 +151,7 @@ impl Parse for SynAocTests {
             input.parse::<Token![=>]>()?;
             let content;
             parenthesized!(content in input);
-            let answers = content.parse_terminated(Answers::parse)?;
+            let answers = content.parse_terminated(Answers::parse, Token![,])?;
             year_tests.push((year, answers));
         }
         // input.parse::<Nothing>()?; // It is empty so it is not needed.
