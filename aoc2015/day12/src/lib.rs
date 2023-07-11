@@ -1,7 +1,6 @@
 use serde_json::Value;
 
 use common::prelude::*;
-use utils::OkIterator;
 
 /// JSAbacusFramework.io
 pub fn solver(part: Part, input: &str) -> Result<String> {
@@ -11,7 +10,7 @@ pub fn solver(part: Part, input: &str) -> Result<String> {
 fn sum_ints(data: &Value, not_reds: bool) -> Result<i64> {
     match data {
         Value::Number(n) => n.as_i64().context("Not i64"),
-        Value::Array(arr) => arr.iter().map(|v| sum_ints(v, not_reds)).ok_sum(),
+        Value::Array(arr) => arr.iter().map(|v| sum_ints(v, not_reds)).sum(),
         Value::Object(obj) => {
             if not_reds
                 && obj
@@ -20,7 +19,7 @@ fn sum_ints(data: &Value, not_reds: bool) -> Result<i64> {
             {
                 Ok(0)
             } else {
-                obj.values().map(|v| sum_ints(v, not_reds)).ok_sum()
+                obj.values().map(|v| sum_ints(v, not_reds)).sum()
             }
         }
         Value::Null | Value::String(_) | Value::Bool(_) => Ok(0),

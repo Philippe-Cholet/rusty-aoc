@@ -13,4 +13,3 @@ doctest = false
 [dependencies]
 serde_json.workspace = true
 common = { path="../../common" }
-utils = { path="../../utils" }
