@@ -1,6 +1,6 @@
 use itertools::Itertools;
 
-use common::{Context, Part, Part1, Part2, Result};
+use common::prelude::*;
 use utils::OkIterator;
 
 fn range_inclusive(a: u32, b: u32) -> impl Iterator<Item = u32> {

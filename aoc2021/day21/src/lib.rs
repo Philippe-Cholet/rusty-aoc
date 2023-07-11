@@ -1,6 +1,6 @@
 use itertools::{iproduct, Itertools};
 
-use common::{Context, Part, Part1, Part2, Result};
+use common::prelude::*;
 
 /// Dirac Dice
 pub fn solver(part: Part, input: &str) -> Result<String> {

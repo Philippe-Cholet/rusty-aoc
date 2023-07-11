@@ -3,7 +3,7 @@ use std::collections::HashMap;
 
 use itertools::Itertools;
 
-use common::{ensure, format_err, Context, Part, Part2, Result};
+use common::prelude::*;
 use utils::OkIterator;
 
 /// Aunt Sue
@@ -61,7 +61,6 @@ pub const INPUTS: [&str; 1] = [include_str!("input.txt")];
 
 #[test]
 fn solver_15_16() -> Result<()> {
-    use common::Part1;
     assert_eq!(solver(Part1, INPUTS[0])?, "373");
     assert_eq!(solver(Part2, INPUTS[0])?, "260");
     Ok(())

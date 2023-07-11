@@ -2,7 +2,7 @@ use std::{collections::HashSet, ops::Add};
 
 use itertools::Itertools;
 
-use common::{bail, Part, Part1, Part2, Result};
+use common::prelude::*;
 use utils::OkIterator;
 
 #[derive(Debug, Clone, Copy, Default, PartialEq, Eq, Hash)]

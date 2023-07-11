@@ -1,4 +1,4 @@
-use common::{bail, Context, Part, Part1, Part2, Result};
+use common::prelude::*;
 
 /// Binary Diagnostic
 pub fn solver(part: Part, input: &str) -> Result<String> {

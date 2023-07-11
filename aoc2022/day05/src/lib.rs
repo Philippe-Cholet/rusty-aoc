@@ -1,4 +1,4 @@
-use common::{ensure, Context, Part, Part1, Result};
+use common::prelude::*;
 use utils::{char10, OkIterator};
 
 /// Supply Stacks
@@ -67,7 +67,6 @@ move 1 from 1 to 2
 
 #[test]
 fn solver_22_05() -> Result<()> {
-    use common::Part2;
     assert_eq!(solver(Part1, INPUTS[0])?, "CMZ");
     assert_eq!(solver(Part1, INPUTS[1])?, "LJSVLTWQM");
     assert_eq!(solver(Part2, INPUTS[0])?, "MCD");

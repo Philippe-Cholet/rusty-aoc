@@ -1,6 +1,6 @@
 use std::collections::HashMap;
 
-use common::{bail, Context, Error, Part, Part1, Part2, Result};
+use common::prelude::*;
 
 // Names are unused but I don't want to delete those, it could have been used in part 2.
 #[derive(Debug)]

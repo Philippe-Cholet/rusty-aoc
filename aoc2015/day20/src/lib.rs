@@ -1,4 +1,4 @@
-use common::{Context, Part, Part1, Part2, Result};
+use common::prelude::*;
 
 const fn sum_divisors(mut n: u32) -> u32 {
     let two = n.trailing_zeros();

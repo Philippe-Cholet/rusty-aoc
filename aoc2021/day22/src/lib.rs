@@ -5,7 +5,7 @@ use std::{
 
 use itertools::{iproduct, Itertools};
 
-use common::{bail, Context, Error, Part, Part1, Result};
+use common::prelude::*;
 use utils::OkIterator;
 
 #[derive(Debug, PartialEq)]
@@ -259,8 +259,6 @@ off x=-93533..-4276,y=-16170..68771,z=-104985..-24507
 
 #[test]
 fn solver_21_22() -> Result<()> {
-    use common::Part2;
-
     assert_eq!(solver(Part1, INPUTS[0])?, "39");
     assert_eq!(solver(Part1, INPUTS[1])?, "590784");
     assert_eq!(solver(Part1, INPUTS[3])?, "568000");

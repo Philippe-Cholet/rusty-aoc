@@ -1,6 +1,6 @@
 use itertools::Itertools;
 
-use common::{Context, Part, Part1, Part2, Result};
+use common::prelude::*;
 use utils::OkIterator;
 
 /// Encoding Error

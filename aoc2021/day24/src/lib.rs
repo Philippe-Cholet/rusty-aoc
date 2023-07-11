@@ -1,4 +1,4 @@
-use common::{Context, Part, Part1, Part2, Result};
+use common::prelude::*;
 use utils::OkIterator;
 
 /// Arithmetic Logic Unit
@@ -62,7 +62,7 @@ mod parser {
 
     use itertools::Itertools;
 
-    use common::{bail, ensure, Error, Result};
+    use common::prelude::*;
     use utils::OkIterator;
 
     use super::{INPUTS, PATTERN};

@@ -4,7 +4,7 @@ use std::collections::VecDeque;
 
 use itertools::Itertools;
 
-use common::{Context, Part, Part1, Part2, Result};
+use common::prelude::*;
 
 /// Tuning Trouble
 pub fn solver(part: Part, input: &str) -> Result<String> {

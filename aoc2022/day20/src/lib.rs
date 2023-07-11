@@ -1,6 +1,6 @@
 use std::cmp::Ordering;
 
-use common::{ensure, Context, Part, Part1, Part2, Result};
+use common::prelude::*;
 use utils::OkIterator;
 
 const DECRYPTION_KEY: i64 = 811_589_153;

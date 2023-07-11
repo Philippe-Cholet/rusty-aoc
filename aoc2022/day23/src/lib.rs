@@ -1,6 +1,6 @@
 use itertools::Itertools;
 
-use common::{bail, ensure, Context, Part, Part1, Part2, Result};
+use common::prelude::*;
 use utils::parse_to_grid;
 
 use Direction::{E, N, S, W};

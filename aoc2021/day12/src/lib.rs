@@ -2,7 +2,7 @@ use std::collections::HashMap;
 
 use itertools::Itertools;
 
-use common::{Context, Error, Part, Part2, Result};
+use common::prelude::*;
 use utils::OkIterator;
 
 /// Passage Pathing
@@ -179,7 +179,6 @@ start-RW
 
 #[test]
 fn solver_21_12() -> Result<()> {
-    use common::Part1;
     for (input, answer) in INPUTS.iter().zip(["10", "19", "226", "3497"]) {
         assert_eq!(solver(Part1, input)?, answer);
     }

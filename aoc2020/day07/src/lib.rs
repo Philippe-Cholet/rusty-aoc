@@ -2,7 +2,7 @@ use std::collections::HashMap;
 
 use petgraph::{algo::toposort, prelude::DiGraphMap, visit::Dfs};
 
-use common::{bail, format_err, Context, Ok, Part, Part1, Part2, Result};
+use common::{prelude::*, Ok};
 use utils::OkIterator;
 
 /// Handy Haversacks

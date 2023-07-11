@@ -2,7 +2,7 @@ use std::collections::HashSet;
 
 use itertools::Itertools;
 
-use common::{Context, Part, Part1, Part2, Result};
+use common::prelude::*;
 
 #[derive(Debug)]
 struct Board([[u8; 5]; 5], [[u8; 5]; 5]); // (rows, columns)

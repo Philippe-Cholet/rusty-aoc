@@ -2,7 +2,7 @@ use std::iter::repeat;
 
 use itertools::Itertools;
 
-use common::{bail, Context, Part, Part1, Part2, Result};
+use common::prelude::*;
 use utils::{parse_to_grid, OkIterator};
 
 #[derive(Debug, Clone, Copy)]

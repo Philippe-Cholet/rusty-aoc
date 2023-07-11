@@ -1,6 +1,6 @@
 use itertools::Itertools;
 
-use common::{ensure, Context, Part, Part1, Part2, Result};
+use common::prelude::*;
 use utils::{char10, OkIterator};
 
 /// Crab Cups

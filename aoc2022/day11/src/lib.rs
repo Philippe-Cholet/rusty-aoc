@@ -2,7 +2,7 @@ use std::str::FromStr;
 
 use itertools::Itertools;
 
-use common::{bail, ensure, Context, Error, Part, Part1, Part2, Result};
+use common::prelude::*;
 use utils::OkIterator;
 
 type Worry = u64;

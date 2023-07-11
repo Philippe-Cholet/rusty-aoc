@@ -7,7 +7,7 @@ use std::{
 
 use itertools::{iproduct, Either, Itertools};
 
-use common::{bail, ensure, Context, Error, Part, Part1, Part2, Result};
+use common::prelude::*;
 use utils::HeuristicItem;
 
 use Amphipod::{Amber, Bronze, Copper, Desert};

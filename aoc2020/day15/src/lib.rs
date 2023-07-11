@@ -1,4 +1,4 @@
-use common::{ensure, Part, Part1, Part2, Result};
+use common::prelude::*;
 use utils::OkIterator;
 
 #[allow(clippy::cast_possible_truncation)] // SAFETY: `idx < numbers.len() <= nb_turns <= 30_000_000 <= u32::MAX`

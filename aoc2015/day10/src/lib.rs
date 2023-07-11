@@ -1,4 +1,4 @@
-use common::{ensure, Part, Part1, Part2, Result};
+use common::prelude::*;
 use utils::{char10, OkIterator};
 
 #[allow(clippy::expect_used)]

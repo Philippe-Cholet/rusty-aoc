@@ -2,7 +2,7 @@ use std::collections::HashSet;
 
 use itertools::Itertools;
 
-use common::{ensure, Context, Part, Part1, Part2, Result};
+use common::prelude::*;
 use utils::OkIterator;
 
 const AZAZ: &str = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";

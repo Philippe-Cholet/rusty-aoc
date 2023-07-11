@@ -1,6 +1,6 @@
 use serde_json::Value;
 
-use common::{Context, Part, Part2, Result};
+use common::prelude::*;
 use utils::OkIterator;
 
 /// JSAbacusFramework.io
@@ -44,7 +44,6 @@ pub const INPUTS: [&str; 12] = [
 
 #[test]
 fn solver_15_12() -> Result<()> {
-    use common::Part1;
     for (input, answer) in INPUTS.into_iter().zip([6, 6, 3, 3, 0, 0, 0, 0]) {
         assert_eq!(solver(Part1, input)?, answer.to_string());
     }

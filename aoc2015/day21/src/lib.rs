@@ -1,6 +1,6 @@
 use itertools::{iproduct, Itertools};
 
-use common::{Context, Error, Ok, Part, Part1, Part2, Result};
+use common::{prelude::*, Ok};
 use utils::OkIterator;
 
 #[derive(Debug, Clone)]

@@ -1,6 +1,6 @@
 use std::collections::HashSet;
 
-use common::{ensure, Part, Part1, Part2, Result};
+use common::prelude::*;
 
 #[derive(Debug)]
 enum Chunks {

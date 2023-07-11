@@ -1,6 +1,6 @@
 use std::collections::{HashMap, HashSet};
 
-use common::{bail, ensure, Context, Error, Part, Part1, Part2, Result};
+use common::prelude::*;
 use utils::OkIterator;
 
 use Instruction::{Mask, Mem};

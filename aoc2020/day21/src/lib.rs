@@ -2,7 +2,7 @@ use std::collections::HashSet;
 
 use itertools::Itertools;
 
-use common::{Context, Ok, Part, Part1, Part2, Result};
+use common::{prelude::*, Ok};
 use utils::OkIterator;
 
 /// Allergen Assessment

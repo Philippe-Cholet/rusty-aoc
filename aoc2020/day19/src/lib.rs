@@ -1,6 +1,6 @@
 use std::collections::HashMap;
 
-use common::{ensure, Context, Error, Part, Part2, Result};
+use common::prelude::*;
 use utils::OkIterator;
 
 #[derive(Debug, PartialEq)]
@@ -165,7 +165,6 @@ aabbbbbaabbbaaaaaabbbbbababaaaaabbaaabba
 
 #[test]
 fn solver_20_19() -> Result<()> {
-    use common::Part1;
     assert_eq!(solver(Part1, INPUTS[0])?, "2");
     assert_eq!(solver(Part1, INPUTS[2])?, "208");
     assert_eq!(solver(Part2, INPUTS[1])?, "12");

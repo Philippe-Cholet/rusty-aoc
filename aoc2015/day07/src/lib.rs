@@ -1,6 +1,6 @@
 use std::collections::HashMap;
 
-use common::{bail, ensure, Context, Error, Part, Part2, Result};
+use common::prelude::*;
 use utils::OkIterator;
 
 #[derive(Debug, Clone)]
@@ -107,7 +107,6 @@ pub const INPUTS: [&str; 1] = [include_str!("input.txt")];
 
 #[test]
 fn solver_15_07() -> Result<()> {
-    use common::Part1;
     assert_eq!(solver(Part1, INPUTS[0])?, "46065");
     assert_eq!(solver(Part2, INPUTS[0])?, "14134");
     Ok(())

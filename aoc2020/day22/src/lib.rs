@@ -1,6 +1,6 @@
 use std::collections::HashSet;
 
-use common::{ensure, Context, Error, Part, Part1, Part2, Result};
+use common::prelude::*;
 use utils::OkIterator;
 
 /// Crab Combat

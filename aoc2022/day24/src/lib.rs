@@ -3,7 +3,7 @@ use std::{
     iter::repeat,
 };
 
-use common::{bail, Context, Error, Part, Part1, Part2, Result};
+use common::prelude::*;
 use utils::{parse_to_grid, HeuristicItem};
 
 #[derive(Debug, Clone, Copy)]

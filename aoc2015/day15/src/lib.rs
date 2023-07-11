@@ -1,4 +1,4 @@
-use common::{ensure, Context, Part, Part1, Result};
+use common::prelude::*;
 use utils::OkIterator;
 
 /// Science for Hungry People
@@ -77,7 +77,6 @@ Cinnamon: capacity 2, durability 3, flavor -2, texture -1, calories 3
 
 #[test]
 fn solver_15_15() -> Result<()> {
-    use common::Part2;
     assert_eq!(solver(Part1, INPUTS[0])?, "62842880");
     assert_eq!(solver(Part1, INPUTS[1])?, "13882464");
     assert_eq!(solver(Part2, INPUTS[0])?, "57600000");

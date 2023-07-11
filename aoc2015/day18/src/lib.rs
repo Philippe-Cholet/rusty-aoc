@@ -1,7 +1,7 @@
 use itertools::iproduct;
 use ndarray::{s, Array2};
 
-use common::{bail, Part, Part2, Result};
+use common::prelude::*;
 use utils::parse_to_grid;
 
 const N: usize = 100;
@@ -51,7 +51,6 @@ pub const INPUTS: [&str; 1] = [include_str!("input.txt")];
 
 #[test]
 fn solver_15_18() -> Result<()> {
-    use common::Part1;
     assert_eq!(solver(Part1, INPUTS[0])?, "768");
     assert_eq!(solver(Part2, INPUTS[0])?, "781");
     Ok(())

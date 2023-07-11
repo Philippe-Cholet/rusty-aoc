@@ -1,3 +1,15 @@
+/// The common prelude imports:
+/// - the `Part` enum and its variants `Part1` and `Part2` ;
+/// - re-export most of `anyhow`: `bail`, `ensure`, `format_err`, `Context`, `Error`, `Result`
+/// but not its function `Ok` (available outside the prelude) to be able to match against result variants.
+///
+/// Then one can do `use common::prelude::*` in a solver and start get things done without looking back.
+pub mod prelude {
+    pub use crate::{bail, ensure, format_err, Context, Error, Result};
+    pub use crate::{Part, Part1, Part2};
+    // My solvers do not need `Day`, `Year` and `AocSolver`.
+}
+
 use std::str::FromStr;
 
 pub use anyhow::{bail, ensure, format_err, Context, Error, Ok, Result};

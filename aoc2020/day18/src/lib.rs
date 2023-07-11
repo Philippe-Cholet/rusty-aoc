@@ -1,7 +1,7 @@
 use itertools::Itertools;
 use pest::{iterators::Pair, Parser};
 
-use common::{Context, Part, Part1, Part2, Result};
+use common::prelude::*;
 use utils::OkIterator;
 
 /// Operation Order

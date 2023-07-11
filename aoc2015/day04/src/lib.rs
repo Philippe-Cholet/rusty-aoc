@@ -1,4 +1,4 @@
-use common::{Part, Part1, Part2, Result};
+use common::prelude::*;
 
 /// The Ideal Stocking Stuffer
 pub fn solver(part: Part, input: &str) -> Result<String> {

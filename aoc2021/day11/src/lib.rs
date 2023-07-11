@@ -1,6 +1,6 @@
 use std::collections::HashSet;
 
-use common::{ensure, Context, Part, Part1, Part2, Result};
+use common::prelude::*;
 use utils::{char10, neighbors, parse_to_grid};
 
 /// Dumbo Octopus

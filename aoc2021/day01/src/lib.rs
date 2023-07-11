@@ -1,6 +1,6 @@
 use itertools::Itertools;
 
-use common::{Part, Part2, Result};
+use common::prelude::*;
 use utils::OkIterator;
 
 /// Sonar Sweep
@@ -35,7 +35,6 @@ pub const INPUTS: [&str; 2] = [
 
 #[test]
 fn solver_21_01() -> Result<()> {
-    use common::Part1;
     assert_eq!(solver(Part1, INPUTS[0])?, "7");
     assert_eq!(solver(Part1, INPUTS[1])?, "1665");
     assert_eq!(solver(Part2, INPUTS[0])?, "5");

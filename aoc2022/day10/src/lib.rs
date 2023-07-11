@@ -1,4 +1,4 @@
-use common::{bail, ensure, Part, Part1, Part2, Result};
+use common::prelude::*;
 
 #[derive(Debug)]
 struct Crt {

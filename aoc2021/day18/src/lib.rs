@@ -2,7 +2,7 @@ use std::{fmt, iter::Sum, ops::Add, str::FromStr};
 
 use itertools::Itertools;
 
-use common::{Context, Error, Part, Part1, Part2, Result};
+use common::prelude::*;
 use utils::OkIterator;
 
 // I avoided to derive Clone on purpose.

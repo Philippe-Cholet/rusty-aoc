@@ -1,7 +1,7 @@
 use itertools::iproduct;
 use ndarray::prelude::*;
 
-use common::{bail, Part, Part1, Part2, Result};
+use common::prelude::*;
 use utils::parse_to_grid;
 
 const N: usize = 6;

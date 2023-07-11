@@ -2,7 +2,7 @@ use std::collections::{HashMap, HashSet, VecDeque};
 
 use itertools::{iproduct, Itertools};
 
-use common::{bail, ensure, Context, Error, Part, Part1, Part2, Result};
+use common::prelude::*;
 use utils::{parse_to_grid, OkIterator};
 
 use Rotation::{Rot0, Rot180, Rot270, Rot90};

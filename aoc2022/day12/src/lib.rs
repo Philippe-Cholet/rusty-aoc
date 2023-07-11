@@ -2,7 +2,7 @@ use std::collections::VecDeque;
 
 use itertools::iproduct;
 
-use common::{ensure, Context, Part, Part1, Part2, Result};
+use common::prelude::*;
 use utils::{neighbors, parse_to_grid_with_loc};
 
 const AZ_LOWER: &str = "abcdefghijklmnopqrstuvwxyz";

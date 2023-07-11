@@ -4,7 +4,7 @@ use std::collections::{BinaryHeap, HashMap};
 use itertools::Itertools;
 use petgraph::{algo::floyd_warshall, graph::NodeIndex, Graph, Undirected};
 
-use common::{ensure, Context, Ok, Part, Part1, Part2, Result};
+use common::{prelude::*, Ok};
 use utils::{HeuristicItem, OkIterator};
 
 /// Proboscidea Volcanium

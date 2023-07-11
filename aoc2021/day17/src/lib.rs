@@ -2,7 +2,7 @@ use std::cmp::Ordering;
 
 use itertools::iproduct;
 
-use common::{Context, Part, Part1, Part2, Result};
+use common::prelude::*;
 
 /// Trick Shot
 pub fn solver(part: Part, input: &str) -> Result<String> {

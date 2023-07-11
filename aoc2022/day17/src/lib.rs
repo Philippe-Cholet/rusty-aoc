@@ -1,6 +1,6 @@
 use std::collections::{HashMap, HashSet};
 
-use common::{bail, ensure, Error, Part, Part1, Part2, Result};
+use common::prelude::*;
 use utils::OkIterator;
 
 const CAVE_WIDTH: usize = 7;

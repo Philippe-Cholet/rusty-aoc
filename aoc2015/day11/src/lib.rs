@@ -1,6 +1,6 @@
 use itertools::Itertools;
 
-use common::{Context, Error, Part, Part1, Part2, Result};
+use common::prelude::*;
 use utils::OkIterator;
 
 const ILOS: [u8; 3] = [8, 11, 14]; // ['i', 'l', 'o'].map(|ch| ch as u8 - b'a')

@@ -1,4 +1,4 @@
-use common::{Part, Part1, Part2, Result};
+use common::prelude::*;
 use utils::OkIterator;
 
 /// I Was Told There Would Be No Math

@@ -1,4 +1,4 @@
-use common::{format_err, Context, Part, Part1, Part2, Result};
+use common::prelude::*;
 use utils::OkIterator;
 
 /// Shuttle Search

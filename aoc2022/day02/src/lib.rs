@@ -1,4 +1,4 @@
-use common::{bail, Context, Part, Part1, Part2, Result};
+use common::prelude::*;
 use utils::OkIterator;
 
 use Outcome::{Draw, Lose, Win};

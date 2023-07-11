@@ -1,4 +1,4 @@
-use common::{bail, Error, Part, Part1, Part2, Result};
+use common::prelude::*;
 use utils::OkIterator;
 
 use Direction::{East, North, South, West};

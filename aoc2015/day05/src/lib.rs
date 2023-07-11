@@ -1,6 +1,6 @@
 use itertools::Itertools;
 
-use common::{Part, Part1, Part2, Result};
+use common::prelude::*;
 
 /// Doesn't He Have Intern-Elves For This?
 pub fn solver(part: Part, input: &str) -> Result<String> {

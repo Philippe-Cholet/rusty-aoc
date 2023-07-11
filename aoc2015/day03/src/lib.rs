@@ -1,6 +1,6 @@
 use std::collections::HashSet;
 
-use common::{bail, Part, Part1, Part2, Result};
+use common::prelude::*;
 use utils::OkIterator;
 
 /// Perfectly Spherical Houses in a Vacuum

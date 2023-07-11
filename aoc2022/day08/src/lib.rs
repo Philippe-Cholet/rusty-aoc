@@ -2,7 +2,7 @@ use std::{fmt::Display, iter::repeat};
 
 use itertools::iproduct;
 
-use common::{Context, Part, Part1, Part2, Result};
+use common::prelude::*;
 use utils::{char10, parse_to_grid};
 
 struct VisibleTrees<'a> {
@@ -159,7 +159,7 @@ use std::iter::repeat;
 
 use itertools::iproduct;
 
-use common::{Part, Part1, Part2, Result};
+use common::prelude::*;
 use utils::{char10, parse_to_grid};
 
 /// Treetop Tree House

@@ -5,7 +5,7 @@ use std::{
 
 use itertools::{iproduct, Itertools};
 
-use common::{ensure, Context, Ok, Part, Part1, Part2, Result};
+use common::{prelude::*, Ok};
 
 #[derive(Debug, PartialEq, Hash, Eq)]
 struct Xyz(i32, i32, i32);

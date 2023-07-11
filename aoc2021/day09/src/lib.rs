@@ -2,7 +2,7 @@ use std::collections::HashSet;
 
 use itertools::iproduct;
 
-use common::{Context, Part, Part1, Part2, Result};
+use common::prelude::*;
 use utils::{char10, neighbors, parse_to_grid};
 
 /// Smoke Basin

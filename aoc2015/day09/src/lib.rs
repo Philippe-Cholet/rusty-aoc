@@ -2,7 +2,7 @@ use std::collections::HashMap;
 
 use itertools::{iproduct, Itertools};
 
-use common::{ensure, Context, Part, Part1, Part2, Result};
+use common::prelude::*;
 use utils::OkIterator;
 
 /// All in a Single Night

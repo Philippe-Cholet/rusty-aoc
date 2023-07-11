@@ -2,7 +2,7 @@ use std::collections::BinaryHeap;
 
 use itertools::iproduct;
 
-use common::{Context, Part, Part2, Result};
+use common::prelude::*;
 use utils::{char10, neighbors, parse_to_grid, HeuristicItem};
 
 /// Chiton
@@ -75,7 +75,6 @@ pub const INPUTS: [&str; 2] = [
 
 #[test]
 fn solver_21_15() -> Result<()> {
-    use common::Part1;
     assert_eq!(solver(Part1, INPUTS[0])?, "40");
     assert_eq!(solver(Part1, INPUTS[1])?, "656");
     assert_eq!(solver(Part2, INPUTS[0])?, "315");

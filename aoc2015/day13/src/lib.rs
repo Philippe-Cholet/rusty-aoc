@@ -2,7 +2,7 @@ use std::collections::HashMap;
 
 use itertools::Itertools;
 
-use common::{bail, Context, Part, Part2, Result};
+use common::prelude::*;
 use utils::OkIterator;
 
 /// Knights of the Dinner Table
@@ -69,7 +69,6 @@ David would gain 41 happiness units by sitting next to Carol.
 
 #[test]
 fn solver_15_13() -> Result<()> {
-    use common::Part1;
     assert_eq!(solver(Part1, INPUTS[0])?, "330");
     assert_eq!(solver(Part1, INPUTS[1])?, "618");
     assert_eq!(solver(Part2, INPUTS[1])?, "601");

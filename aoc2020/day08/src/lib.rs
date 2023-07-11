@@ -1,4 +1,4 @@
-use common::{bail, Context, Error, Part, Part1, Part2, Result};
+use common::prelude::*;
 use utils::OkIterator;
 
 /// Handheld Halting
