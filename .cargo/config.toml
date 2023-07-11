@@ -1,4 +1,11 @@
 [alias]
+rr = "run --release"
+tr = "test --release"
+tri = "tr -- --ignored"
+trii = "tr -- --include-ignored"
+ntr = "nextest run -r"
+ntri = "ntr --run-ignored ignored-only"
+ntrii = "ntr --run-ignored all"
 f = "fmt --check"
 clip = "clippy -- -W clippy::all -W clippy::pedantic -W clippy::nursery -W clippy::unwrap_used -W clippy::expect_used -A clippy::missing-errors-doc"
 cli = "run --bin cli-runner"
