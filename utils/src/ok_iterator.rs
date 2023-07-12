@@ -5,7 +5,7 @@ use std::{
     iter::{Product, Sum},
 };
 
-use common::{format_err, Error, Result};
+use anyhow::{format_err, Error, Ok as ok, Result};
 
 /// An interface for dealing with iterators of results and shortcuts to collect into usual types.
 pub trait OkIterator<T, E>
@@ -282,7 +282,7 @@ where
         Ok(self
             .map(|res| {
                 let value = res.map_err(Into::into)?;
-                common::Ok((f(&value), value))
+                ok((f(&value), value))
             })
             .ok_max_by(|(key1, _value1), (key2, _value2)| key1.cmp(key2))?
             .map(|(_key, value)| value))
@@ -313,7 +313,7 @@ where
         Ok(self
             .map(|res| {
                 let value = res.map_err(Into::into)?;
-                common::Ok((f(&value), value))
+                ok((f(&value), value))
             })
             .ok_min_by(|(key1, _value1), (key2, _value2)| key1.cmp(key2))?
             .map(|(_key, value)| value))

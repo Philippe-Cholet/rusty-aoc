@@ -1,4 +1,4 @@
-use common::{Context, Error, Result};
+use anyhow::{Context, Error, Result};
 
 /// Convert a char representing a decimal digit to any type that can come from `u32`.
 pub fn char10<T>(ch: char) -> Result<T>
