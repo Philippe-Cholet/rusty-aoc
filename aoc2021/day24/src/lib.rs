@@ -1,33 +1,23 @@
+#![allow(clippy::cast_sign_loss)] // To fix but I won't.
 use common::prelude::*;
-use utils::OkIterator;
 
 /// Arithmetic Logic Unit
 pub fn solver(part: Part, input: &str) -> Result<String> {
-    parser::check_input(input)?; // old code that I don't want to remove.
-    deductions::get_possibilities();
-    // TODO: use the deduced result to define digit ranges and digits... I did it manually while I would prefer it automatic.
-    // d4 == d3 - 8 && d6 == d5 - 3 && d7 == d2 && d8 == d1 - 7 && d10 == d9 + 5 && d13 == d12 - 6 && d14 == d11 + 3
-    let ds = [8..=9, 1..=9, 9..=9, 4..=9, 1..=4, 1..=6, 7..=9];
-    #[cfg(debug_assertions)]
-    println!(
-        "There are {} model numbers accepted by MONAD.",
-        2*9 /* *1 */ *6*4*6*3, // == 7776 (product of the range lengths in `ds`).
-    );
-    let [d1, d2, d3, d5, d9, d11, d12]: [_; 7] = ds
-        .into_iter()
-        .map(|range| {
-            match part {
-                Part1 => range.max(),
-                Part2 => range.min(),
-            }
-            .context("empty range")
-        })
-        .ok_collect_array()?;
-    let [d4, d6, d7, d8, d10, d13, d14] = [d3 - 8, d5 - 3, d2, d1 - 7, d9 + 5, d12 - 6, d11 + 3];
-    let model_digits = [d1, d2, d3, d4, d5, d6, d7, d8, d9, d10, d11, d12, d13, d14];
+    let pattern = parser::check_input(input)?;
+    let ds = deductions::get_possibilities(pattern)?;
+    if cfg!(debug_assertions) {
+        println!(
+            "There are {} model numbers accepted by MONAD.",
+            deductions::ConditionalDigit::count(&ds),
+        );
+    }
+    let model_digits = deductions::ConditionalDigit::eval(&ds, |r| match part {
+        Part1 => r.max(),
+        Part2 => r.min(),
+    })?;
     let model_number = model_digits
         .into_iter()
-        .fold(0u64, |res, digit| res * 10 + digit);
+        .fold(0u64, |res, digit| res * 10 + digit as u64);
     Ok(model_number.to_string())
 }
 
@@ -40,32 +30,11 @@ fn solver_21_24() -> Result<()> {
     Ok(())
 }
 
-const PATTERN: [(bool, i32, i32); 14] = [
-    (false, 10, 5),
-    (false, 13, 9),
-    (false, 12, 4),
-    (true, -12, 4),
-    (false, 11, 10),
-    (true, -13, 14),
-    (true, -9, 14),
-    (true, -12, 12),
-    (false, 14, 14),
-    (true, -9, 14),
-    (false, 15, 5),
-    (false, 11, 10),
-    (true, -16, 8),
-    (true, -2, 15),
-];
-
 mod parser {
     use std::str::FromStr;
 
-    use itertools::Itertools;
-
     use common::prelude::*;
     use utils::OkIterator;
-
-    use super::{INPUTS, PATTERN};
 
     use self::{
         Instruction::{Add, Div, Eql, Inp, Mod, Mul},
@@ -139,9 +108,9 @@ mod parser {
         }
     }
 
-    pub fn check_input(input: &str) -> Result<()> {
+    pub fn check_input(input: &str) -> Result<[(bool, i32, i32); 14]> {
         let instructions: Vec<Instruction> = input.lines().map(str::parse).ok_collect()?;
-        let data: Vec<_> = instructions.chunks(18)
+        instructions.chunks(18)
             .map(|chunk| {
                 match chunk {
                     [
@@ -168,18 +137,11 @@ mod parser {
                         == [&W, &X, &X, &X, &Z, &X, &X, &X, &Y, &Y, &Y, &Y, &Z, &Y, &Y, &Y, &Y, &Z]
                         && [w0, w1, w2, w3, w4, w5, w6] == [&Z, &W, &X, &Y, &W, &X, &Y]
                         && [1, 26].contains(a)
-                        && (-16..=15).contains(b)
-                        && (4..=15).contains(c)
                     => Ok((*a == 26, *b, *c)),
                     _ => bail!("Does not match the blocks I saw"),
                 }
             })
-            .try_collect()?;
-        ensure!(
-            data == PATTERN && input == INPUTS[0],
-            "Only one MONAD in the world!"
-        );
-        Ok(())
+            .ok_collect_array()
     }
 }
 
@@ -239,11 +201,14 @@ Therefore:
 - `z * 26` is the vector with 0 inserted at index 0.
 */
 mod deductions {
-    use std::{fmt, ops::Add};
+    use std::{
+        cmp::Ordering,
+        fmt,
+        ops::{Add, RangeInclusive},
+    };
 
+    use common::{bail, ensure, Context, Result};
     use itertools::Itertools;
-
-    use super::PATTERN;
 
     // Basic symbolic calculus with digits as symbols.
     // I first tried to do this by hand (with Sublime Text and multiple cursors which is amazingly useful)
@@ -331,12 +296,8 @@ mod deductions {
 
     impl fmt::Display for Possibility {
         fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-            let base26 = self.base26.iter().map(|add| format!("{add}")).join(", ");
-            let eql = self
-                .conditions
-                .iter()
-                .map(|eql| format!("{eql}"))
-                .join(" && ");
+            let base26 = self.base26.iter().join(", ");
+            let eql = self.conditions.iter().join(" && ");
             write!(f, "[{base26}] // {eql}")
         }
     }
@@ -350,10 +311,10 @@ mod deductions {
         }
     }
 
-    pub fn get_possibilities() {
+    pub fn get_possibilities(pattern: [(bool, i32, i32); 14]) -> Result<[ConditionalDigit; 14]> {
         let mut possibilities = vec![Possibility::default()];
         let digits: Vec<_> = (1..=14).map(Digit).collect();
-        for (idx, item) in PATTERN.into_iter().enumerate() {
+        for (idx, item) in pattern.into_iter().enumerate() {
             let digit = digits[idx];
             possibilities = possibilities
                 .iter()
@@ -385,9 +346,86 @@ mod deductions {
                 .collect();
         }
         possibilities.retain(Possibility::is_zero);
+        ensure!(possibilities.len() == 1, "More than 1 possibility");
         #[cfg(debug_assertions)]
-        for possibility in possibilities {
-            println!("{possibility}");
+        println!("{}", possibilities[0]);
+        let Possibility { base26, conditions } = possibilities.remove(0);
+        ensure!(base26.is_empty(), "Not zero");
+        ensure!(conditions.iter().all(|c| c.2), "!=");
+        let mut ranges = [0; 14].map(|_| None);
+        macro_rules! replace {
+            ($idx:ident, $value:expr) => {
+                debug_assert!((1..=14).contains(&$idx));
+                ensure!(ranges[$idx as usize - 1].is_none(), "...");
+                ranges[$idx as usize - 1].replace($value);
+            };
+        }
+        for eq in conditions {
+            match eq {
+                Equality(_, _, false) => bail!("Not equal: {eq}"),
+                // Not encountered (like "d4 == 5"):
+                Equality(Addition::Value(value), Digit(d), true) => {
+                    replace!(d, ConditionalDigit::Range(value..=value));
+                }
+                Equality(Addition::Stuff(Digit(mut d1), mut value), Digit(mut d2), true) => {
+                    if value < 0 {
+                        (d1, d2) = (d2, d1);
+                        value *= -1;
+                    }
+                    match d1.cmp(&d2) {
+                        Ordering::Equal => bail!("x == x + {value}"),
+                        Ordering::Greater => {
+                            replace!(d2, ConditionalDigit::Range(value + 1..=9));
+                            replace!(d1, ConditionalDigit::Addition(d2 as usize - 1, -value));
+                        }
+                        Ordering::Less => {
+                            replace!(d1, ConditionalDigit::Range(1..=9 - value));
+                            replace!(d2, ConditionalDigit::Addition(d1 as usize - 1, value));
+                        }
+                    }
+                }
+            }
+        }
+        let ranges = ranges.map(|o| o.unwrap_or(ConditionalDigit::Range(1..=9)));
+        #[cfg(debug_assertions)]
+        println!("{ranges:?}");
+        Ok(ranges)
+    }
+
+    #[derive(Debug, Clone)]
+    pub enum ConditionalDigit {
+        Range(RangeInclusive<i32>),
+        Addition(usize, i32),
+    }
+
+    impl ConditionalDigit {
+        pub fn count(digits: &[Self; 14]) -> usize {
+            digits
+                .iter()
+                .map(|cd| match cd {
+                    Self::Range(r) => r.clone().count(),
+                    Self::Addition(_, _) => 1,
+                })
+                .product()
+        }
+
+        pub fn eval(
+            digits: &[Self; 14],
+            func: impl Fn(RangeInclusive<i32>) -> Option<i32>,
+        ) -> Result<[i32; 14]> {
+            let mut res = [i32::MAX; 14];
+            for i in 0..14 {
+                res[i] = match digits[i].clone() {
+                    Self::Range(range) => func(range).context("Empty range")?,
+                    Self::Addition(idx, value) => {
+                        let Self::Range(range) = &digits[idx] else {
+                            bail!("Unexpected condition: {:?}", digits[i]);
+                        };
+                        func(range.clone()).context("Empty range")? + value
+                    }
+                };
+            }
+            Ok(res)
         }
     }
 }
