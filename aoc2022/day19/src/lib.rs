@@ -1,20 +1,13 @@
-// I wanted to try another solver: "GLPK"
-// choco install -y glpk
-// use good_lp::solvers::lp_solvers::{GlpkSolver, LpSolver};
-// let glpk_solver = LpSolver(GlpkSolver::new().command_name("glpsol".to_owned()));
-// The command line failed for some reason, maybe its version, I don't know.
-use good_lp::{default_solver, variable, variables, Expression, Solution, SolverModel};
-
 use common::{prelude::*, Ok};
 use utils::OkIterator;
 
 #[derive(Debug)]
 struct Blueprint {
-    id: i32,
-    ore_robot_cost: i32,             // Ore
-    clay_robot_cost: i32,            // Ore
-    obsidian_robot_cost: (i32, i32), // Ore, Clay
-    geode_robot_cost: (i32, i32),    // Ore, Obsidian
+    id: u8,
+    ore_robot_cost: u8,            // Ore
+    clay_robot_cost: u8,           // Ore
+    obsidian_robot_cost: (u8, u8), // Ore, Clay
+    geode_robot_cost: (u8, u8),    // Ore, Obsidian
 }
 
 impl std::str::FromStr for Blueprint {
@@ -24,7 +17,7 @@ impl std::str::FromStr for Blueprint {
         let v: Vec<_> = s
             .replace(':', "")
             .split_whitespace()
-            .filter_map(|t| t.parse::<i32>().ok())
+            .filter_map(|t| t.parse::<u8>().ok())
             .collect();
         ensure!(v.len() == 7, "A blueprint line should have 7 integers");
         Ok(Self {
@@ -37,9 +30,17 @@ impl std::str::FromStr for Blueprint {
     }
 }
 
+#[cfg(feature = "lp")]
 impl Blueprint {
     #[allow(clippy::cast_possible_truncation)]
-    fn maximise_geodes(&self, minutes: usize) -> Result<i32> {
+    fn maximise_geodes(&self, minutes: u8) -> Result<u8> {
+        // I wanted to try another solver: "GLPK"
+        // choco install -y glpk
+        // use good_lp::solvers::lp_solvers::{GlpkSolver, LpSolver};
+        // let glpk_solver = LpSolver(GlpkSolver::new().command_name("glpsol".to_owned()));
+        // The command line failed for some reason, maybe its version, I don't know.
+        use good_lp::{default_solver, variable, variables, Expression, Solution, SolverModel};
+
         let mut problem_vars = variables!();
         let zero = Expression::default;
         // Minerals/robots: [ore, clay, obsidian, geodes]
@@ -77,26 +78,98 @@ impl Blueprint {
             problem.add_constraint(quantity);
         }
         let max_geodes = problem.solve()?.eval(nb_geodes);
-        Ok(max_geodes as i32)
+        Ok(max_geodes as u8)
+    }
+}
+
+#[cfg(not(feature = "lp"))]
+impl Blueprint {
+    fn geodes_upperbound(&self, time_left: u8, mut obs_minerals: u8, mut obs_robots: u8) -> u8 {
+        let mut geodes: u8 = 0;
+        // Assuming we have enough ore and clay, we create geode robots when possible.
+        for n in (0..=time_left).rev() {
+            if obs_minerals >= self.geode_robot_cost.1 {
+                obs_minerals -= self.geode_robot_cost.1;
+                obs_minerals += obs_robots;
+                geodes = geodes.saturating_add(n);
+            } else {
+                obs_minerals += obs_robots;
+                obs_robots += 1;
+            }
+        }
+        geodes
+    }
+
+    fn maximise_geodes(&self, minutes: u8) -> Result<u8> {
+        let all_costs = [
+            [self.ore_robot_cost, 0, 0],
+            [self.clay_robot_cost, 0, 0],
+            [self.obsidian_robot_cost.0, self.obsidian_robot_cost.1, 0],
+            [self.geode_robot_cost.0, 0, self.geode_robot_cost.1],
+        ];
+        let mut result = 0;
+        let mut stack = Vec::with_capacity(64); // Enough for the tests.
+        stack.push((minutes, [0; 4], [1, 0, 0, 0]));
+        while let Some((time_left, minerals, robots)) = stack.pop() {
+            // Without creating a new robot, we are sure to have some geodes.
+            let geodes_lowerbound = minerals[3] + robots[3] * time_left;
+            result = result.max(geodes_lowerbound);
+            // Now we have to create robots.
+            if time_left <= 1 {
+                continue; // Not enough time to create a robot AND get more minerals with it.
+            }
+            // We can get an upper bound, useful to cut the search tree.
+            let ub = geodes_lowerbound + self.geodes_upperbound(time_left, minerals[2], robots[2]);
+            if ub <= result {
+                continue; // Even with all the ore and clay of the world, we can not get more geodes.
+            }
+            // What robot are we gonna build next?
+            stack.extend((0..4).filter_map(|idx| {
+                let costs = all_costs[idx];
+                let mut ms = minerals;
+                // Find the next time we have enough minerals to build the robot.
+                (0..time_left)
+                    .rfind(|_| {
+                        // Enough ressource to start building the robot?
+                        let enough = ms[0] >= costs[0] && ms[1] >= costs[1] && ms[2] >= costs[2];
+                        // Anyway, previously built robots have collected some minerals.
+                        ms.iter_mut().zip(robots.iter()).for_each(|(m, r)| *m += r);
+                        enough
+                    })
+                    .map(|t| {
+                        // New robot.
+                        ms[0] -= costs[0];
+                        ms[1] -= costs[1];
+                        ms[2] -= costs[2];
+                        let mut rs = robots;
+                        rs[idx] += 1;
+                        (t, ms, rs)
+                    })
+            }));
+        }
+        Ok(result)
     }
 }
 
 /// Not Enough Minerals
 pub fn solver(part: Part, input: &str) -> Result<String> {
     let data: Vec<Blueprint> = input.lines().map(str::parse).ok_collect()?;
-    let result: i32 = match part {
+    let result: Result<u32> = match part {
         Part1 => data
             .iter()
-            .map(|bp| Ok(bp.id * bp.maximise_geodes(24)?))
-            .ok_sum()?,
+            .map(|bp| {
+                bp.maximise_geodes(24)
+                    .map(|geodes| u32::from(bp.id) * u32::from(geodes))
+            })
+            .sum(),
         Part2 => data
             .iter()
             // .take(3)
             .filter(|bp| bp.id <= 3)
-            .map(|bp| bp.maximise_geodes(32))
-            .ok_product()?,
+            .map(|bp| bp.maximise_geodes(32).map(u32::from))
+            .product(),
     };
-    Ok(result.to_string())
+    Ok(result?.to_string())
 }
 
 pub const INPUTS: [&str; 2] = [
@@ -115,7 +188,7 @@ Each geode robot costs 3 ore and 12 obsidian.
 ];
 
 #[test]
-#[ignore] // slow (roughly 30 seconds)
+#[cfg_attr(feature = "lp", ignore)] // slow (roughly 30 seconds)
 fn solver_22_19() -> Result<()> {
     assert_eq!(solver(Part1, INPUTS[0])?, "33");
     assert_eq!(solver(Part1, INPUTS[1])?, "1981");

@@ -10,7 +10,10 @@ license.workspace = true
 [lib]
 doctest = false
 
+[features]
+lp = ["good_lp"]
+
 [dependencies]
-good_lp.workspace = true
+good_lp = { workspace = true, optional = true }
 common = { path="../../common" }
 utils = { path="../../utils" }
