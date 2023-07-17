@@ -130,20 +130,21 @@ struct Active {
 #[derive(Debug, Clone)]
 struct State<const N: usize> {
     actives: [Active; N],
-    visited: Vec<bool>,
+    nb_valves: usize,
+    visited: u32,
     pressure: u32,
 }
 
 impl<const N: usize> State<N> {
     fn new(nb_valves: usize, minutes_left: u32) -> Self {
-        let mut visited = vec![false; nb_valves];
-        visited[0] = true;
+        debug_assert!(nb_valves <= 32, "visited: u32  can only store 32 booleans");
         Self {
             actives: [Active {
                 loc: 0,
                 minutes_left,
             }; N],
-            visited,
+            nb_valves,
+            visited: 1, // Valve 0 is visited, the others are not.
             pressure: 0,
         }
     }
@@ -160,6 +161,14 @@ impl<const N: usize> State<N> {
         HeuristicItem::new((self.minutes_left(), self.pressure), self)
     }
 
+    const fn is_visited(&self, loc: usize) -> bool {
+        (self.visited >> loc) & 1 == 1
+    }
+
+    fn visit(&mut self, loc: usize) {
+        self.visited |= 1 << loc;
+    }
+
     fn neighbors(
         &self,
         distances: &[Vec<u32>],
@@ -167,16 +176,14 @@ impl<const N: usize> State<N> {
     ) -> Vec<HeuristicItem<(u32, u32), Self>> {
         self.actives
             .map(|active| {
-                self.visited
-                    .iter()
-                    .enumerate()
-                    .filter_map(|(new_loc, visited)| {
-                        (!visited && active.minutes_left >= distances[active.loc][new_loc]).then(
-                            || Active {
+                (0..self.nb_valves)
+                    .filter_map(|new_loc| {
+                        (!self.is_visited(new_loc)
+                            && active.minutes_left >= distances[active.loc][new_loc])
+                            .then(|| Active {
                                 loc: new_loc,
                                 minutes_left: active.minutes_left - distances[active.loc][new_loc],
-                            },
-                        )
+                            })
                     })
                     .map(Some)
                     .chain([None])
@@ -191,12 +198,12 @@ impl<const N: usize> State<N> {
                 for (idx, active) in new_actives.into_iter().enumerate() {
                     if let Some(active) = active {
                         let new = res.get_or_insert_with(|| self.clone());
-                        if new.visited[active.loc] {
+                        if new.is_visited(active.loc) {
                             // Multiple actives want to visit the same location.
                             return None;
                         }
                         new.actives[idx] = active;
-                        new.visited[active.loc] = true;
+                        new.visit(active.loc);
                         new.pressure += active.minutes_left * rates[active.loc];
                     }
                 }
