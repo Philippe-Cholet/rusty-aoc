@@ -18,25 +18,26 @@ pub fn solver(part: Part, input: &str) -> Result<String> {
         "The process is supposed to grow molecules",
     );
     Ok(match part {
-        Part1 => replacements(molecule, &repls).unique().count(),
+        Part1 => replacements(molecule, &repls)
+            .map(String::from)
+            .unique()
+            .count(),
         Part2 => beam_search("e", molecule, repls, 75).context("Too small beam width")?,
         // NOTE: The beam search does not guarantee an optimal solution.
     }
     .to_string())
 }
 
-fn replacements<'a>(s: &'a str, repls: &'a [(&str, &str)]) -> impl Iterator<Item = String> + 'a {
-    repls.iter().flat_map(move |(src, dst)| {
-        let j = src.len();
-        let capacity = s.len() + dst.len() - j;
-        s.match_indices(src).map(move |(i, _)| {
-            let mut t = String::with_capacity(capacity);
-            t.push_str(&s[..i]);
-            t.push_str(dst);
-            t.push_str(&s[i + j..]);
-            t
+fn replacements<'a>(s: &'a str, repls: &'a [(&str, &str)]) -> impl Iterator<Item = Repl<'a>> + 'a {
+    repls
+        .iter()
+        .filter(move |(src, _)| s.len() >= src.len())
+        .flat_map(move |(src, dst)| {
+            let j = src.len();
+            let len = s.len() - j + dst.len();
+            s.match_indices(src)
+                .map(move |(i, _)| Repl::new(len, &s[..i], dst, &s[i + j..]))
         })
-    })
 }
 
 fn beam_search<'a>(
@@ -62,16 +63,55 @@ fn beam_search<'a>(
                 }
                 !found
             })
-            // TODO: Use `Itertools::k_largest_by` method if it exists in the future.
+            // TODO: Use `Itertools::k_smallest_by` method if it exists in the future.
             .map(|s| utils::HeuristicItem::new(s.len(), s))
             .k_smallest(beam_width)
             .map(|hi| hi.item)
+            .map(Into::into)
             .collect();
         if found {
             return Some(nb_steps);
         }
     }
     None
+}
+
+struct Repl<'a>(usize, &'a str, &'a str, &'a str);
+
+impl<'a> Repl<'a> {
+    #[inline]
+    fn new(len: usize, a: &'a str, b: &'a str, c: &'a str) -> Self {
+        debug_assert!(a.len() + b.len() + c.len() == len, "Wrong length provided");
+        Self(len, a, b, c)
+    }
+
+    #[inline]
+    const fn len(&self) -> usize {
+        self.0
+    }
+}
+
+// `impl<'a> std::fmt::Display for Repl<'a>` would not allow me to pre-allocate.
+impl<'a> From<Repl<'a>> for String {
+    #[inline]
+    fn from(value: Repl<'a>) -> Self {
+        let Repl(len, a, b, c) = value;
+        let mut t = Self::with_capacity(len);
+        t.push_str(a);
+        t.push_str(b);
+        t.push_str(c);
+        t
+    }
+}
+
+impl<'a> PartialEq<str> for Repl<'a> {
+    #[inline]
+    fn eq(&self, t: &str) -> bool {
+        self.0 == t.len()
+            && t.starts_with(self.1)
+            && t.ends_with(self.3)
+            && t[self.1.len()..].starts_with(self.2)
+    }
 }
 
 pub const INPUTS: [&str; 5] = [
