@@ -39,9 +39,9 @@ pub fn solver(part: Part, input: &str) -> Result<String> {
     Ok((0..nb_people)
         .permutations(nb_people)
         .map(|idxs| {
-            idxs.into_iter()
+            idxs.iter()
                 .circular_tuple_windows()
-                .map(|(src, dst)| happinesses[src][dst] + happinesses[dst][src])
+                .map(|(src, dst)| happinesses[*src][*dst] + happinesses[*dst][*src])
                 .sum::<i32>()
         })
         .max()
