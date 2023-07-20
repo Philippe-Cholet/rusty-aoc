@@ -28,24 +28,19 @@ pub fn solver(part: Part, input: &str) -> Result<String> {
                 .ok_collect_array::<5>()
         })
         .ok_collect_vec()?;
-    let nb_ings = data.len();
-    let mut all_quantities = vec![vec![0; nb_ings]];
-    for idx in 0..nb_ings {
-        let last = idx + 1 == nb_ings;
-        all_quantities = all_quantities
-            .into_iter()
-            .flat_map(|quantities| {
-                let remaining = 100 - quantities.iter().copied().sum::<u8>();
-                (if last { remaining } else { 0 }..=remaining).map(move |quantity| {
-                    let mut new_qs = quantities.clone();
-                    new_qs[idx] = quantity;
-                    new_qs
-                })
-            })
-            .collect();
+    // `quantities` in `highest_score` should be as long as `data` but `data.len()` is so small that
+    // I do not want to allocate (176k times for me) on the heap using `Vec` for so few numbers.
+    // I could use assume an upper bound on `data.len()` but I currently don't.
+    match data.len() {
+        2 => highest_score::<2>(part == Part1, &data),
+        4 => highest_score::<4>(part == Part1, &data),
+        _ => bail!("Currently only 2 or 4 ingredients are allowed!"),
     }
-    #[cfg(debug_assertions)]
-    println!("{:?} possibilities", all_quantities.len()); // 176851 for me
+    .map(|score| score.to_string())
+    .context("No valid recipe")
+}
+
+fn highest_score<const NB_INGS: usize>(original: bool, data: &[[i32; 5]]) -> Option<i32> {
     let property_result = |idx, quantities: &[u8]| {
         data.iter()
             .zip(quantities.iter())
@@ -53,18 +48,29 @@ pub fn solver(part: Part, input: &str) -> Result<String> {
             .sum::<i32>()
             .max(0)
     };
-    Ok(all_quantities
-        .into_iter()
-        .filter_map(|quantities| {
-            (part == Part1 || property_result(4, &quantities) == 500).then(|| {
-                (0..4)
-                    .map(|idx| property_result(idx, &quantities))
-                    .product::<i32>()
-            })
-        })
-        .max()
-        .context("No valid recipe")?
-        .to_string())
+    let mut stack = Vec::with_capacity(150); // No reallocation on all the tests I have.
+    stack.push((0, 100, [0; NB_INGS]));
+    let mut res: Option<i32> = None;
+    while let Some((idx, remaining, mut quantities)) = stack.pop() {
+        if idx + 1 == NB_INGS || remaining == 0 {
+            quantities[idx] = remaining;
+            if original || property_result(4, &quantities) == 500 {
+                let candidate: i32 = (0..4).map(|i| property_result(i, &quantities)).product();
+                if let Some(m) = &mut res {
+                    *m = candidate.max(*m);
+                } else {
+                    res = Some(candidate);
+                }
+            }
+        } else {
+            stack.extend((0..=remaining).map(move |quantity| {
+                let mut new_qs = quantities;
+                new_qs[idx] = quantity;
+                (idx + 1, remaining - quantity, new_qs)
+            }));
+        }
+    }
+    res
 }
 
 pub const INPUTS: [&str; 2] = [
