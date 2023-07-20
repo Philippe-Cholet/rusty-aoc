@@ -8,7 +8,7 @@ ntri = "ntr --run-ignored ignored-only"
 ntrii = "ntr --run-ignored all"
 f = "fmt --check"
 clip = "clippy -- -W clippy::all -W clippy::pedantic -W clippy::nursery -W clippy::unwrap_used -W clippy::expect_used -A clippy::missing-errors-doc"
-cli = "run --bin cli-runner"
+cli = "run --bin cli-runner --profile final"
 flame = "flamegraph --profile flamegraph"
 
 [env]

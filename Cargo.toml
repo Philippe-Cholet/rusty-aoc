@@ -29,6 +29,12 @@ cargo_toml = "0.15.3"
 quote = "1.0.29"
 syn = "2.0.25"
 
-[profile.flamegraph]
+[profile.final]
 inherits = "release"
+lto = true
+codegen-units = 1
+panic = 'abort'
+
+[profile.flamegraph]
+inherits = "final"
 debug = true
