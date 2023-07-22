@@ -122,14 +122,21 @@ pub fn solver(part: Part, input: &str) -> Result<String> {
             .count(),
         Part2 => {
             let digit_bitset = Segm7::bitset(&Segm7::DIGITS);
+            let mut all_perm7 = Vec::with_capacity(5040); // There are `7!` (5040) permutations.
+            #[allow(clippy::expect_used)] // Not an iterator of arrays but lengths are 7.
+            all_perm7.extend(
+                (0..7)
+                    .permutations(7)
+                    .map(|vec| <[u8; 7]>::try_from(vec).expect("7 long")),
+            );
             data.into_iter()
                 .flat_map(|(signal, entry)| {
-                    (0..7)
-                        .permutations(7) // 5040 possibilities
+                    all_perm7
+                        .iter()
                         .find_map(|perm| {
-                            let perm_signal = signal.map(|seg| seg.permute(&perm));
+                            let perm_signal = signal.map(|seg| seg.permute(perm));
                             (Segm7::bitset(&perm_signal) == digit_bitset)
-                                .then(|| Segm7::read_number(&entry, &perm))
+                                .then(|| Segm7::read_number(&entry, perm))
                         })
                         .context("No solution")
                 })
