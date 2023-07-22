@@ -57,18 +57,22 @@ impl Segm7 {
     }
 
     fn permute(self, perm: &[u8]) -> Self {
+        let mut n = self.0;
+        let bits = std::iter::repeat_with(|| {
+            let bit = n & 1;
+            n >>= 1;
+            bit
+        });
         Self(
             perm.iter()
-                .enumerate()
-                .fold(0, |res, (i, p)| res | ((self.0 >> i) & 1) << p),
+                .zip(bits)
+                .map(|(p, bit)| bit << p)
+                .fold(0, std::ops::BitOr::bitor),
         )
     }
 
     fn to_digit(self) -> Option<usize> {
-        Self::DIGITS
-            .into_iter()
-            .enumerate()
-            .find_map(|(digit, seg)| (seg == self).then_some(digit))
+        Self::DIGITS.into_iter().position(|seg| seg == self)
     }
 
     fn read_number(numbers: &[Self], perm: &[u8]) -> Result<usize> {
