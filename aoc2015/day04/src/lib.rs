@@ -1,4 +1,5 @@
 use common::prelude::*;
+use utils::U64Ascii;
 
 /// The Ideal Stocking Stuffer
 pub fn solver(part: Part, input: &str) -> Result<String> {
@@ -8,33 +9,16 @@ pub fn solver(part: Part, input: &str) -> Result<String> {
     };
     let mut context = md5::Context::new();
     context.consume(input.trim_end());
-    let mut data = vec![b'0'];
+    let mut nb = U64Ascii::default();
     loop {
         let mut ctx = context.clone();
-        increment(&mut data);
-        ctx.consume(&data);
+        nb.increment();
+        ctx.consume(&nb);
         let digest = ctx.compute();
         if &digest.0[..3] <= &max3 {
-            return Ok(String::from_utf8(data)?);
+            return Ok(nb.to_string());
         }
     }
-}
-
-fn increment(data: &mut Vec<u8>) {
-    let idx = data
-        .iter_mut()
-        .rposition(|d| {
-            let nine = d == &b'9';
-            if nine {
-                *d = b'0';
-            }
-            !nine
-        })
-        .unwrap_or_else(|| {
-            data.push(b'0');
-            0
-        });
-    data[idx] += 1;
 }
 
 pub const INPUTS: [&str; 2] = ["abcdef", include_str!("input.txt")];
@@ -45,14 +29,4 @@ fn solver_15_04() -> Result<()> {
     assert_eq!(solver(Part1, INPUTS[1])?, "117946");
     assert_eq!(solver(Part2, INPUTS[1])?, "3938038");
     Ok(())
-}
-
-#[test]
-#[ignore]
-fn test_increment() {
-    let mut data = vec![b'0'];
-    for n in 0..=100 {
-        assert_eq!(data, n.to_string().into_bytes(), "{}", n);
-        increment(&mut data);
-    }
 }

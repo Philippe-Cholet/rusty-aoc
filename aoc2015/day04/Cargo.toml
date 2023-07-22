@@ -13,3 +13,4 @@ doctest = false
 [dependencies]
 md5.workspace = true
 common = { path="../../common" }
+utils = { path="../../utils" }
