@@ -11,6 +11,9 @@ enum SeaCucumberKind {
 
 /// Sea Cucumber
 pub fn solver(part: Part, input: &str) -> Result<String> {
+    if part == Part2 {
+        return Ok(SUCCESS.to_owned());
+    }
     let mut grid = parse_to_grid(input.lines(), |ch| {
         Ok(match ch {
             '.' => None,
@@ -61,10 +64,7 @@ pub fn solver(part: Part, input: &str) -> Result<String> {
             break;
         }
     }
-    Ok(match part {
-        Part1 => steps.to_string(),
-        Part2 => SUCCESS.to_owned(),
-    })
+    Ok(steps.to_string())
 }
 
 fn display_grid(grid: &Vec<Vec<Option<SeaCucumberKind>>>) {
