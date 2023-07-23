@@ -48,8 +48,8 @@ impl SensorData {
         (xd >= 0).then_some((self.sensor.0 - xd, self.sensor.0 + xd))
     }
 
-    fn x_intervals(datas: &[Self], y: i64, maxi: Option<i64>) -> Vec<(i64, i64)> {
-        let mut intervals = Vec::with_capacity(datas.len());
+    fn x_intervals(datas: &[Self], y: i64, maxi: Option<i64>, intervals: &mut Vec<(i64, i64)>) {
+        intervals.clear();
         intervals.extend(datas.iter().filter_map(|data| {
             let x_int = data.x_interval(y)?;
             match maxi {
@@ -72,7 +72,6 @@ impl SensorData {
                 true
             }
         });
-        intervals
     }
 }
 
@@ -84,10 +83,12 @@ pub fn solver(part: Part, input: &str) -> Result<String> {
         .iter()
         .flat_map(|data| [data.sensor.0, data.sensor.1, data.beacon.0, data.beacon.1])
         .all(|x| x < 1000);
+    let mut intervals = Vec::with_capacity(datas.len());
     Ok(match part {
         Part1 => {
             let y = if small { 10 } else { 2_000_000 };
-            SensorData::x_intervals(&datas, y, None)
+            SensorData::x_intervals(&datas, y, None, &mut intervals);
+            intervals
                 .into_iter()
                 .fold((0, i64::MIN), |(total, cur_x), (x0, x1)| {
                     let interval_length = (x0.max(cur_x) - x1).abs();
@@ -101,17 +102,16 @@ pub fn solver(part: Part, input: &str) -> Result<String> {
                 .rev() // faster than without, but that's just fortunate!
                 .find_map(|y| {
                     let mut cur_x = i64::MIN;
-                    let x = SensorData::x_intervals(&datas, y, Some(maxi))
-                        .into_iter()
-                        .find_map(|(x0, x1)| {
-                            if cur_x + 1 < x0 && cur_x != i64::MIN {
-                                // `cur_x + 1` is in the hole and we were told it is the only one.
-                                Some(cur_x + 1)
-                            } else {
-                                cur_x = x1;
-                                None
-                            }
-                        })?;
+                    SensorData::x_intervals(&datas, y, Some(maxi), &mut intervals);
+                    let x = intervals.iter().copied().find_map(|(x0, x1)| {
+                        if cur_x + 1 < x0 && cur_x != i64::MIN {
+                            // `cur_x + 1` is in the hole and we were told it is the only one.
+                            Some(cur_x + 1)
+                        } else {
+                            cur_x = x1;
+                            None
+                        }
+                    })?;
                     #[cfg(debug_assertions)]
                     println!("{:?}", (x, y));
                     // NOTE: The type i64 is required for this multiplication:
