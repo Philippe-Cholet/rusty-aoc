@@ -64,14 +64,14 @@ impl Interval {
         //     =======    -->    == & =====
         // 3.   ---    strictly containing: other is cut in 3
         //     =======    -->    = & === & ===
-        let mut pts = vec![other.0];
-        for n in [self.0, self.1] {
+        let mut pts = [Some(other.0), None, None, Some(other.1)];
+        for (idx, n) in [(1, self.0), (2, self.1)] {
             if other.0 < n && n < other.1 {
-                pts.push(n);
+                pts[idx] = Some(n);
             }
         }
-        pts.push(other.1);
         pts.into_iter()
+            .flatten()
             .tuple_windows()
             .filter_map(|(a, b)| Self::new(a, b))
             .collect()
