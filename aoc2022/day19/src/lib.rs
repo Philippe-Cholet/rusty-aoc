@@ -3,11 +3,11 @@ use utils::OkIterator;
 
 #[derive(Debug)]
 struct Blueprint {
-    id: u8,
-    ore_robot_cost: u8,            // Ore
-    clay_robot_cost: u8,           // Ore
-    obsidian_robot_cost: (u8, u8), // Ore, Clay
-    geode_robot_cost: (u8, u8),    // Ore, Obsidian
+    id: u16,
+    ore_robot_cost: u16,             // Ore
+    clay_robot_cost: u16,            // Ore
+    obsidian_robot_cost: (u16, u16), // Ore, Clay
+    geode_robot_cost: (u16, u16),    // Ore, Obsidian
 }
 
 impl std::str::FromStr for Blueprint {
@@ -17,7 +17,7 @@ impl std::str::FromStr for Blueprint {
         let v: Vec<_> = s
             .replace(':', "")
             .split_whitespace()
-            .filter_map(|t| t.parse::<u8>().ok())
+            .filter_map(|t| t.parse::<u16>().ok())
             .collect();
         ensure!(v.len() == 7, "A blueprint line should have 7 integers");
         Ok(Self {
@@ -33,7 +33,7 @@ impl std::str::FromStr for Blueprint {
 #[cfg(feature = "lp")]
 impl Blueprint {
     #[allow(clippy::cast_possible_truncation)]
-    fn maximise_geodes(&self, minutes: u8) -> Result<u8> {
+    fn maximise_geodes(&self, minutes: u16) -> Result<u16> {
         // I wanted to try another solver: "GLPK"
         // choco install -y glpk
         // use good_lp::solvers::lp_solvers::{GlpkSolver, LpSolver};
@@ -78,14 +78,14 @@ impl Blueprint {
             problem.add_constraint(quantity);
         }
         let max_geodes = problem.solve()?.eval(nb_geodes);
-        Ok(max_geodes as u8)
+        Ok(max_geodes as u16)
     }
 }
 
 #[cfg(not(feature = "lp"))]
 impl Blueprint {
-    fn geodes_upperbound(&self, time_left: u8, mut obs_minerals: u8, mut obs_robots: u8) -> u8 {
-        let mut geodes: u8 = 0;
+    fn geodes_upperbound(&self, time_left: u16, mut obs_minerals: u16, mut obs_robots: u16) -> u16 {
+        let mut geodes: u16 = 0;
         // Assuming we have enough ore and clay, we create geode robots when possible.
         for n in (0..=time_left).rev() {
             if obs_minerals >= self.geode_robot_cost.1 {
@@ -100,7 +100,7 @@ impl Blueprint {
         geodes
     }
 
-    fn maximise_geodes(&self, minutes: u8) -> Result<u8> {
+    fn maximise_geodes(&self, minutes: u16) -> Result<u16> {
         let all_costs = [
             [self.ore_robot_cost, 0, 0],
             [self.clay_robot_cost, 0, 0],
