@@ -37,7 +37,7 @@ pub fn solver(part: Part, input: &str) -> Result<String> {
             let (id, s) = line.split_once(": ").context("No colon")?;
             let id = id.parse()?;
             let mut rule = s.parse()?;
-            if part == Part2 {
+            if part.two() {
                 if id == 8 {
                     ensure!(rule == Rule::SubRules(vec![vec![42]]), "Wrong rule 8");
                     rule = Rule::SubRules(vec![vec![42], vec![42, 8]]);

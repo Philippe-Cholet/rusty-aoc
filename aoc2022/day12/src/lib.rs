@@ -30,7 +30,7 @@ pub fn solver(part: Part, input: &str) -> Result<String> {
             let dist = dist2end[r1][c1].context("A frontier element has a distance")?;
             for (r0, c0) in neighbors((r1, c1), nrows, ncols, false) {
                 if grid[r1][c1] <= grid[r0][c0] + 1 && dist2end[r0][c0].is_none() {
-                    if part == Part1 && (r0, c0) == start {
+                    if part.one() && (r0, c0) == start {
                         break 'job dist + 1;
                     }
                     dist2end[r0][c0] = Some(dist + 1);
@@ -38,7 +38,7 @@ pub fn solver(part: Part, input: &str) -> Result<String> {
                 }
             }
         }
-        ensure!(part == Part2, "Failed part 1");
+        ensure!(part.two(), "Failed part 1");
         iproduct!(0..nrows, 0..ncols)
             .filter_map(|(r, c)| {
                 if grid[r][c] == 0 {

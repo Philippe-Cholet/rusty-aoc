@@ -21,10 +21,7 @@ pub fn solver(part: Part, input: &str) -> Result<String> {
         ch => bail!("Wrong char: {}", ch),
     })?;
     let (nrows, ncols) = (available_seats.len(), available_seats[0].len());
-    let (min_seats, max_k) = match part {
-        Part1 => (4, 1),
-        Part2 => (5, isize::MAX),
-    };
+    let (min_seats, max_k) = part.value((4, 1), (5, isize::MAX));
     loop {
         let first_seat = |r: usize, c: usize, (dr, dc)| {
             (1..=max_k)

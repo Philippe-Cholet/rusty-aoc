@@ -44,7 +44,7 @@ pub fn solver(part: Part, input: &str) -> Result<String> {
             .checked_sub(nb)
             .context("Not enough stuff in this stack")?;
         let mut changes = stacks[from].split_off(idx);
-        if part == Part1 {
+        if part.one() {
             changes.reverse();
         }
         stacks[to].extend(changes);

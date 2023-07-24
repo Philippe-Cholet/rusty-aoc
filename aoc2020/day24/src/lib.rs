@@ -81,11 +81,7 @@ pub fn solver(part: Part, input: &str) -> Result<String> {
         .into_iter()
         .filter_map(|(xyz, c)| (c % 2 == 1).then_some(xyz))
         .collect();
-    let nb_days = match part {
-        Part1 => 0,
-        Part2 => 100,
-    };
-    for _ in 0..nb_days {
+    for _ in 0..part.value(0, 100) {
         let mut new_pts: HashSet<_> = pts
             .iter()
             .flat_map(|&pt| CubeCoords::OPT_DIRS.map(|d| pt + d))

@@ -52,10 +52,7 @@ pub fn solver(part: Part, input: &str) -> Result<String> {
     //     } >= n)
     //     .context("No u32 solution")?
     // .to_string())
-    let sum_lower_bound = match part {
-        Part1 => n / 10,
-        Part2 => n / 11,
-    };
+    let sum_lower_bound = n / part.value(10, 11);
     // Compute `solution_lower_bound` is fast and it cuts off
     // the section `0..solution_lower_bound` of the search below.
     let solution_lower_bound = find_robin_lower_bound(sum_lower_bound);

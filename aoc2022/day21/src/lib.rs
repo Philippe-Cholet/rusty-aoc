@@ -180,7 +180,7 @@ pub fn solver(part: Part, input: &str) -> Result<String> {
         let (name, job) = &data[*idx];
         let v = if name != &"root" {
             job.evaluate(&monkey_values)
-        } else if part == Part1 {
+        } else if part.one() {
             let result = job.evaluate(&monkey_values).context("unevaluable root")?;
             return Ok(result.to_string());
         } else {
@@ -188,7 +188,7 @@ pub fn solver(part: Part, input: &str) -> Result<String> {
         };
         monkey_values.insert(name, v);
     }
-    ensure!(part == Part2, "Root being last, part 1 should be solved!");
+    ensure!(part.two(), "Root being last, part 1 should be solved!");
     for idx in order.iter().rev() {
         let (name, job) = &data[*idx];
         if name == &"root" {

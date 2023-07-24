@@ -32,8 +32,8 @@ pub fn solver(part: Part, input: &str) -> Result<String> {
     // I do not want to allocate (176k times for me) on the heap using `Vec` for so few numbers.
     // I could use assume an upper bound on `data.len()` but I currently don't.
     match data.len() {
-        2 => highest_score::<2>(part == Part1, &data),
-        4 => highest_score::<4>(part == Part1, &data),
+        2 => highest_score::<2>(part.one(), &data),
+        4 => highest_score::<4>(part.one(), &data),
         _ => bail!("Currently only 2 or 4 ingredients are allowed!"),
     }
     .map(|score| score.to_string())

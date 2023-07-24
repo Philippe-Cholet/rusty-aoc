@@ -160,11 +160,7 @@ impl BlizzardGrid {
 /// Blizzard Basin
 pub fn solver(part: Part, input: &str) -> Result<String> {
     let mut bgrid: BlizzardGrid = input.parse()?;
-    let times = match part {
-        Part1 => 0,
-        Part2 => 1,
-    };
-    Ok(bgrid.find_multi_path(times)?.to_string())
+    Ok(bgrid.find_multi_path(part.value(0, 1))?.to_string())
 }
 
 pub const INPUTS: [&str; 2] = [

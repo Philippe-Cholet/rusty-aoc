@@ -6,10 +6,7 @@ use utils::OkIterator;
 pub fn solver(part: Part, input: &str) -> Result<String> {
     let numbers: Vec<u32> = input.trim_end().split(',').map(str::parse).ok_collect()?;
     ensure!(!numbers.is_empty(), "No number provided");
-    let nb_turns = match part {
-        Part1 => 2020,
-        Part2 => 30_000_000,
-    };
+    let nb_turns = part.value(2020, 30_000_000);
     ensure!(
         numbers.len() <= nb_turns as usize,
         "I assumed there were less numbers than turns",

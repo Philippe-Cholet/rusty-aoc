@@ -11,7 +11,7 @@ enum SeaCucumberKind {
 
 /// Sea Cucumber
 pub fn solver(part: Part, input: &str) -> Result<String> {
-    if part == Part2 {
+    if part.two() {
         return Ok(SUCCESS.to_owned());
     }
     let mut grid = parse_to_grid(input.lines(), |ch| {

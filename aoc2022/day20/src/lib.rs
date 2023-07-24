@@ -11,16 +11,12 @@ pub fn solver(part: Part, input: &str) -> Result<String> {
     let nb = file.len();
     // Otherwise, `nb - 1` would overflow or `rem_euclid(modulus)` below would panic.
     ensure!(nb >= 2, "Not enough numbers");
-    let nb_times = match part {
-        Part1 => 1,
-        Part2 => {
-            file.iter_mut().for_each(|elem| *elem *= DECRYPTION_KEY);
-            10
-        }
-    };
+    if part.two() {
+        file.iter_mut().for_each(|elem| *elem *= DECRYPTION_KEY);
+    }
     let mut data: Vec<_> = file.into_iter().enumerate().collect();
     let modulus = (nb - 1) as i64;
-    for _ in 0..nb_times {
+    for _ in 0..part.value(1, 10) {
         for idx in 0..nb {
             let i0 = data
                 .iter()

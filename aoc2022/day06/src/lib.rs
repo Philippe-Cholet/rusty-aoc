@@ -8,10 +8,7 @@ use common::prelude::*;
 
 /// Tuning Trouble
 pub fn solver(part: Part, input: &str) -> Result<String> {
-    let size = match part {
-        Part1 => 4,
-        Part2 => 14,
-    };
+    let size = part.value(4, 14);
     /*
     let mut chars = input.trim_end().chars();
     let mut window: VecDeque<_> = chars.by_ref().take(size).collect();

@@ -31,7 +31,7 @@ pub fn solver(part: Part, input: &str) -> Result<String> {
         .enumerate()
         .map(|(idx, name)| (name, idx))
         .collect();
-    let nb_people = name2idx.len() + usize::from(part == Part2);
+    let nb_people = name2idx.len() + usize::from(part.two());
     let mut happinesses = vec![vec![0; nb_people]; nb_people];
     for (src, dst, happiness) in data {
         happinesses[name2idx[&src]][name2idx[&dst]] = happiness;

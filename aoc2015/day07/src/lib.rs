@@ -29,7 +29,7 @@ pub fn solver(part: Part, input: &str) -> Result<String> {
         })
         .ok_collect_vec()?;
     let mut a = Operation::find_a(&data)?;
-    if part == Part2 {
+    if part.two() {
         let b_op = data
             .iter_mut()
             .find_map(|(op, dst)| (dst == &"b").then_some(op))

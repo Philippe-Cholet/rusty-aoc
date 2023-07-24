@@ -15,7 +15,7 @@ pub fn solver(part: Part, input: &str) -> Result<String> {
     })?;
     let mut grid = Array2::<bool>::from_shape_fn((N, N), |(r, c)| grid[r][c]);
     let turn_on_corners = |grid: &mut Array2<bool>| {
-        if part == Part2 {
+        if part.two() {
             for loc in iproduct!([0, N - 1], [0, N - 1]) {
                 grid[loc] = true;
             }

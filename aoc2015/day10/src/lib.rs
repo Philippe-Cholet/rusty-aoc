@@ -4,10 +4,6 @@ use utils::{char10, OkIterator};
 #[allow(clippy::expect_used)]
 /// Elves Look, Elves Say
 pub fn solver(part: Part, input: &str) -> Result<String> {
-    let nb_steps = match part {
-        Part1 => 40,
-        Part2 => 50,
-    };
     let mut ns = input
         .trim_end()
         .chars()
@@ -17,7 +13,7 @@ pub fn solver(part: Part, input: &str) -> Result<String> {
         ns.iter().all(|n| matches!(n, 1..=3)),
         "Look-and-say sequence consist of only 1s 2s and 3s.",
     );
-    for _ in 0..nb_steps {
+    for _ in 0..part.value(40, 50) {
         ns = {
             let mut it = ns.into_iter();
             let Some(mut number) = it.next() else {

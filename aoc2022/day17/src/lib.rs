@@ -231,10 +231,7 @@ impl std::str::FromStr for TetrisSolver {
 
 /// Pyroclastic Flow
 pub fn solver(part: Part, input: &str) -> Result<String> {
-    let nb_steps = match part {
-        Part1 => 2022,
-        Part2 => 1_000_000_000_000,
-    };
+    let nb_steps = part.value(2022, 1_000_000_000_000);
     let height = input.parse::<TetrisSolver>()?.solve(nb_steps);
     Ok(height.to_string())
 }

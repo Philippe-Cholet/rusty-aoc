@@ -151,4 +151,26 @@ impl FromStr for Part {
 
 impl Part {
     pub const ALL: [Self; 2] = [Part1, Part2];
+
+    #[must_use]
+    #[inline]
+    pub const fn one(self) -> bool {
+        matches!(self, Part1)
+    }
+
+    #[must_use]
+    #[inline]
+    pub const fn two(self) -> bool {
+        matches!(self, Part2)
+    }
+
+    // Can not be const because `one` or `two` is dropped and the destructor might not be evaluated at compile time.
+    #[allow(clippy::missing_const_for_fn)]
+    #[inline]
+    pub fn value<T>(self, one: T, two: T) -> T {
+        match self {
+            Part1 => one,
+            Part2 => two,
+        }
+    }
 }

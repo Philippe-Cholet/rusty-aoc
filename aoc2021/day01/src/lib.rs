@@ -6,7 +6,7 @@ use utils::OkIterator;
 /// Sonar Sweep
 pub fn solver(part: Part, input: &str) -> Result<String> {
     let mut v: Vec<u32> = input.lines().map(str::parse).ok_collect()?;
-    if part == Part2 {
+    if part.two() {
         v = v
             .iter()
             .tuple_windows()

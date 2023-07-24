@@ -12,7 +12,7 @@ pub fn solver(part: Part, input: &str) -> Result<String> {
         let mut nrows = grid.len();
         let mut ncols = grid.first().context("Empty grid")?.len();
         // TODO: Eventually check if the grid is rectangular.
-        if part == Part2 {
+        if part.two() {
             let extension = |row: &[_], k: u32| -> Vec<_> {
                 row.iter().map(|n| (*n + k - 1) % 9 + 1).collect()
             };

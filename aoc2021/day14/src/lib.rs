@@ -20,10 +20,7 @@ pub fn solver(part: Part, input: &str) -> Result<String> {
             Ok((pair, middle))
         })
         .ok_collect_hmap()?;
-    let steps = match part {
-        Part1 => 10,
-        Part2 => 40,
-    };
+    let steps = part.value(10, 40);
     let counts = if false {
         // Easier (and nice insertion closure IMO) but too slow.
         let insert = |text: String| {

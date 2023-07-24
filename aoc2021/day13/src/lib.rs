@@ -27,7 +27,7 @@ pub fn solver(part: Part, input: &str) -> Result<String> {
             Ok((xy == "x", n.parse::<u32>()?))
         })
         .ok_collect_vec()?;
-    if part == Part1 {
+    if part.one() {
         fold_alongs = fold_alongs.into_iter().take(1).collect();
     }
     for (vertical, n) in fold_alongs {

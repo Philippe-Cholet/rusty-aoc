@@ -18,10 +18,7 @@ pub fn solver(part: Part, input: &str) -> Result<String> {
         },
         "Not 123456789"
     );
-    let (limit, nb_steps) = match part {
-        Part1 => (9, 100),
-        Part2 => (1_000_000, 10_000_000),
-    };
+    let (limit, nb_steps) = part.value((9, 100), (1_000_000, 10_000_000));
     cups.extend(10..=limit);
     let mut src = cups[0];
     let mut table = vec![0; limit as usize + 1];

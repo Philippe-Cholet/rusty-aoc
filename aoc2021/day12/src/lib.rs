@@ -7,10 +7,7 @@ use utils::OkIterator;
 
 /// Passage Pathing
 pub fn solver(part: Part, input: &str) -> Result<String> {
-    Ok(input
-        .parse::<CaveGraph>()?
-        .nb_paths(part == Part2)
-        .to_string())
+    Ok(input.parse::<CaveGraph>()?.nb_paths(part.two()).to_string())
 }
 
 #[derive(Debug)]

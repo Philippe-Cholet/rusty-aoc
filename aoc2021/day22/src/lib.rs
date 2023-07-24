@@ -146,7 +146,7 @@ pub fn solver(part: Part, input: &str) -> Result<String> {
             cuboids.push(new);
         }
     }
-    if part == Part1 {
+    if part.one() {
         // Retain cuboids in -50..=50, -50..=50, -50..=50
         cuboids.retain_mut(|old| {
             SMALL50.intersection(old).map_or(false, |new| {

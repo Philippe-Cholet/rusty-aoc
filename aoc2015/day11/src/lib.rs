@@ -10,10 +10,7 @@ struct Password([u8; 8]);
 /// Corporate Policy
 pub fn solver(part: Part, input: &str) -> Result<String> {
     let mut pwd: Password = input.trim_end().parse()?;
-    pwd.nth(match part {
-        Part1 => 1,
-        Part2 => 2,
-    });
+    pwd.nth(part.value(1, 2));
     Ok(pwd.to_string())
 }
 

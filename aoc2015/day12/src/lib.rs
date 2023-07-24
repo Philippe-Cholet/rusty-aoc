@@ -4,7 +4,7 @@ use common::prelude::*;
 
 /// JSAbacusFramework.io
 pub fn solver(part: Part, input: &str) -> Result<String> {
-    Ok(sum_ints(&input.parse()?, part == Part2)?.to_string())
+    Ok(sum_ints(&input.parse()?, part.two())?.to_string())
 }
 
 fn sum_ints(data: &Value, not_reds: bool) -> Result<i64> {

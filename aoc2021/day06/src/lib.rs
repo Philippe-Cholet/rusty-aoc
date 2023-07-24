@@ -3,10 +3,7 @@ use utils::OkIterator;
 
 /// Lanternfish
 pub fn solver(part: Part, input: &str) -> Result<String> {
-    let days = match part {
-        Part1 => 80,
-        Part2 => 256,
-    };
+    let days = part.value(80, 256);
     let ages: Vec<usize> = input.split(',').map(str::parse).ok_collect()?;
     let mut state = [0usize; 9];
     for age in ages {

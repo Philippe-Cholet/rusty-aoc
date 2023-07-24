@@ -3,10 +3,7 @@ use utils::U64Ascii;
 
 /// The Ideal Stocking Stuffer
 pub fn solver(part: Part, input: &str) -> Result<String> {
-    let max3 = match part {
-        Part1 => [0, 0, 0x0F],
-        Part2 => [0, 0, 0],
-    };
+    let max3 = [0, 0, part.value(0x0F, 0)];
     let mut context = md5::Context::new();
     context.consume(input.trim_end());
     let mut nb = U64Ascii::default();

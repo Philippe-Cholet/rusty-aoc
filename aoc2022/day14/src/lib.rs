@@ -53,14 +53,14 @@ pub fn solver(part: Part, input: &str) -> Result<String> {
             // It either came to rest or not.
             match pos {
                 None => {
-                    if part == Part2 && (x, y) == START {
+                    if part.two() && (x, y) == START {
                         break 'pouring sand_counter + 1;
                     }
                     break;
                 }
                 Some(p) => {
                     (x, y) = p;
-                    if part == Part1 && !(x_min <= x && x <= x_max && y <= y_max) {
+                    if part.one() && !(x_min <= x && x <= x_max && y <= y_max) {
                         break 'pouring sand_counter;
                     }
                 }

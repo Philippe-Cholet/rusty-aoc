@@ -32,10 +32,7 @@ pub fn solver(part: Part, input: &str) -> Result<String> {
         .map(str::len)
         .max()
         .context("No image")?;
-    let steps = match part {
-        Part1 => 2,
-        Part2 => 50,
-    };
+    let steps = part.value(2, 50);
     let n = steps + 1;
     let mut fill_value = false;
     let mut image = vec![vec![fill_value; ncols + 2 * n]; nrows + 2 * n];
