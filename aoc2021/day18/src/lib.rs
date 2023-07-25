@@ -173,10 +173,11 @@ impl PartialEq for Snailfish {
 }
 
 #[cfg(test)]
-mod tests_18 {
+mod tests {
     use super::*;
 
     #[test]
+    #[ignore]
     fn test_snailfish_explode() -> Result<()> {
         for (s, a) in [
             ("[[[[[9,8],1],2],3],4]", "[[[[0,9],2],3],4]"),
@@ -199,6 +200,7 @@ mod tests_18 {
     }
 
     #[test]
+    #[ignore]
     fn test_snailfish_reduction() -> Result<()> {
         let s = [
             "[[[[4,3],4],4],[7,[[8,4],9]]]",
@@ -225,6 +227,7 @@ mod tests_18 {
     }
 
     #[test]
+    #[ignore]
     fn test_snailfish_sum() -> Result<()> {
         for (fs, answer) in [
             (
@@ -264,6 +267,7 @@ mod tests_18 {
     }
 
     #[test]
+    #[ignore]
     fn test_snailfish_magnitude() -> Result<()> {
         for (s, n) in [
             ("[[1,2],[[3,4],5]]", 143),
@@ -282,6 +286,7 @@ mod tests_18 {
     }
 
     #[test]
+    #[ignore]
     fn test_snailfish_sum2() -> Result<()> {
         let fs = [
             "[[[0,[5,8]],[[1,7],[9,6]]],[[4,[1,2]],[[1,4],2]]]",

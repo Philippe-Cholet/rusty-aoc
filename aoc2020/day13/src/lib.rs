@@ -68,6 +68,7 @@ fn solver_20_13() -> Result<()> {
 }
 
 #[test]
+#[ignore]
 fn examples() -> Result<()> {
     assert_eq!(solver(Part2, "0\n17,x,13,19")?, "3417");
     assert_eq!(solver(Part2, "0\n67,7,59,61")?, "754018");

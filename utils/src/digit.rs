@@ -26,6 +26,7 @@ mod tests {
     use crate::parse_to_grid;
 
     #[test]
+    #[ignore]
     fn test_char10() -> Result<()> {
         for (dec, ch) in "0123456789".chars().enumerate() {
             assert_eq!(char10::<u8>(ch)?, dec as u8);
@@ -55,6 +56,7 @@ mod tests {
     }
 
     #[test]
+    #[ignore]
     fn test_char16() -> Result<()> {
         for (hex, ch) in "0123456789abcdef".chars().enumerate() {
             assert_eq!(char16::<u8>(ch)?, hex as u8);

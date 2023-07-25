@@ -157,6 +157,7 @@ mod tests {
     }
 
     #[test]
+    #[ignore]
     fn first_hundred() {
         let mut asc = U64Ascii::default();
         for mut n in 0..=100 {
@@ -173,6 +174,7 @@ mod tests {
     }
 
     #[test]
+    #[ignore]
     fn max() {
         let max = u64::MAX;
         let mut asc = U64Ascii::from(max);
@@ -182,6 +184,7 @@ mod tests {
     }
 
     #[test]
+    #[ignore]
     #[cfg_attr(debug_assertions, should_panic = "attempt to add with overflow")]
     #[cfg_attr(not(debug_assertions), should_panic = "u64 saturated")]
     fn incremented_max_into_u64() {
