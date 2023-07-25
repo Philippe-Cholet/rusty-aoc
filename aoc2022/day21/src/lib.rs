@@ -1,5 +1,3 @@
-use std::collections::HashMap;
-
 use petgraph::{algo::toposort, graph::NodeIndex, Directed, Graph};
 
 use common::prelude::*;

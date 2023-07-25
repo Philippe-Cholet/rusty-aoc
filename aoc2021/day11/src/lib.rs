@@ -1,5 +1,3 @@
-use std::collections::HashSet;
-
 use common::prelude::*;
 use utils::{char10, neighbors, parse_to_grid};
 

@@ -1,11 +1,13 @@
 use std::{
     cmp::{max_by, min_by, Ordering},
-    collections::{BTreeMap, BTreeSet, BinaryHeap, HashMap, HashSet, LinkedList, VecDeque},
+    collections::{BTreeMap, BTreeSet, BinaryHeap, LinkedList, VecDeque},
     hash::Hash,
     iter::{Product, Sum},
 };
 
 use anyhow::{format_err, Error, Ok as ok, Result};
+
+use common::hash::prelude::*;
 
 /// An interface for dealing with iterators of results and shortcuts to collect into usual types.
 pub trait OkIterator<T, E>

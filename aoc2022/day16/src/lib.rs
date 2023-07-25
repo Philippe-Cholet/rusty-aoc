@@ -1,5 +1,5 @@
 #![allow(clippy::expect_used)]
-use std::collections::{BinaryHeap, HashMap};
+use std::collections::BinaryHeap;
 
 use itertools::Itertools;
 use petgraph::{algo::floyd_warshall, graph::NodeIndex, Graph, Undirected};

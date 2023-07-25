@@ -1,4 +1,4 @@
-use std::collections::{HashMap, HashSet, VecDeque};
+use std::collections::VecDeque;
 
 use itertools::{iproduct, Itertools};
 
@@ -197,7 +197,8 @@ impl Tile {
 }
 
 fn distances_from(start: u32, graph: &HashMap<u32, Vec<u32>>) -> Result<HashMap<u32, usize>> {
-    let mut distances = HashMap::from([(start, 0)]);
+    let mut distances = HashMap::new();
+    distances.insert(start, 0);
     let mut been = HashSet::new();
     let mut queue = VecDeque::from([start]);
     while let Some(id) = queue.pop_front() {
@@ -236,6 +237,7 @@ impl TileCollection {
             .copied()
             .flat_map(|(u, v)| [(u, v), (v, u)])
             .into_group_map();
+        let graph = graph.into_iter().collect(); // RandomState -> FxHasher
         let first_corner_id = *self
             .sure_corner_ids()
             .first()
@@ -256,7 +258,8 @@ impl TileCollection {
         for (id, dist) in distances {
             dist2ids[dist].push(id);
         }
-        let mut id2loc = HashMap::from([(first_corner_id, (0, 0))]);
+        let mut id2loc = HashMap::new();
+        id2loc.insert(first_corner_id, (0, 0));
         let mut pairs = dist2ids.iter().tuple_windows();
         let (_, ones) = pairs.next().context("The corner is alone?!")?;
         let &[id0, id1] = &ones[..] else {

@@ -2,12 +2,16 @@
 /// - the `Part` enum and its variants `Part1` and `Part2` ;
 /// - re-export most of `anyhow`: `bail`, `ensure`, `format_err`, `Context`, `Error`, `Result`
 /// but not its function `Ok` (available outside the prelude) to be able to match against result variants.
+/// - `HashMap` and `HashSet` from the `rustc-hash` crate both extended with 2 methods
+/// (`new` and `with_capacity`) to be a nearly drop-in replacement of the ones from `std::collections`
+/// (but it does not implement `From<[(K, V); N]>`).
 ///
 /// Then one can do `use common::prelude::*` in a solver and start get things done without looking back.
 pub mod prelude {
     pub use crate::{bail, ensure, format_err, Context, Error, Result};
     pub use crate::{Part, Part1, Part2};
     // My solvers do not need `Day`, `Year` and `AocSolver`.
+    pub use crate::hash::prelude::*;
 }
 
 use std::str::FromStr;
@@ -171,6 +175,50 @@ impl Part {
         match self {
             Part1 => one,
             Part2 => two,
+        }
+    }
+}
+
+pub mod hash {
+    #![allow(clippy::default_trait_access, clippy::implicit_hasher)]
+
+    /// `HashMap` and `HashSet` from the `rustc-hash` crate.
+    /// And an unnamed trait to mimic the ones in `std::collections`.
+    pub mod prelude {
+        pub use super::{FxHasherHack as _, HashMap, HashSet};
+    }
+
+    #[allow(clippy::module_name_repetitions)]
+    pub use rustc_hash::{FxHashMap as HashMap, FxHashSet as HashSet};
+
+    /// `std::collections::HashMap<K, V>` has 2 methods (`new` and `with_capacity`) that
+    /// `rustc_hash::FxHashMap<K, V>` does not have.
+    /// Same for the `Set` variants.
+    ///
+    /// It's because `rustc_hash::FxHasher` is not `std::collections::hash_map::RandomState`.
+    /// This trait is intended to mimic this behavior.
+    pub trait FxHasherHack: Default {
+        #[must_use]
+        #[inline]
+        fn new() -> Self {
+            Self::default()
+        }
+        fn with_capacity(capacity: usize) -> Self;
+    }
+
+    impl<K, V> FxHasherHack for HashMap<K, V> {
+        #[must_use]
+        #[inline]
+        fn with_capacity(capacity: usize) -> Self {
+            Self::with_capacity_and_hasher(capacity, Default::default())
+        }
+    }
+
+    impl<T> FxHasherHack for HashSet<T> {
+        #[must_use]
+        #[inline]
+        fn with_capacity(capacity: usize) -> Self {
+            Self::with_capacity_and_hasher(capacity, Default::default())
         }
     }
 }

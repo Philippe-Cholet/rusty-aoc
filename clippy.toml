@@ -1,0 +1,3 @@
+# `rustc-hash` versions are faster but non-cryptographic, which is not an issue for me.
+# But it can be commented out.
+disallowed-types = ["std::collections::HashMap", "std::collections::HashSet"]

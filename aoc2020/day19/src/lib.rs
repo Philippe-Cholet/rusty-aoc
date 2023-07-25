@@ -1,5 +1,3 @@
-use std::collections::HashMap;
-
 use common::prelude::*;
 use utils::OkIterator;
 

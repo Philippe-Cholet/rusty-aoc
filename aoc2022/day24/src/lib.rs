@@ -1,7 +1,4 @@
-use std::{
-    collections::{BinaryHeap, HashSet},
-    iter::repeat,
-};
+use std::{collections::BinaryHeap, iter::repeat};
 
 use common::prelude::*;
 use utils::{parse_to_grid, HeuristicItem};

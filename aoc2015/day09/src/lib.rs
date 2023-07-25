@@ -1,5 +1,3 @@
-use std::collections::HashMap;
-
 use itertools::{iproduct, Itertools};
 
 use common::prelude::*;

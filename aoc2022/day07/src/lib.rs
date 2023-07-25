@@ -1,5 +1,3 @@
-use std::collections::HashMap;
-
 use common::prelude::*;
 
 // Names are unused but I don't want to delete those, it could have been used in part 2.

@@ -12,7 +12,7 @@ Any of my solvers _should_ parse the input (nothing by hand) and not panic but r
 
 In this workspace, packages are:
 
-- "common" which mostly defines `Year`, `Day`, `Part` enums used in other packages and reexport "anyhow".
+- "common" which defines `Year`, `Day`, `Part` enums used in other packages and reexport "anyhow" and an extended "rustc-hash".
   It also has a prelude for convenience.
 - "aoc-macro" defines two "function-like" procedural macros:
     - `make_aoc` generates a function "aoc" to get the solver and inputs
@@ -40,7 +40,7 @@ I use the [flamegraph](https://crates.io/crates/flamegraph) crate to easily dete
 Here is what I learnt so far:
 
 - Heap-allocation: prevent it or avoid as much reallocation as possible with methods like `with_capacity`.
-- Hash less data. Or avoid hashing entirely when possible (eventually use vectors when possible).
+- Hash less data. Use a faster hasher? Or avoid hashing entirely when possible (eventually use vectors when possible).
 - Know the methods of the data structure you use.
 - Use `u32` instead of `usize` when possible on a 64 bits target.
 - Otherwise change... the data structure you use OR the entire algorithm, there is fun in starting from scratch again.
@@ -55,6 +55,7 @@ Arguments: `[<year [20]15...> [<day 1...25> [<part 1 2> [<input 0...>]]]]`
 
 ### Current dependencies
 - **anyhow:** error handling
+- **rustc-hash:** non-cryptographic but faster hasher
 - **itertools:** iterators are nice
 - **petgraph:** graph algorithms
 - **ndarray:** n-dimensional arrays
@@ -64,9 +65,6 @@ Arguments: `[<year [20]15...> [<day 1...25> [<part 1 2> [<input 0...>]]]]`
 - **serde_json:** handle JSON
 
 but I might need "regex", "num" at some point, eventually others.
-
-I'm thinking about "rustc-hash" (fast non-cryptographic hash) but I can't call `with_capacity` on it
-like with `HashMap<K, V, RandomState>` yet. But some codes are twice faster with this.
 
 I also thought about "smallvec" and "rayon" but it does not seem to really fasten my code.
 
