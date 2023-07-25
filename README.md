@@ -39,7 +39,9 @@ I use the [flamegraph](https://crates.io/crates/flamegraph) crate to easily dete
 
 Here is what I learnt so far:
 
-- Heap-allocation: prevent it or avoid as much reallocation as possible with methods like `with_capacity`.
+- Heap-allocation: prevent it or avoid as much reallocation as possible with:
+    - methods like `with_capacity`, `reserve` and insightful values ;
+    - shared `vec/hashmap/...` like `fn job(..., &mut shared: HashMap<Data, usize>)`.
 - Hash less data. Use a faster hasher? Or avoid hashing entirely when possible (eventually use vectors when possible).
 - Know the methods of the data structure you use.
 - Use `u32` instead of `usize` when possible on a 64 bits target.

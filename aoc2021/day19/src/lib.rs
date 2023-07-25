@@ -97,27 +97,29 @@ impl<T, A: Permute<T>, B: Permute<T>, C: Permute<T>> Permute<T> for (A, B, C) {
     }
 }
 
-fn merge12(positions: &HashSet<Xyz>, group: &[Xyz]) -> Option<(Xyz, Vec<Xyz>)> {
+fn merge12(
+    positions: &HashSet<Xyz>,
+    group: &[Xyz],
+    offsets: &mut HashMap<Xyz, usize>,
+) -> Option<(Xyz, Vec<Xyz>)> {
+    offsets.reserve((positions.len() * group.len()).saturating_sub(offsets.capacity()));
+    let mut aligned = Vec::with_capacity(group.len());
     iproduct!(
         [Axis3D::X, Axis3D::Y, Axis3D::Z],
         [Up(true), (Up(false))],
         [Rot::Rot0, Rot::Rot90, Rot::Rot180, Rot::Rot270]
     )
     .find_map(|transformation| {
-        let aligned = group
-            .iter()
-            .cloned()
-            .map(|xyz| transformation.permute(xyz))
-            .collect_vec();
-        let mut offsets = HashMap::<_, usize>::with_capacity(positions.len() * aligned.len());
-        iproduct!(positions.iter(), aligned.iter())
-            .find_map(|(pos, align)| {
-                let count = offsets.entry(pos - align).or_default();
-                *count += 1;
-                (*count >= 12).then_some(pos - align)
-            })
-            .map(|offset| (offset, aligned))
+        aligned.clear();
+        aligned.extend(group.iter().cloned().map(|xyz| transformation.permute(xyz)));
+        offsets.clear();
+        iproduct!(positions.iter(), aligned.iter()).find_map(|(pos, align)| {
+            let count = offsets.entry(pos - align).or_default();
+            *count += 1;
+            (*count >= 12).then_some(pos - align)
+        })
     })
+    .map(|offset| (offset, aligned))
 }
 
 /// Beacon Scanner
@@ -138,10 +140,11 @@ pub fn solver(part: Part, input: &str) -> Result<String> {
     let mut beacons: HashSet<_> = data.next().context("No scanner")?.try_collect()?;
     let mut groups: Vec<Vec<_>> = data.map(Iterator::collect).try_collect()?;
     let mut scanners = vec![Xyz(0, 0, 0)];
+    let mut offsets = HashMap::new();
     while !groups.is_empty() {
         let mut no_reunion = true;
         groups.retain(|group| {
-            merge12(&beacons, group).map_or(true, |(offset, aligned)| {
+            merge12(&beacons, group, &mut offsets).map_or(true, |(offset, aligned)| {
                 beacons.extend(aligned.into_iter().map(|p| &p + &offset));
                 scanners.push(offset);
                 no_reunion = false;
