@@ -1,7 +1,7 @@
 use itertools::{iproduct, Itertools};
 
 use common::prelude::*;
-use utils::OkIterator;
+use utils::{permutations_map, OkIterator};
 
 /// All in a Single Night
 pub fn solver(part: Part, input: &str) -> Result<String> {
@@ -41,8 +41,10 @@ pub fn solver(part: Part, input: &str) -> Result<String> {
         iproduct!(0..nb_cities, 0..nb_cities).all(|(r, c)| (r == c) == (dists[r][c] == 0)),
         "Positive distances between different cities",
     );
-    let all_dists = (0..nb_cities).permutations(nb_cities).map(|path| {
-        path.into_iter()
+    let mut indexes = (0..nb_cities).collect_vec();
+    let all_dists = permutations_map(&mut indexes, |path| {
+        path.iter()
+            .copied()
             .tuple_windows()
             .map(|(u, v)| dists[u][v])
             .sum::<u32>()

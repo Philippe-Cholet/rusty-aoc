@@ -62,9 +62,10 @@ Arguments: `[<year [20]15...> [<day 1...25> [<part 1 2> [<input 0...>]]]]`
 - **petgraph:** graph algorithms
 - **ndarray:** n-dimensional arrays
 - **pest:** Parsing Expression Grammar
-- **good_lp:** linear programming
 - **md5:** hash function
 - **serde_json:** handle JSON
+- **permutohedron:** permutations using Heap's algorithm (without heap allocation)
+- **good_lp (optional):** linear programming
 
 but I might need "regex", "num" at some point, eventually others.
 

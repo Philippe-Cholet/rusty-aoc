@@ -1,7 +1,7 @@
 use itertools::Itertools;
 
 use common::prelude::*;
-use utils::OkIterator;
+use utils::{permutations_map, OkIterator};
 
 /// Knights of the Dinner Table
 pub fn solver(part: Part, input: &str) -> Result<String> {
@@ -34,17 +34,15 @@ pub fn solver(part: Part, input: &str) -> Result<String> {
     for (src, dst, happiness) in data {
         happinesses[name2idx[&src]][name2idx[&dst]] = happiness;
     }
-    Ok((0..nb_people)
-        .permutations(nb_people)
-        .map(|idxs| {
-            idxs.iter()
-                .circular_tuple_windows()
-                .map(|(src, dst)| happinesses[*src][*dst] + happinesses[*dst][*src])
-                .sum::<i32>()
-        })
-        .max()
-        .context("No people around the rable")?
-        .to_string())
+    Ok(permutations_map(&mut (0..nb_people).collect_vec(), |idxs| {
+        idxs.iter()
+            .circular_tuple_windows()
+            .map(|(src, dst)| happinesses[*src][*dst] + happinesses[*dst][*src])
+            .sum::<i32>()
+    })
+    .max()
+    .context("No people around the rable")?
+    .to_string())
 }
 
 pub const INPUTS: [&str; 2] = [

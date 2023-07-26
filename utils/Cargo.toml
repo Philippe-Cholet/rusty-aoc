@@ -9,4 +9,5 @@ license.workspace = true
 
 [dependencies]
 anyhow.workspace = true
+permutohedron.workspace = true
 common = { path = "../common" }

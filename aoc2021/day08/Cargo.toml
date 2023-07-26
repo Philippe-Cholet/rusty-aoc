@@ -11,6 +11,5 @@ license.workspace = true
 doctest = false
 
 [dependencies]
-itertools.workspace = true
 common = { path="../../common" }
 utils = { path="../../utils" }

@@ -1,7 +1,5 @@
-use itertools::Itertools;
-
 use common::prelude::*;
-use utils::OkIterator;
+use utils::{permutations_map, OkIterator};
 
 #[derive(Debug, Clone, Copy, PartialEq)]
 struct Segm7(u8);
@@ -123,12 +121,10 @@ pub fn solver(part: Part, input: &str) -> Result<String> {
         Part2 => {
             let digit_bitset = Segm7::bitset(&Segm7::DIGITS);
             let mut all_perm7 = Vec::with_capacity(5040); // There are `7!` (5040) permutations.
-            #[allow(clippy::expect_used)] // Not an iterator of arrays but lengths are 7.
-            all_perm7.extend(
-                (0..7)
-                    .permutations(7)
-                    .map(|vec| <[u8; 7]>::try_from(vec).expect("7 long")),
-            );
+            #[allow(clippy::expect_used)] // Slices of length 7.
+            all_perm7.extend(permutations_map(&mut [0, 1, 2, 3, 4, 5, 6], |perm| {
+                <[u8; 7]>::try_from(perm).expect("7 long")
+            }));
             data.into_iter()
                 .flat_map(|(signal, entry)| {
                     all_perm7
