@@ -45,6 +45,7 @@ pub fn solver(part: Part, input: &str) -> Result<String> {
                     .iter()
                     .filter_map(|d| first_seat(r, c, *d))
                     .filter(|&(r0, c0)| available_seats[r0][c0] == OCCUPIED)
+                    .take(if free { 1 } else { min_seats }) // just to cut down the count
                     .count();
                 if (free && nb_occup == 0) || (!free && nb_occup >= min_seats) {
                     new_seats[r][c] = Some(!free);
