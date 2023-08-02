@@ -18,11 +18,11 @@ impl Instruction {
     }
 
     fn update_brightness(&self, brightness: &mut u8) {
-        *brightness = brightness.saturating_add_signed(match self {
-            Self::TurnOn(true) => 1,
-            Self::TurnOn(false) => -1,
-            Self::Toggle => 2,
-        });
+        match self {
+            Self::TurnOn(true) => *brightness += 1,
+            Self::TurnOn(false) => *brightness = brightness.saturating_sub(1),
+            Self::Toggle => *brightness += 2,
+        };
     }
 }
 
