@@ -23,23 +23,19 @@ pub fn solver(part: Part, input: &str) -> Result<String> {
                 .with_context(|| format!("Not 4 integers: {line}"))
         })
         .ok_collect_vec()?;
-    let counts = data
-        .into_iter()
-        .flat_map(|(x1, y1, x2, y2)| {
-            if x1 == x2 {
-                range_inclusive(y1, y2).map(|y| (x1, y)).collect()
-            } else if y1 == y2 {
-                range_inclusive(x1, x2).map(|x| (x, y1)).collect()
-            } else {
-                match part {
-                    Part1 => vec![],
-                    Part2 => range_inclusive(x1, x2)
-                        .zip(range_inclusive(y1, y2))
-                        .collect(),
-                }
-            }
-        })
-        .counts();
+    let mut counts = HashMap::<(u32, u32), u8>::new();
+    let mut increment = |pt| *counts.entry(pt).or_default() += 1;
+    for (x1, y1, x2, y2) in data {
+        if x1 == x2 {
+            range_inclusive(y1, y2).for_each(|y| increment((x1, y)));
+        } else if y1 == y2 {
+            range_inclusive(x1, x2).for_each(|x| increment((x, y1)));
+        } else if part.two() {
+            range_inclusive(x1, x2)
+                .zip(range_inclusive(y1, y2))
+                .for_each(&mut increment);
+        }
+    }
     let result = counts.into_values().filter(|&value| value > 1).count();
     Ok(result.to_string())
 }
