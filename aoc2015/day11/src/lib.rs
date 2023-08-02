@@ -73,9 +73,8 @@ impl Password {
     fn is_valid(&self) -> bool {
         self.0
             .iter()
-            .copied()
             .tuple_windows()
-            .any(|(a, b, c)| a + 1 == b && b + 1 == c)
+            .any(|(a, b, c)| *a + 1 == *b && *b + 1 == *c)
             && self
                 .0
                 .iter()
