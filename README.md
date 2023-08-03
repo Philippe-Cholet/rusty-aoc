@@ -65,6 +65,7 @@ Arguments: `[<year [20]15...> [<day 1...25> [<part 1 2> [<input 0...>]]]]`
 - **md5:** hash function
 - **serde_json:** handle JSON
 - **permutohedron:** permutations using Heap's algorithm (without heap allocation)
+- **memchr:** fast substring search
 - **good_lp (optional):** linear programming
 
 but I might need "regex", "num" at some point, eventually others.

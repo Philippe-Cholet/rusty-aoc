@@ -1,4 +1,5 @@
 use itertools::Itertools;
+use memchr::memmem;
 
 use common::prelude::*;
 use utils::OkIterator;
@@ -35,8 +36,8 @@ fn replacements<'a>(s: &'a str, repls: &'a [(&str, &str)]) -> impl Iterator<Item
         .flat_map(move |(src, dst)| {
             let j = src.len();
             let len = s.len() - j + dst.len();
-            s.match_indices(src)
-                .map(move |(i, _)| Repl::new(len, &s[..i], dst, &s[i + j..]))
+            memmem::find_iter(s.as_bytes(), src)
+                .map(move |i| Repl::new(len, &s[..i], dst, &s[i + j..]))
         })
 }
 
