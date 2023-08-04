@@ -1,3 +1,4 @@
+use std::collections::hash_map::Entry;
 use std::ops::{Add, Sub};
 
 use itertools::{iproduct, Itertools};
@@ -114,9 +115,17 @@ fn merge12(
         aligned.extend(group.iter().cloned().map(|xyz| transformation.permute(xyz)));
         offsets.clear();
         iproduct!(positions.iter(), aligned.iter()).find_map(|(pos, align)| {
-            let count = offsets.entry(pos - align).or_default();
-            *count += 1;
-            (*count >= 12).then_some(pos - align)
+            match offsets.entry(pos - align) {
+                Entry::Vacant(vacant) => {
+                    vacant.insert(1);
+                    None
+                }
+                Entry::Occupied(occupied) => {
+                    let count = occupied.into_mut();
+                    *count += 1;
+                    (*count >= 12).then_some(pos - align)
+                }
+            }
         })
     })
     .map(|offset| (offset, aligned))
