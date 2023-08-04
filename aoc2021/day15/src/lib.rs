@@ -11,7 +11,10 @@ pub fn solver(part: Part, input: &str) -> Result<String> {
         let mut grid = parse_to_grid(input.lines(), char10::<u32>)?;
         let mut nrows = grid.len();
         let mut ncols = grid.first().context("Empty grid")?.len();
-        // TODO: Eventually check if the grid is rectangular.
+        ensure!(
+            grid.iter().all(|row| row.len() == ncols),
+            "The grid is not rectangular",
+        );
         if part.two() {
             let extension = |row: &[_], k: u32| -> Vec<_> {
                 row.iter().map(|n| (*n + k - 1) % 9 + 1).collect()

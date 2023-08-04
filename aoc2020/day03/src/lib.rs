@@ -8,8 +8,11 @@ pub fn solver(part: Part, input: &str) -> Result<String> {
         '.' => Ok(false),
         _ => bail!("Wrong char: {}", ch),
     })?;
-    // TODO: Ensure the grid is (non-empty and) rectangular.
-    let width = data[0].len();
+    let width = data.get(0).context("Empty grid")?.len();
+    ensure!(
+        data.iter().all(|row| row.len() == width),
+        "The grid is not rectangular",
+    );
     let count_trees = |(right, down)| {
         data.iter()
             .step_by(down)

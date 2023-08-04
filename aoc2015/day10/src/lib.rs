@@ -1,7 +1,6 @@
 use common::prelude::*;
 use utils::{char10, OkIterator};
 
-#[allow(clippy::expect_used)]
 /// Elves Look, Elves Say
 pub fn solver(part: Part, input: &str) -> Result<String> {
     let mut ns = input
@@ -12,6 +11,10 @@ pub fn solver(part: Part, input: &str) -> Result<String> {
     ensure!(
         ns.iter().all(|n| matches!(n, 1..=3)),
         "Look-and-say sequence consist of only 1s 2s and 3s.",
+    );
+    ensure!(
+        !input.contains("1111") && !input.contains("2222") && !input.contains("3333"),
+        "Look-and-say sequence must not contain more than 3 consecutive equal characters.",
     );
     for _ in 0..part.value(40, 50) {
         ns = {
