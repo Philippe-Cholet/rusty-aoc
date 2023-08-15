@@ -1,7 +1,5 @@
-use std::cmp::Ordering;
-
 use common::prelude::*;
-use utils::OkIterator;
+use utils::{OkIterator, SliceExt};
 
 const DECRYPTION_KEY: i64 = 811_589_153;
 
@@ -23,11 +21,7 @@ pub fn solver(part: Part, input: &str) -> Result<String> {
                 .position(|(i, _)| i == &idx)
                 .context("Missing index")?;
             let i1 = ((i0 as i64 + data[i0].1 - 1).rem_euclid(modulus) + 1).try_into()?;
-            match i0.cmp(&i1) {
-                Ordering::Less => data[i0..=i1].rotate_left(1),
-                Ordering::Equal => {}
-                Ordering::Greater => data[i1..=i0].rotate_right(1),
-            }
+            data.remove_insert(i0, i1);
         }
     }
     let i0 = data

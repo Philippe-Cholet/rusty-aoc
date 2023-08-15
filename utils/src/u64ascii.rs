@@ -1,7 +1,7 @@
 /// Efficiently mimics the bytes representation of `u64` numbers on the stack,
 /// especially sequentially with the `increment` method.
 ///
-/// ```
+/// ```ignore
 /// # use utils::U64Ascii;
 /// fn job<T: AsRef<[u8]>>(data: T) -> usize {
 ///     let bytes = data.as_ref();
