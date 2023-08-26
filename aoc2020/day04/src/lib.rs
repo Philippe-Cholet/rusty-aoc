@@ -67,7 +67,8 @@ impl<'a> Passport<'a> {
             eye_color: Some(eye),
             passport_id: Some(pid),
             ..
-        } = self else {
+        } = self
+        else {
             return false;
         };
         range_check(birth, 1920, 2002, None)
