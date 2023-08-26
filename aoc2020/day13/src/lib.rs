@@ -22,6 +22,7 @@ pub fn solver(part: Part, input: &str) -> Result<String> {
             .map(|(bus_id, time)| bus_id * time)
             .context("No bus")?,
         Part2 => {
+            #[allow(clippy::cast_possible_wrap)] // Issue only for VERY LARGE inputs!!!
             let modular_equation: Vec<_> = bus_ids
                 .into_iter()
                 .enumerate()

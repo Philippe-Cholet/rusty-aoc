@@ -68,8 +68,8 @@ fn follow_instructions(
     grid: &[Vec<Tile>],
 ) -> Result<(usize, usize, Direction)> {
     #[cfg(debug_assertions)]
-    for row in grid.iter() {
-        for tile in row.iter() {
+    for row in grid {
+        for tile in row {
             match tile {
                 Tile::Open => print!("."),
                 Tile::Void => print!("+"),

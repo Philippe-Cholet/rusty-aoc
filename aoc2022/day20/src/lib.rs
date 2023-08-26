@@ -13,14 +13,14 @@ pub fn solver(part: Part, input: &str) -> Result<String> {
         file.iter_mut().for_each(|elem| *elem *= DECRYPTION_KEY);
     }
     let mut data: Vec<_> = file.into_iter().enumerate().collect();
-    let modulus = (nb - 1) as i64;
+    let modulus = i64::try_from(nb - 1)?;
     for _ in 0..part.value(1, 10) {
         for idx in 0..nb {
             let i0 = data
                 .iter()
                 .position(|(i, _)| i == &idx)
                 .context("Missing index")?;
-            let i1 = ((i0 as i64 + data[i0].1 - 1).rem_euclid(modulus) + 1).try_into()?;
+            let i1 = ((i64::try_from(i0)? + data[i0].1 - 1).rem_euclid(modulus) + 1).try_into()?;
             data.remove_insert(i0, i1);
         }
     }
