@@ -24,6 +24,8 @@ In this workspace, packages are:
 - E.g. the folder "aoc2021/day01" is for the library "aoc21-01" containing a solver, inputs and tests against those inputs.
 
 ### Performance
+[**The Rust Performance Book**](https://nnethercote.github.io/perf-book/) is a must-read.
+
 #### [Faster compile times](https://endler.dev/2020/rust-compile-times/)
 My target directory is on a SSD and packages without changes are not recompiled thanks to this workspace structure.
 I first used "clap" to parse command line arguments but the compile times were longer.
