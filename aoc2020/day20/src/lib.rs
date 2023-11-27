@@ -223,7 +223,7 @@ impl TileCollection {
     fn sure_corner_ids(&self) -> Vec<u32> {
         self.common_border
             .keys()
-            .flat_map(|&(i0, i1)| [i0, i1])
+            .flat_map(|(i0, i1)| [*i0, *i1])
             .counts()
             .into_iter()
             .filter_map(|(id, count)| (count == 2).then_some(id))
@@ -272,7 +272,8 @@ impl TileCollection {
                 let prev_locs = old
                     .iter()
                     .copied()
-                    .filter_map(|prev_id| graph[id].contains(&prev_id).then(|| id2loc[&prev_id]))
+                    .filter(|prev_id| graph[id].contains(prev_id))
+                    .map(|prev_id| id2loc[&prev_id])
                     .collect_vec();
                 let loc: (usize, usize) = match prev_locs[..] {
                     [(r, 0)] => (r + 1, 0),

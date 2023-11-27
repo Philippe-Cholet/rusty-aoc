@@ -177,13 +177,13 @@ impl<const N: usize> State<N> {
         self.actives
             .map(|active| {
                 (0..self.nb_valves)
-                    .filter_map(|new_loc| {
-                        (!self.is_visited(new_loc)
-                            && active.minutes_left >= distances[active.loc][new_loc])
-                            .then(|| Active {
-                                loc: new_loc,
-                                minutes_left: active.minutes_left - distances[active.loc][new_loc],
-                            })
+                    .filter(|new_loc| {
+                        !self.is_visited(*new_loc)
+                            && active.minutes_left >= distances[active.loc][*new_loc]
+                    })
+                    .map(|loc| Active {
+                        loc,
+                        minutes_left: active.minutes_left - distances[active.loc][loc],
                     })
                     .map(Some)
                     .chain([None])

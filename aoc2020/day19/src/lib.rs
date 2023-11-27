@@ -55,7 +55,7 @@ pub fn solver(part: Part, input: &str) -> Result<String> {
         .collect();
     let rules = rules
         .into_iter()
-        .map(|(_, mut rule)| rule.translate(&table).map(|_| rule))
+        .map(|(_, mut rule)| rule.translate(&table).map(|()| rule))
         .ok_collect_vec()?;
     Ok(messages
         .lines()

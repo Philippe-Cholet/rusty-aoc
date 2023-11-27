@@ -24,11 +24,10 @@ pub fn solver(part: Part, input: &str) -> Result<String> {
                     row.extend(extension(&row[0..ncols], k));
                 }
             }
-            grid.extend(
-                iproduct!(1..5, 0..nrows)
-                    .map(|(k, r)| extension(&grid[r], k))
-                    .collect::<Vec<_>>(),
-            );
+            let mut new_rows = iproduct!(1..5, 0..nrows)
+                .map(|(k, r)| extension(&grid[r], k))
+                .collect();
+            grid.append(&mut new_rows);
             nrows *= 5;
             ncols *= 5;
         }
