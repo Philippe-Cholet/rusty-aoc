@@ -1,0 +1,113 @@
+[env]
+USB_PATH = "/run/media/nixos/CORSAIR"
+AOCFL = "./target/flamegraph/cli-runner"
+
+
+[config]
+# WIthout this, a task is executed in every member of the workspace.
+default_to_workspace = false
+
+# load_cargo_aliases = true
+
+
+[tasks.final]
+description = "Runs 10 times the final executable (in final-*.txt)"
+category = "Perf"
+dependencies = ["build-final", "run-final"]
+
+[tasks.build-final]
+private = true  # not from cli
+command = "cargo"
+args = ["build", "--profile", "final"]
+
+[tasks.run-final.linux]
+private = true
+script='''
+for i in {1..10}; do ./target/final/cli-runner >> ${USB_PATH}/final-linux.txt; done
+'''
+
+[tasks.run-final.windows]
+private = true
+script='''
+@echo off
+FOR %%i IN (1 2 3 4 5 6 7 8 9 10) DO "./target/final/cli-runner.exe" >> final-windows.txt
+'''
+
+
+[tasks.flames]
+description = "Make all SVG flamegraphs (Linux expected)"
+category = "Perf"
+# install_crate = "cargo-flamegraph"
+# condition = { platforms = ["linux"], fail_message = "Only on Linux" }
+dependencies = [
+    "build-flame",
+    "linux-flames-yy",
+    "linux-flames-ys",
+    "linux-flames-cleanup",
+]
+
+[tasks.build-flame]
+description = "Build the executable for flamegraphs"
+command = "cargo"
+args = ["build", "--profile", "flamegraph"]
+
+[tasks.linux-flames-yy]
+description = "Make all SVG flamegraphs (year by year)"
+category = "Perf"
+script='''
+aocfl=./target/flamegraph/cli-runner
+for y in 15 20 21 22
+do
+    flamegraph -o flamegraph-$y.svg -- $aocfl $y
+    heaptrack -o ht$y $aocfl $y
+    # wait until I close the window
+    for s in peak allocations temporary
+    do
+        heaptrack_print --flamegraph-cost-type $s -F ht$y$s.txt ht$y.zst
+        flamegraph.pl --title="AoC 20$y - heap flamegraph: $s" --width=1920 --colors=mem ht$y$s.txt > ht$y$s.svg
+    done
+done
+'''
+
+[tasks.linux-flames-ys]
+description = "Make all SVG flamegraphs (all years)"
+category = "Perf"
+script='''
+aocfl=./target/flamegraph/cli-runner
+flamegraph -o flamegraph.svg -- $aocfl
+heaptrack -o ht $aocfl
+# wait until I close the window
+for s in peak allocations temporary
+do
+    heaptrack_print --flamegraph-cost-type $s -F ht$s.txt ht.zst
+    flamegraph.pl --title="AoC - heap flamegraph: $s" --width=1920 --colors=mem ht$s.txt > ht$s.svg
+done
+'''
+
+[tasks.linux-flames-cleanup]
+description = "Remove temporary files (for flamegraphs), copy SVG to USB device"
+category = "Perf"
+script='''
+rm perf.data*
+rm ht*.zst
+rm ht*.txt
+cp *.svg ${USB_PATH}
+# rm *.svg
+'''
+
+
+# By default, "sh" on linux, "cmd" on windows so no need of "#!/bin/sh".
+
+# PASS ARGUMENTS
+# [tasks.varargs]
+# command = "echo"
+# args = ["args are:", "${@}"]  # args = ["args are:", "-o=${@}"]
+
+# [env]
+# MULTIPLE_VALUES="1 2 3 4"
+# [tasks.split]
+# command = "echo"
+# args = ["@@split(MULTIPLE_VALUES, )"]
+# [tasks.no-split]
+# command = "echo"
+# args = ["${MULTIPLE_VALUES}"]
