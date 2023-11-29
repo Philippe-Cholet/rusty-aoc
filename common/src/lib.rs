@@ -64,6 +64,40 @@ impl Year {
     ];
 }
 
+impl From<Year> for u8 {
+    fn from(year: Year) -> Self {
+        match year {
+            Year2015 => 15,
+            Year2016 => 16,
+            Year2017 => 17,
+            Year2018 => 18,
+            Year2019 => 19,
+            Year2020 => 20,
+            Year2021 => 21,
+            Year2022 => 22,
+            Year2023 => 23,
+            Year2024 => 24,
+        }
+    }
+}
+
+impl From<Year> for i32 {
+    fn from(year: Year) -> Self {
+        match year {
+            Year2015 => 2015,
+            Year2016 => 2016,
+            Year2017 => 2017,
+            Year2018 => 2018,
+            Year2019 => 2019,
+            Year2020 => 2020,
+            Year2021 => 2021,
+            Year2022 => 2022,
+            Year2023 => 2023,
+            Year2024 => 2024,
+        }
+    }
+}
+
 #[derive(Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Hash)]
 pub enum Day {
     Day1,
@@ -133,6 +167,38 @@ impl Day {
         Day1, Day2, Day3, Day4, Day5, Day6, Day7, Day8, Day9, Day10, Day11, Day12, Day13, Day14,
         Day15, Day16, Day17, Day18, Day19, Day20, Day21, Day22, Day23, Day24, Day25,
     ];
+}
+
+impl From<Day> for u8 {
+    fn from(day: Day) -> Self {
+        match day {
+            Day1 => 1,
+            Day2 => 2,
+            Day3 => 3,
+            Day4 => 4,
+            Day5 => 5,
+            Day6 => 6,
+            Day7 => 7,
+            Day8 => 8,
+            Day9 => 9,
+            Day10 => 10,
+            Day11 => 11,
+            Day12 => 12,
+            Day13 => 13,
+            Day14 => 14,
+            Day15 => 15,
+            Day16 => 16,
+            Day17 => 17,
+            Day18 => 18,
+            Day19 => 19,
+            Day20 => 20,
+            Day21 => 21,
+            Day22 => 22,
+            Day23 => 23,
+            Day24 => 24,
+            Day25 => 25,
+        }
+    }
 }
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Hash)]
