@@ -1,7 +1,8 @@
 [package]
 name = "aoc21-04"
-edition = "2021"
 description = "My solution for the Advent of Code 2021 day 4"
+edition.workspace = true
+rust-version.workspace = true
 version.workspace = true
 authors.workspace = true
 repository.workspace = true
@@ -12,4 +13,4 @@ doctest = false
 
 [dependencies]
 itertools.workspace = true
-common = { path="../../common" }
+common = { path = "../../common" }

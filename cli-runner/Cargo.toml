@@ -1,7 +1,8 @@
 [package]
 name = "cli-runner"
-edition = "2021"
 description = "Run my rust solutions to Advents of Code from the command line"
+edition.workspace = true
+rust-version.workspace = true
 version.workspace = true
 authors.workspace = true
 repository.workspace = true
@@ -12,101 +13,101 @@ name = "cli-runner"
 test = false
 
 [dependencies]
-aoc-macro = { path="../aoc-macro" }
-common = { path="../common" }
-aoc21-01 = { path="../aoc2021/day01" }
-aoc21-02 = { path="../aoc2021/day02" }
-aoc21-03 = { path="../aoc2021/day03" }
-aoc21-04 = { path="../aoc2021/day04" }
-aoc21-05 = { path="../aoc2021/day05" }
-aoc21-06 = { path="../aoc2021/day06" }
-aoc21-07 = { path="../aoc2021/day07" }
-aoc21-08 = { path="../aoc2021/day08" }
-aoc21-09 = { path="../aoc2021/day09" }
-aoc21-10 = { path="../aoc2021/day10" }
-aoc21-11 = { path="../aoc2021/day11" }
-aoc21-12 = { path="../aoc2021/day12" }
-aoc21-13 = { path="../aoc2021/day13" }
-aoc21-14 = { path="../aoc2021/day14" }
-aoc21-15 = { path="../aoc2021/day15" }
-aoc21-16 = { path="../aoc2021/day16" }
-aoc21-17 = { path="../aoc2021/day17" }
-aoc21-18 = { path="../aoc2021/day18" }
-aoc21-19 = { path="../aoc2021/day19" }
-aoc21-20 = { path="../aoc2021/day20" }
-aoc21-21 = { path="../aoc2021/day21" }
-aoc21-22 = { path="../aoc2021/day22" }
-aoc21-23 = { path="../aoc2021/day23" }
-aoc21-24 = { path="../aoc2021/day24" }
-aoc21-25 = { path="../aoc2021/day25" }
-aoc22-01 = { path="../aoc2022/day01" }
-aoc22-02 = { path="../aoc2022/day02" }
-aoc22-03 = { path="../aoc2022/day03" }
-aoc22-04 = { path="../aoc2022/day04" }
-aoc22-05 = { path="../aoc2022/day05" }
-aoc22-06 = { path="../aoc2022/day06" }
-aoc22-07 = { path="../aoc2022/day07" }
-aoc22-08 = { path="../aoc2022/day08" }
-aoc22-09 = { path="../aoc2022/day09" }
-aoc22-10 = { path="../aoc2022/day10" }
-aoc22-11 = { path="../aoc2022/day11" }
-aoc22-12 = { path="../aoc2022/day12" }
-aoc22-13 = { path="../aoc2022/day13" }
-aoc22-14 = { path="../aoc2022/day14" }
-aoc22-15 = { path="../aoc2022/day15" }
-aoc22-16 = { path="../aoc2022/day16" }
-aoc22-17 = { path="../aoc2022/day17" }
-aoc22-18 = { path="../aoc2022/day18" }
-aoc22-19 = { path="../aoc2022/day19" }
-aoc22-20 = { path="../aoc2022/day20" }
-aoc22-21 = { path="../aoc2022/day21" }
-aoc22-22 = { path="../aoc2022/day22" }
-aoc22-23 = { path="../aoc2022/day23" }
-aoc22-24 = { path="../aoc2022/day24" }
-aoc22-25 = { path="../aoc2022/day25" }
-aoc20-01 = { path="../aoc2020/day01" }
-aoc20-02 = { path="../aoc2020/day02" }
-aoc20-03 = { path="../aoc2020/day03" }
-aoc20-04 = { path="../aoc2020/day04" }
-aoc20-05 = { path="../aoc2020/day05" }
-aoc20-06 = { path="../aoc2020/day06" }
-aoc20-07 = { path="../aoc2020/day07" }
-aoc20-08 = { path="../aoc2020/day08" }
-aoc20-09 = { path="../aoc2020/day09" }
-aoc20-10 = { path="../aoc2020/day10" }
-aoc20-11 = { path="../aoc2020/day11" }
-aoc20-12 = { path="../aoc2020/day12" }
-aoc20-13 = { path="../aoc2020/day13" }
-aoc20-14 = { path="../aoc2020/day14" }
-aoc20-15 = { path="../aoc2020/day15" }
-aoc20-16 = { path="../aoc2020/day16" }
-aoc20-17 = { path="../aoc2020/day17" }
-aoc20-18 = { path="../aoc2020/day18" }
-aoc20-19 = { path="../aoc2020/day19" }
-aoc20-20 = { path="../aoc2020/day20" }
-aoc20-21 = { path="../aoc2020/day21" }
-aoc20-22 = { path="../aoc2020/day22" }
-aoc20-23 = { path="../aoc2020/day23" }
-aoc20-24 = { path="../aoc2020/day24" }
-aoc20-25 = { path="../aoc2020/day25" }
-aoc15-01 = { path="../aoc2015/day01" }
-aoc15-02 = { path="../aoc2015/day02" }
-aoc15-03 = { path="../aoc2015/day03" }
-aoc15-04 = { path="../aoc2015/day04" }
-aoc15-05 = { path="../aoc2015/day05" }
-aoc15-06 = { path="../aoc2015/day06" }
-aoc15-07 = { path="../aoc2015/day07" }
-aoc15-08 = { path="../aoc2015/day08" }
-aoc15-09 = { path="../aoc2015/day09" }
-aoc15-10 = { path="../aoc2015/day10" }
-aoc15-11 = { path="../aoc2015/day11" }
-aoc15-12 = { path="../aoc2015/day12" }
-aoc15-13 = { path="../aoc2015/day13" }
-aoc15-14 = { path="../aoc2015/day14" }
-aoc15-15 = { path="../aoc2015/day15" }
-aoc15-16 = { path="../aoc2015/day16" }
-aoc15-17 = { path="../aoc2015/day17" }
-aoc15-18 = { path="../aoc2015/day18" }
-aoc15-19 = { path="../aoc2015/day19" }
-aoc15-20 = { path="../aoc2015/day20" }
-aoc15-21 = { path="../aoc2015/day21" }
+aoc-macro = { path = "../aoc-macro" }
+common = { path = "../common" }
+aoc21-01 = { path = "../aoc2021/day01" }
+aoc21-02 = { path = "../aoc2021/day02" }
+aoc21-03 = { path = "../aoc2021/day03" }
+aoc21-04 = { path = "../aoc2021/day04" }
+aoc21-05 = { path = "../aoc2021/day05" }
+aoc21-06 = { path = "../aoc2021/day06" }
+aoc21-07 = { path = "../aoc2021/day07" }
+aoc21-08 = { path = "../aoc2021/day08" }
+aoc21-09 = { path = "../aoc2021/day09" }
+aoc21-10 = { path = "../aoc2021/day10" }
+aoc21-11 = { path = "../aoc2021/day11" }
+aoc21-12 = { path = "../aoc2021/day12" }
+aoc21-13 = { path = "../aoc2021/day13" }
+aoc21-14 = { path = "../aoc2021/day14" }
+aoc21-15 = { path = "../aoc2021/day15" }
+aoc21-16 = { path = "../aoc2021/day16" }
+aoc21-17 = { path = "../aoc2021/day17" }
+aoc21-18 = { path = "../aoc2021/day18" }
+aoc21-19 = { path = "../aoc2021/day19" }
+aoc21-20 = { path = "../aoc2021/day20" }
+aoc21-21 = { path = "../aoc2021/day21" }
+aoc21-22 = { path = "../aoc2021/day22" }
+aoc21-23 = { path = "../aoc2021/day23" }
+aoc21-24 = { path = "../aoc2021/day24" }
+aoc21-25 = { path = "../aoc2021/day25" }
+aoc22-01 = { path = "../aoc2022/day01" }
+aoc22-02 = { path = "../aoc2022/day02" }
+aoc22-03 = { path = "../aoc2022/day03" }
+aoc22-04 = { path = "../aoc2022/day04" }
+aoc22-05 = { path = "../aoc2022/day05" }
+aoc22-06 = { path = "../aoc2022/day06" }
+aoc22-07 = { path = "../aoc2022/day07" }
+aoc22-08 = { path = "../aoc2022/day08" }
+aoc22-09 = { path = "../aoc2022/day09" }
+aoc22-10 = { path = "../aoc2022/day10" }
+aoc22-11 = { path = "../aoc2022/day11" }
+aoc22-12 = { path = "../aoc2022/day12" }
+aoc22-13 = { path = "../aoc2022/day13" }
+aoc22-14 = { path = "../aoc2022/day14" }
+aoc22-15 = { path = "../aoc2022/day15" }
+aoc22-16 = { path = "../aoc2022/day16" }
+aoc22-17 = { path = "../aoc2022/day17" }
+aoc22-18 = { path = "../aoc2022/day18" }
+aoc22-19 = { path = "../aoc2022/day19" }
+aoc22-20 = { path = "../aoc2022/day20" }
+aoc22-21 = { path = "../aoc2022/day21" }
+aoc22-22 = { path = "../aoc2022/day22" }
+aoc22-23 = { path = "../aoc2022/day23" }
+aoc22-24 = { path = "../aoc2022/day24" }
+aoc22-25 = { path = "../aoc2022/day25" }
+aoc20-01 = { path = "../aoc2020/day01" }
+aoc20-02 = { path = "../aoc2020/day02" }
+aoc20-03 = { path = "../aoc2020/day03" }
+aoc20-04 = { path = "../aoc2020/day04" }
+aoc20-05 = { path = "../aoc2020/day05" }
+aoc20-06 = { path = "../aoc2020/day06" }
+aoc20-07 = { path = "../aoc2020/day07" }
+aoc20-08 = { path = "../aoc2020/day08" }
+aoc20-09 = { path = "../aoc2020/day09" }
+aoc20-10 = { path = "../aoc2020/day10" }
+aoc20-11 = { path = "../aoc2020/day11" }
+aoc20-12 = { path = "../aoc2020/day12" }
+aoc20-13 = { path = "../aoc2020/day13" }
+aoc20-14 = { path = "../aoc2020/day14" }
+aoc20-15 = { path = "../aoc2020/day15" }
+aoc20-16 = { path = "../aoc2020/day16" }
+aoc20-17 = { path = "../aoc2020/day17" }
+aoc20-18 = { path = "../aoc2020/day18" }
+aoc20-19 = { path = "../aoc2020/day19" }
+aoc20-20 = { path = "../aoc2020/day20" }
+aoc20-21 = { path = "../aoc2020/day21" }
+aoc20-22 = { path = "../aoc2020/day22" }
+aoc20-23 = { path = "../aoc2020/day23" }
+aoc20-24 = { path = "../aoc2020/day24" }
+aoc20-25 = { path = "../aoc2020/day25" }
+aoc15-01 = { path = "../aoc2015/day01" }
+aoc15-02 = { path = "../aoc2015/day02" }
+aoc15-03 = { path = "../aoc2015/day03" }
+aoc15-04 = { path = "../aoc2015/day04" }
+aoc15-05 = { path = "../aoc2015/day05" }
+aoc15-06 = { path = "../aoc2015/day06" }
+aoc15-07 = { path = "../aoc2015/day07" }
+aoc15-08 = { path = "../aoc2015/day08" }
+aoc15-09 = { path = "../aoc2015/day09" }
+aoc15-10 = { path = "../aoc2015/day10" }
+aoc15-11 = { path = "../aoc2015/day11" }
+aoc15-12 = { path = "../aoc2015/day12" }
+aoc15-13 = { path = "../aoc2015/day13" }
+aoc15-14 = { path = "../aoc2015/day14" }
+aoc15-15 = { path = "../aoc2015/day15" }
+aoc15-16 = { path = "../aoc2015/day16" }
+aoc15-17 = { path = "../aoc2015/day17" }
+aoc15-18 = { path = "../aoc2015/day18" }
+aoc15-19 = { path = "../aoc2015/day19" }
+aoc15-20 = { path = "../aoc2015/day20" }
+aoc15-21 = { path = "../aoc2015/day21" }

@@ -1,7 +1,8 @@
 [package]
 name = "aoc-macro"
-edition = "2021"
 description = "A macro to get the solver and inputs for a given year and day"
+edition.workspace = true
+rust-version.workspace = true
 version.workspace = true
 authors.workspace = true
 repository.workspace = true

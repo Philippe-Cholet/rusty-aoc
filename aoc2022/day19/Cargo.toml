@@ -1,7 +1,8 @@
 [package]
 name = "aoc22-19"
-edition = "2021"
 description = "My solution for the Advent of Code 2022 day 19"
+edition.workspace = true
+rust-version.workspace = true
 version.workspace = true
 authors.workspace = true
 repository.workspace = true
@@ -15,5 +16,5 @@ lp = ["good_lp"]
 
 [dependencies]
 good_lp = { workspace = true, optional = true }
-common = { path="../../common" }
-utils = { path="../../utils" }
+common = { path = "../../common" }
+utils = { path = "../../utils" }

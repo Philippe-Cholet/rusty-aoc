@@ -1,7 +1,8 @@
 [package]
 name = "utils"
-edition = "2021"
 description = "Utilities that my solutions can all use for Advents of Code"
+edition.workspace = true
+rust-version.workspace = true
 version.workspace = true
 authors.workspace = true
 repository.workspace = true

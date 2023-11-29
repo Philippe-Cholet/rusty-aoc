@@ -1,7 +1,8 @@
 [package]
 name = "aoc22-24"
-edition = "2021"
 description = "My solution for the Advent of Code 2022 day 24"
+edition.workspace = true
+rust-version.workspace = true
 version.workspace = true
 authors.workspace = true
 repository.workspace = true
@@ -11,5 +12,5 @@ license.workspace = true
 doctest = false
 
 [dependencies]
-common = { path="../../common" }
-utils = { path="../../utils" }
+common = { path = "../../common" }
+utils = { path = "../../utils" }
