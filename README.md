@@ -22,6 +22,7 @@ In this workspace, packages are:
       (tests kept private because we should not share inputs, I keep what I found though).
 - "cli-runner" to run my solutions from the command line.
 - "utils" lists utilities that my solutions can all use.
+- "web" for simple interactions with [adventofcode.com](https://adventofcode.com).
 - E.g. the folder "aoc2021/day01" is for the library "aoc21-01" containing a solver, inputs and tests against those inputs.
 
 ### Performance
@@ -58,6 +59,13 @@ Arguments: `[<year [20]15...> [<day 1...25> [<part 1 2> [<input 0...>]]]]`
 - When no day is given, the solver runs on all available days/parts (only big inputs).
 - When no year is given, the solver runs on all available years/days/parts (only big inputs).
 
+### `web` usage
+The session cookie can be hold in an environment variable (`AOC_TOKEN` by default), in a text file or be given manually.
+
+    cargo web [--token <TOKEN>] <YEAR> <DAY> open [--calendar] [--description] [--input]
+    cargo web [--token <TOKEN>] <YEAR> <DAY> download [--calendar <FILEPATH>] [--description <FILEPATH>] [--input <FILEPATH>]
+    cargo web [--token <TOKEN>] <YEAR> <DAY> submit <PART> <ANSWER>
+
 ### Current dependencies
 - **anyhow:** error handling
 - **rustc-hash:** non-cryptographic but faster hasher
@@ -75,9 +83,13 @@ but I might need "regex", "num" at some point, eventually others.
 
 I also thought about "smallvec" and "rayon" but it does not seem to really fasten my code.
 
-#### For procedural macros
-- **quote** and **syn**
+#### Non-solver dependencies
+- **quote** and **syn** for procedural macros
 - **cargo_toml** to parse the dependencies automatically
+- **clap** for a nice command line interface
+- **ureq** for simple http requests
+- **thiserror** for a nice library error type
+- **webbrowser** to open a webpage
 
 ## Roadmap
 - Expand/Improve my utilities.
