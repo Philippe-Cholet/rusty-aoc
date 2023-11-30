@@ -21,5 +21,7 @@ cli = "run --bin cli-runner --profile final"
 
 flame = "flamegraph --profile flamegraph"
 
+web = "run --bin web --"
+
 [env]
 # RUST_BACKTRACE="1"

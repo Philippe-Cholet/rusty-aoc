@@ -1,0 +1,16 @@
+[package]
+name = "web"
+description = "Simple interactions with adventofcode.com"
+edition.workspace = true
+rust-version.workspace = true
+version.workspace = true
+authors.workspace = true
+repository.workspace = true
+license.workspace = true
+
+[dependencies]
+clap.workspace = true
+thiserror.workspace = true
+ureq.workspace = true
+webbrowser.workspace = true
+common = { path = "../common" }
