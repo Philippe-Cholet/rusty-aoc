@@ -19,14 +19,14 @@ mod aoc_tests;
 ///
 /// then it creates a function named `aoc` like:
 /// ```
-/// fn aoc(year: Year, day: Day) -> Result<(AocSolver, &'static [&'static str])> {
+/// fn aoc(year: Year, day: Day) -> Result<(Box<dyn AocSolver>, &'static [&'static str])> {
 ///     Ok(match (year, day) {
-///         (Year2021, Day1)  => (aoc21_01::solver, &aoc21_01::INPUTS),
+///         (Year2021, Day1)  => (Box::new(aoc21_01::solver), &aoc21_01::INPUTS),
 ///         ...
-///         (Year2021, Day25) => (aoc21_25::solver, &aoc21_25::INPUTS),
-///         (Year2022, Day1)  => (aoc22_01::solver, &aoc22_01::INPUTS),
+///         (Year2021, Day25) => (Box::new(aoc21_25::solver), &aoc21_25::INPUTS),
+///         (Year2022, Day1)  => (Box::new(aoc22_01::solver), &aoc22_01::INPUTS),
 ///         ...
-///         (Year2022, Day5)  => (aoc22_05::solver, &aoc22_05::INPUTS),
+///         (Year2022, Day5)  => (Box::new(aoc22_05::solver), &aoc22_05::INPUTS),
 ///         _ => bail!("You have not solved AoC {:?} {:?}[...]", year, day),
 ///     })
 /// }
@@ -41,12 +41,12 @@ pub fn make_aoc(input: TokenStream) -> TokenStream {
             let day = format_ident!("Day{}", d);
             let dependency = format_ident!("aoc{}_{:0>2}", y, d);
             quote! {
-                (::common::#year, ::common::#day) => (::#dependency::solver, &::#dependency::INPUTS),
+                (::common::#year, ::common::#day) => (::std::boxed::Box::new(::#dependency::solver), &::#dependency::INPUTS),
             }
         })
         .collect();
     quote! {
-        fn aoc(year: ::common::Year, day: ::common::Day) -> ::common::Result<(::common::AocSolver, &'static [&'static str])> {
+        fn aoc(year: ::common::Year, day: ::common::Day) -> ::common::Result<(::std::boxed::Box<dyn ::common::AocSolver>, &'static [&'static str])> {
             ::common::Result::Ok(match (year, day) {
                 #(#matched_lines)*
                 _ => ::common::bail!("You have not solved AoC {:?} {:?}, what are you waiting for?!", year, day),
@@ -110,7 +110,7 @@ fn all_years_and_days() -> Vec<(u8, u8)> {
 /// #[test]
 /// fn username_21() -> Result<()> {
 ///     let input = include_str!("username/2021/01.txt");
-///     assert_eq!(aoc21_01::solver(Part1, input)?, "Day1 Part1 answer", "username: year 2021 day 1 part 1");
+///     assert_eq!(aoc21_01::solver(Part1, input)?.to_string(), "Day1 Part1 answer", "username: year 2021 day 1 part 1");
 ///     // day1 part2
 ///     // days 2 to 25...
 ///     Ok(())
@@ -120,7 +120,7 @@ fn all_years_and_days() -> Vec<(u8, u8)> {
 /// #[test]
 /// fn username_22() -> Result<()> {
 ///     let input = include_str!("username/2022/01.txt");
-///     assert_eq!(aoc22_01::solver(Part1, input)?, "Day1 Part1 answer", "username: year 2022 day 1 part 1");
+///     assert_eq!(aoc22_01::solver(Part1, input)?.to_string(), "Day1 Part1 answer", "username: year 2022 day 1 part 1");
 ///     // ...
 ///     Ok(())
 /// }
@@ -130,7 +130,7 @@ fn all_years_and_days() -> Vec<(u8, u8)> {
 /// #[test]
 /// fn username_22_ignored() -> Result<()> {
 ///     let input = include_str!("username/2022/01.txt");
-///     assert_eq!(aoc22_01::solver(Part2, input)?, "Day1 Part2 answer", "username: year 2022 day 1 part 2");
+///     assert_eq!(aoc22_01::solver(Part2, input)?.to_string(), "Day1 Part2 answer", "username: year 2022 day 1 part 2");
 ///     // ...
 ///     Ok(())
 /// }
@@ -161,7 +161,7 @@ pub fn make_aoc_tests(input: TokenStream) -> TokenStream {
                                 let part = &parts[idx];
                                 let expl = format!("{name}: year 20{year} day {day} part {}", idx + 1);
                                 quote! {
-                                    assert_eq!(::#dep::solver(#part, input)?, #answer, #expl);
+                                    assert_eq!(::#dep::solver(#part, input)?.to_string(), #answer, #expl);
                                 }
                             })
                         });

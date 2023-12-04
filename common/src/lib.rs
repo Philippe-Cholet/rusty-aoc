@@ -15,12 +15,33 @@ pub mod prelude {
 }
 
 use std::str::FromStr;
+use std::time::{Duration, Instant};
 
 pub use anyhow::{bail, ensure, format_err, Context, Error, Ok, Result};
 
 pub use self::{Day::*, Part::*, Year::*};
 
-pub type AocSolver = fn(Part, &str) -> Result<String>;
+pub trait AocSolver {
+    fn solve(&self, part: Part, input: &str) -> Result<String>;
+    fn timed_solve(&self, part: Part, input: &str) -> Result<(String, Duration)>;
+}
+
+impl<T, F> AocSolver for F
+where
+    T: std::fmt::Display,
+    F: Fn(Part, &str) -> Result<T>,
+{
+    fn solve(&self, part: Part, input: &str) -> Result<String> {
+        self(part, input).map(|t| t.to_string())
+    }
+
+    fn timed_solve(&self, part: Part, input: &str) -> Result<(String, Duration)> {
+        let now = Instant::now();
+        let t = self(part, input)?;
+        let elapsed = now.elapsed();
+        Ok((t.to_string(), elapsed))
+    }
+}
 
 #[non_exhaustive]
 #[derive(Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Hash)]

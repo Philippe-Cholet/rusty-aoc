@@ -1,18 +1,9 @@
-use std::{
-    env,
-    time::{Duration, Instant},
-};
+use std::env;
+use std::time::Duration;
 
-use common::{ensure, AocSolver, Day, Part, Part1, Part2, Result, Year};
+use common::{ensure, Day, Part, Part1, Part2, Result, Year};
 
 aoc_macro::make_aoc!();
-
-fn timed_solve(solver: AocSolver, part: Part, input: &str) -> Result<(String, Duration)> {
-    let now = Instant::now();
-    let result = solver(part, input)?;
-    let t = now.elapsed();
-    Ok((result, t))
-}
 
 fn run_some_inputs(year: Year, day: Day, parts: &[Part], index: Option<usize>) -> Result<()> {
     let (solver, inputs) = aoc(year, day)?;
@@ -32,7 +23,7 @@ fn run_some_inputs(year: Year, day: Day, parts: &[Part], index: Option<usize>) -
             println!("\n{part:?} input #{input_idx}:");
             let input = inputs[*input_idx];
             ensure!(!input.is_empty(), "Empty input: you forgot to fill it?!");
-            let (result, t) = timed_solve(solver, part, input)?;
+            let (result, t) = solver.timed_solve(part, input)?;
             println!("[ Done in {t:?} ]\n{result}");
         }
     }
@@ -43,8 +34,8 @@ fn run_big_inputs(year: Year) -> Result<()> {
     let mut results = Vec::with_capacity(50);
     for day in Day::ALL {
         if let Ok((solver, [.., big_input])) = aoc(year, day) {
-            let t1 = timed_solve(solver, Part1, big_input)?.1;
-            let t2 = timed_solve(solver, Part2, big_input)?.1;
+            let t1 = solver.timed_solve(Part1, big_input)?.1;
+            let t2 = solver.timed_solve(Part2, big_input)?.1;
             results.push((day, t1, t2));
         }
     }
