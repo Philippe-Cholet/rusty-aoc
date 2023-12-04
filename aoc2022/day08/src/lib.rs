@@ -121,7 +121,7 @@ impl<'a> TreeHouse<'a> {
 }
 
 /// Treetop Tree House
-pub fn solver(part: Part, input: &str) -> Result<String> {
+pub fn solver(part: Part, input: &str) -> Result<usize> {
     let grid = parse_to_grid(input.lines(), char10::<u8>)?;
     Ok(match part {
         Part1 => {
@@ -131,8 +131,7 @@ pub fn solver(part: Part, input: &str) -> Result<String> {
             vis_trees.get_count()
         }
         Part2 => TreeHouse::new(&grid).best_scenic_score(),
-    }
-    .to_string())
+    })
 }
 
 pub const INPUTS: [&str; 2] = [
@@ -147,10 +146,10 @@ pub const INPUTS: [&str; 2] = [
 
 #[test]
 fn solver_22_08() -> Result<()> {
-    assert_eq!(solver(Part1, INPUTS[0])?, "21");
-    assert_eq!(solver(Part1, INPUTS[1])?, "1816");
-    assert_eq!(solver(Part2, INPUTS[0])?, "8");
-    assert_eq!(solver(Part2, INPUTS[1])?, "383520");
+    assert_eq!(solver(Part1, INPUTS[0])?, 21);
+    assert_eq!(solver(Part1, INPUTS[1])?, 1816);
+    assert_eq!(solver(Part2, INPUTS[0])?, 8);
+    assert_eq!(solver(Part2, INPUTS[1])?, 383520);
     Ok(())
 }
 
@@ -163,7 +162,7 @@ use common::prelude::*;
 use utils::{char10, parse_to_grid};
 
 /// Treetop Tree House
-pub fn solver(part: Part, input: &str) -> Result<String> {
+pub fn solver(part: Part, input: &str) -> Result<usize> {
     let grid = parse_to_grid(input.lines(), char10::<u8>)?;
     let (nrows, ncols) = (grid.len(), grid[0].len());
     Ok(match part {
@@ -228,7 +227,6 @@ pub fn solver(part: Part, input: &str) -> Result<String> {
                 .max()
                 .unwrap_or(0)
         }
-    }
-    .to_string())
+    })
 }
 */

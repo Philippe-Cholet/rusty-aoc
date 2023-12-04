@@ -49,15 +49,14 @@ const P_HEIGHT: usize = 3;
 const P_WIDTH: usize = 20;
 
 /// Jurassic Jigsaw
-pub fn solver(part: Part, input: &str) -> Result<String> {
+pub fn solver(part: Part, input: &str) -> Result<u64> {
     let mut tile_collection: TileCollection = input.parse()?;
-    Ok(match part {
+    match part {
         Part1 => {
             let ids = tile_collection.sure_corner_ids();
             (ids.len() == 4)
-                .then(|| ids.into_iter().map(u64::from).product::<u64>())
-                .context("Not sure about some corner(s)")?
-                .to_string()
+                .then(|| ids.into_iter().map(u64::from).product())
+                .context("Not sure about some corner(s)")
         }
         Part2 => {
             let mut image = tile_collection.merge_tiles()?;
@@ -103,9 +102,9 @@ pub fn solver(part: Part, input: &str) -> Result<String> {
                 bail!("Did not find any pattern");
             };
             let nb_blacks = image.iter().flatten().filter(|black| **black).count();
-            (nb_blacks - nb_cells).to_string()
+            Ok((nb_blacks - nb_cells) as u64)
         }
-    })
+    }
 }
 
 impl Rotation {
@@ -519,9 +518,9 @@ Tile 3079:
 
 #[test]
 fn solver_20_20() -> Result<()> {
-    assert_eq!(solver(Part1, INPUTS[0])?, "20899048083289"); // 1951 * 3079 * 2971 * 1171
-    assert_eq!(solver(Part1, INPUTS[1])?, "21599955909991"); // 1061 * 2521 * 2633 * 3067
-    assert_eq!(solver(Part2, INPUTS[0])?, "273");
-    assert_eq!(solver(Part2, INPUTS[1])?, "2495");
+    assert_eq!(solver(Part1, INPUTS[0])?, 20899048083289); // 1951 * 3079 * 2971 * 1171
+    assert_eq!(solver(Part1, INPUTS[1])?, 21599955909991); // 1061 * 2521 * 2633 * 3067
+    assert_eq!(solver(Part2, INPUTS[0])?, 273);
+    assert_eq!(solver(Part2, INPUTS[1])?, 2495);
     Ok(())
 }

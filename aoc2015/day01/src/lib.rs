@@ -2,32 +2,32 @@ use common::prelude::*;
 use utils::OkIterator;
 
 /// Not Quite Lisp
-pub fn solver(part: Part, input: &str) -> Result<String> {
+pub fn solver(part: Part, input: &str) -> Result<i32> {
     let mut ns = input.trim_end().chars().map(|ch| match ch {
         '(' => Ok(1),
         ')' => Ok(-1),
         _ => bail!("Expected ( or ) but got {:?}.", ch),
     });
-    Ok(match part {
-        Part1 => ns.ok_sum::<i32>()?.to_string(),
+    match part {
+        Part1 => ns.sum(),
         Part2 => {
             let mut floor = 0;
-            (1 + ns
+            let pos = ns
                 .ok_position(|n| {
                     floor += n;
                     floor == -1
                 })?
-                .context("Did not reach the basement.")?)
-            .to_string()
+                .context("Did not reach the basement.")?;
+            Ok(i32::try_from(1 + pos)?)
         }
-    })
+    }
 }
 
 pub const INPUTS: [&str; 1] = [include_str!("input.txt")];
 
 #[test]
 fn solver_15_01() -> Result<()> {
-    assert_eq!(solver(Part1, INPUTS[0])?, "280");
-    assert_eq!(solver(Part2, INPUTS[0])?, "1797");
+    assert_eq!(solver(Part1, INPUTS[0])?, 280);
+    assert_eq!(solver(Part2, INPUTS[0])?, 1797);
     Ok(())
 }

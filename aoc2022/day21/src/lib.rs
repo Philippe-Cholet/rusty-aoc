@@ -138,7 +138,7 @@ fn get_order(data: &[(&str, Job)]) -> Result<Vec<usize>> {
 }
 
 /// Monkey Math
-pub fn solver(part: Part, input: &str) -> Result<String> {
+pub fn solver(part: Part, input: &str) -> Result<i64> {
     let data = input
         .lines()
         .map(|line| {
@@ -179,8 +179,7 @@ pub fn solver(part: Part, input: &str) -> Result<String> {
         let v = if name != &"root" {
             job.evaluate(&monkey_values)
         } else if part.one() {
-            let result = job.evaluate(&monkey_values).context("unevaluable root")?;
-            return Ok(result.to_string());
+            return job.evaluate(&monkey_values).context("unevaluable root");
         } else {
             None
         };
@@ -207,8 +206,7 @@ pub fn solver(part: Part, input: &str) -> Result<String> {
     }
     #[cfg(debug_assertions)]
     println!("{:?}", monkey_values["humn"]);
-    let result = monkey_values["humn"].context("Failed to solve")?;
-    Ok(result.to_string())
+    monkey_values["humn"].context("Failed to solve")
 }
 
 pub const INPUTS: [&str; 2] = [
@@ -233,9 +231,9 @@ hmdt: 32
 
 #[test]
 fn solver_22_21() -> Result<()> {
-    assert_eq!(solver(Part1, INPUTS[0])?, "152");
-    assert_eq!(solver(Part1, INPUTS[1])?, "256997859093114");
-    assert_eq!(solver(Part2, INPUTS[0])?, "301");
-    assert_eq!(solver(Part2, INPUTS[1])?, "3952288690726");
+    assert_eq!(solver(Part1, INPUTS[0])?, 152);
+    assert_eq!(solver(Part1, INPUTS[1])?, 256997859093114);
+    assert_eq!(solver(Part2, INPUTS[0])?, 301);
+    assert_eq!(solver(Part2, INPUTS[1])?, 3952288690726);
     Ok(())
 }

@@ -4,7 +4,7 @@ use common::{prelude::*, Ok};
 use utils::OkIterator;
 
 /// Ticket Translation
-pub fn solver(part: Part, input: &str) -> Result<String> {
+pub fn solver(part: Part, input: &str) -> Result<u64> {
     let (rules, my_ticket, nearby_tickets) = input
         .split("\n\n")
         .collect_tuple()
@@ -92,10 +92,9 @@ pub fn solver(part: Part, input: &str) -> Result<String> {
                     name.starts_with("departure")
                         .then_some(u64::from(my_ticket[idx]))
                 })
-                .product::<u64>()
+                .product()
         }
-    }
-    .to_string())
+    })
 }
 
 pub const INPUTS: [&str; 2] = [
@@ -118,8 +117,8 @@ nearby tickets:
 
 #[test]
 fn solver_20_16() -> Result<()> {
-    assert_eq!(solver(Part1, INPUTS[0])?, "71");
-    assert_eq!(solver(Part1, INPUTS[1])?, "18142");
-    assert_eq!(solver(Part2, INPUTS[1])?, "1069784384303");
+    assert_eq!(solver(Part1, INPUTS[0])?, 71);
+    assert_eq!(solver(Part1, INPUTS[1])?, 18142);
+    assert_eq!(solver(Part2, INPUTS[1])?, 1069784384303);
     Ok(())
 }

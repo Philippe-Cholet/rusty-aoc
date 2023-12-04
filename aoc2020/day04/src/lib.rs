@@ -86,7 +86,7 @@ impl<'a> Passport<'a> {
 }
 
 /// Passport Processing
-pub fn solver(part: Part, input: &str) -> Result<String> {
+pub fn solver(part: Part, input: &str) -> Result<usize> {
     let mut data = input
         .split("\n\n")
         .map(Passport::try_from)
@@ -95,7 +95,7 @@ pub fn solver(part: Part, input: &str) -> Result<String> {
         Part1 => data.retain(Passport::basic_validation),
         Part2 => data.retain(Passport::real_validation),
     }
-    Ok(data.len().to_string())
+    Ok(data.len())
 }
 
 pub const INPUTS: [&str; 2] = [
@@ -118,10 +118,10 @@ iyr:2011 ecl:brn hgt:59in
 
 #[test]
 fn solver_20_04() -> Result<()> {
-    assert_eq!(solver(Part1, INPUTS[0])?, "2");
-    assert_eq!(solver(Part1, INPUTS[1])?, "226");
-    // assert_eq!(solver(Part2, INPUTS[0])?, "2");
-    assert_eq!(solver(Part2, INPUTS[1])?, "160");
+    assert_eq!(solver(Part1, INPUTS[0])?, 2);
+    assert_eq!(solver(Part1, INPUTS[1])?, 226);
+    // assert_eq!(solver(Part2, INPUTS[0])?, 2);
+    assert_eq!(solver(Part2, INPUTS[1])?, 160);
     Ok(())
 }
 

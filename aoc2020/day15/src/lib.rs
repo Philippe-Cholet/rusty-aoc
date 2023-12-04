@@ -3,7 +3,7 @@ use utils::OkIterator;
 
 #[allow(clippy::cast_possible_truncation)] // SAFETY: `idx < numbers.len() <= nb_turns <= 30_000_000 <= u32::MAX`
 /// Rambunctious Recitation
-pub fn solver(part: Part, input: &str) -> Result<String> {
+pub fn solver(part: Part, input: &str) -> Result<u32> {
     let numbers: Vec<u32> = input.trim_end().split(',').map(str::parse).ok_collect()?;
     ensure!(!numbers.is_empty(), "No number provided");
     let nb_turns = part.value(2020, 30_000_000);
@@ -24,7 +24,7 @@ pub fn solver(part: Part, input: &str) -> Result<String> {
         // spoken[n as usize] = turn;
         n = turn.saturating_sub(last);
     }
-    Ok(n.to_string())
+    Ok(n)
 }
 
 pub const INPUTS: [&str; 8] = [
@@ -40,13 +40,11 @@ pub const INPUTS: [&str; 8] = [
 
 #[test]
 fn solver_20_15() -> Result<()> {
-    let answers1 = ["436", "1", "10", "27", "78", "438", "1836", "1696"];
+    let answers1 = [436, 1, 10, 27, 78, 438, 1836, 1696];
     for (input, answer) in INPUTS.iter().zip(answers1) {
         assert_eq!(solver(Part1, input)?, answer);
     }
-    let answers2 = [
-        "175594", "2578", "3544142", "261214", "6895259", "18", "362", "37385",
-    ];
+    let answers2 = [175594, 2578, 3544142, 261214, 6895259, 18, 362, 37385];
     for (input, answer) in INPUTS.iter().zip(answers2) {
         assert_eq!(solver(Part2, input)?, answer);
     }

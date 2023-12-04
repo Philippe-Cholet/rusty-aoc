@@ -11,7 +11,7 @@ fn count_actives<'a>(it: impl IntoIterator<Item = &'a bool>) -> usize {
 }
 
 /// Conway Cubes
-pub fn solver(part: Part, input: &str) -> Result<String> {
+pub fn solver(part: Part, input: &str) -> Result<usize> {
     let initial_grid = parse_to_grid(input.lines(), |ch| match ch {
         '#' => Ok(true),
         '.' => Ok(false),
@@ -68,16 +68,16 @@ pub fn solver(part: Part, input: &str) -> Result<String> {
             array.into_raw_vec()
         }
     };
-    Ok(count_actives(&flaten_array).to_string())
+    Ok(count_actives(&flaten_array))
 }
 
 pub const INPUTS: [&str; 2] = [".#.\n..#\n###\n", include_str!("input.txt")];
 
 #[test]
 fn solver_20_17() -> Result<()> {
-    assert_eq!(solver(Part1, INPUTS[0])?, "112");
-    assert_eq!(solver(Part1, INPUTS[1])?, "315");
-    assert_eq!(solver(Part2, INPUTS[0])?, "848");
-    assert_eq!(solver(Part2, INPUTS[1])?, "1520");
+    assert_eq!(solver(Part1, INPUTS[0])?, 112);
+    assert_eq!(solver(Part1, INPUTS[1])?, 315);
+    assert_eq!(solver(Part2, INPUTS[0])?, 848);
+    assert_eq!(solver(Part2, INPUTS[1])?, 1520);
     Ok(())
 }

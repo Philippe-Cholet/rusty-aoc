@@ -31,7 +31,7 @@ impl Board {
 }
 
 /// Giant Squid
-pub fn solver(part: Part, input: &str) -> Result<String> {
+pub fn solver(part: Part, input: &str) -> Result<u32> {
     let mut lines = input.split("\n\n");
     let numbers: Vec<_> = lines
         .next()
@@ -67,11 +67,12 @@ pub fn solver(part: Part, input: &str) -> Result<String> {
         }
         idx_scores
     });
-    let idx_score = match part {
-        Part1 => score.next().context("No score")?.1,
-        Part2 => score.last().context("No score")?.1,
-    };
-    Ok(idx_score.to_string())
+    match part {
+        Part1 => score.next(),
+        Part2 => score.last(),
+    }
+    .context("No score")
+    .map(|(_, idx_score)| idx_score)
 }
 
 pub const INPUTS: [&str; 2] = [
@@ -100,9 +101,9 @@ pub const INPUTS: [&str; 2] = [
 
 #[test]
 fn solver_21_04() -> Result<()> {
-    assert_eq!(solver(Part1, INPUTS[0])?, "4512");
-    assert_eq!(solver(Part1, INPUTS[1])?, "64084");
-    assert_eq!(solver(Part2, INPUTS[0])?, "1924");
-    assert_eq!(solver(Part2, INPUTS[1])?, "12833");
+    assert_eq!(solver(Part1, INPUTS[0])?, 4512);
+    assert_eq!(solver(Part1, INPUTS[1])?, 64084);
+    assert_eq!(solver(Part2, INPUTS[0])?, 1924);
+    assert_eq!(solver(Part2, INPUTS[1])?, 12833);
     Ok(())
 }

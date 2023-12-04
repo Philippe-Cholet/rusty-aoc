@@ -106,7 +106,7 @@ impl Stream {
 }
 
 /// Packet Decoder
-pub fn solver(part: Part, input: &str) -> Result<String> {
+pub fn solver(part: Part, input: &str) -> Result<usize> {
     let bin_line = input
         .trim_end()
         .chars()
@@ -114,11 +114,10 @@ pub fn solver(part: Part, input: &str) -> Result<String> {
         .ok_collect_str()?;
     let main_packet = Stream(bin_line.chars().rev().collect()).read_packet()?;
     // println!("{:#?}", main_packet);
-    Ok(match part {
-        Part1 => main_packet.version_sum(),
-        Part2 => main_packet.value()?,
+    match part {
+        Part1 => Ok(main_packet.version_sum()),
+        Part2 => main_packet.value(),
     }
-    .to_string())
 }
 
 pub const INPUTS: [&str; 13] = [
@@ -142,17 +141,17 @@ fn solver_21_16() -> Result<()> {
     let (big_input, inputs) = INPUTS.split_last().context("No input")?;
     let (inputs1, inputs2) = inputs.split_at(4);
 
-    let answers1 = ["16", "12", "23", "31"];
+    let answers1 = [16, 12, 23, 31];
     for (input, answer) in inputs1.iter().zip(answers1) {
         assert_eq!(solver(Part1, input)?, answer);
     }
-    assert_eq!(solver(Part1, big_input)?, "943");
+    assert_eq!(solver(Part1, big_input)?, 943);
 
-    let answers2 = ["3", "54", "7", "9", "1", "0", "0", "1"];
+    let answers2 = [3, 54, 7, 9, 1, 0, 0, 1];
     for (input, answer) in inputs2.iter().zip(answers2) {
         assert_eq!(solver(Part2, input)?, answer);
     }
-    assert_eq!(solver(Part2, big_input)?, "167737115857");
+    assert_eq!(solver(Part2, big_input)?, 167737115857);
 
     Ok(())
 }

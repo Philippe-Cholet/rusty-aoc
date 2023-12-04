@@ -4,7 +4,7 @@ use common::prelude::*;
 use utils::OkIterator;
 
 /// Password Philosophy
-pub fn solver(part: Part, input: &str) -> Result<String> {
+pub fn solver(part: Part, input: &str) -> Result<usize> {
     let data = input
         .lines()
         .map(|line| {
@@ -32,8 +32,7 @@ pub fn solver(part: Part, input: &str) -> Result<String> {
                 (pwd.chars().nth(*n1 - 1) == Some(*ch)) ^ (pwd.chars().nth(*n2 - 1) == Some(*ch))
             }
         })
-        .count()
-        .to_string())
+        .count())
 }
 
 pub const INPUTS: [&str; 2] = [
@@ -46,9 +45,9 @@ pub const INPUTS: [&str; 2] = [
 
 #[test]
 fn solver_20_02() -> Result<()> {
-    assert_eq!(solver(Part1, INPUTS[0])?, "2");
-    assert_eq!(solver(Part1, INPUTS[1])?, "564");
-    assert_eq!(solver(Part2, INPUTS[0])?, "1");
-    assert_eq!(solver(Part2, INPUTS[1])?, "325");
+    assert_eq!(solver(Part1, INPUTS[0])?, 2);
+    assert_eq!(solver(Part1, INPUTS[1])?, 564);
+    assert_eq!(solver(Part2, INPUTS[0])?, 1);
+    assert_eq!(solver(Part2, INPUTS[1])?, 325);
     Ok(())
 }

@@ -4,7 +4,7 @@ use common::prelude::*;
 use utils::{permutations_map, OkIterator};
 
 /// All in a Single Night
-pub fn solver(part: Part, input: &str) -> Result<String> {
+pub fn solver(part: Part, input: &str) -> Result<u32> {
     let dists_between_cities = input
         .lines()
         .map(|line| {
@@ -49,12 +49,11 @@ pub fn solver(part: Part, input: &str) -> Result<String> {
             .map(|(u, v)| dists[u][v])
             .sum::<u32>()
     });
-    Ok(match part {
+    match part {
         Part1 => all_dists.min(),
         Part2 => all_dists.max(),
     }
-    .context("No city")?
-    .to_string())
+    .context("No city")
 }
 
 pub const INPUTS: [&str; 2] = [
@@ -68,9 +67,9 @@ Dublin to Belfast = 141
 
 #[test]
 fn solver_15_09() -> Result<()> {
-    assert_eq!(solver(Part1, INPUTS[0])?, "605");
-    assert_eq!(solver(Part1, INPUTS[1])?, "251");
-    assert_eq!(solver(Part2, INPUTS[0])?, "982");
-    assert_eq!(solver(Part2, INPUTS[1])?, "898");
+    assert_eq!(solver(Part1, INPUTS[0])?, 605);
+    assert_eq!(solver(Part1, INPUTS[1])?, 251);
+    assert_eq!(solver(Part2, INPUTS[0])?, 982);
+    assert_eq!(solver(Part2, INPUTS[1])?, 898);
     Ok(())
 }

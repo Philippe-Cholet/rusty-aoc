@@ -2,7 +2,7 @@ use common::prelude::*;
 use utils::OkIterator;
 
 /// Camp Cleanup
-pub fn solver(part: Part, input: &str) -> Result<String> {
+pub fn solver(part: Part, input: &str) -> Result<usize> {
     let assignment_pairs = input
         .lines()
         .map(|line| {
@@ -18,8 +18,7 @@ pub fn solver(part: Part, input: &str) -> Result<String> {
             Part1 => (a.0 <= b.0 && b.1 <= a.1) || (b.0 <= a.0 && a.1 <= b.1),
             Part2 => !(a.1 < b.0 || b.1 < a.0),
         })
-        .count()
-        .to_string())
+        .count())
 }
 
 pub const INPUTS: [&str; 2] = [
@@ -35,9 +34,9 @@ pub const INPUTS: [&str; 2] = [
 
 #[test]
 fn solver_22_04() -> Result<()> {
-    assert_eq!(solver(Part1, INPUTS[0])?, "2");
-    assert_eq!(solver(Part1, INPUTS[1])?, "644");
-    assert_eq!(solver(Part2, INPUTS[0])?, "4");
-    assert_eq!(solver(Part2, INPUTS[1])?, "926");
+    assert_eq!(solver(Part1, INPUTS[0])?, 2);
+    assert_eq!(solver(Part1, INPUTS[1])?, 644);
+    assert_eq!(solver(Part2, INPUTS[0])?, 4);
+    assert_eq!(solver(Part2, INPUTS[1])?, 926);
     Ok(())
 }

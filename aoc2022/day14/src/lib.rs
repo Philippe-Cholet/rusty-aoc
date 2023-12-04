@@ -7,7 +7,7 @@ type Loc = (usize, usize);
 const START: Loc = (500, 0);
 
 /// Regolith Reservoir
-pub fn solver(part: Part, input: &str) -> Result<String> {
+pub fn solver(part: Part, input: &str) -> Result<i32> {
     let rock_lines: Vec<Vec<(usize, usize)>> = input
         .lines()
         .map(|line| {
@@ -44,7 +44,7 @@ pub fn solver(part: Part, input: &str) -> Result<String> {
     let mut occupied = grid::Grid::new(START.0, floor);
     occupied.extend(rocks);
     let mut sand_counter = 0;
-    Ok('pouring: loop {
+    loop {
         let (mut x, mut y) = START;
         loop {
             let pos = [(x, y + 1), (x - 1, y + 1), (x + 1, y + 1)]
@@ -54,14 +54,14 @@ pub fn solver(part: Part, input: &str) -> Result<String> {
             match pos {
                 None => {
                     if part.two() && (x, y) == START {
-                        break 'pouring sand_counter + 1;
+                        return Ok(sand_counter + 1);
                     }
                     break;
                 }
                 Some(p) => {
                     (x, y) = p;
                     if part.one() && !(x_min <= x && x <= x_max && y <= y_max) {
-                        break 'pouring sand_counter;
+                        return Ok(sand_counter);
                     }
                 }
             }
@@ -69,7 +69,6 @@ pub fn solver(part: Part, input: &str) -> Result<String> {
         ensure!(occupied.insert((x, y)), "Sand already there: {:?}", (x, y));
         sand_counter += 1;
     }
-    .to_string())
 }
 
 mod grid {
@@ -127,9 +126,9 @@ pub const INPUTS: [&str; 2] = [
 
 #[test]
 fn solver_22_14() -> Result<()> {
-    assert_eq!(solver(Part1, INPUTS[0])?, "24");
-    assert_eq!(solver(Part1, INPUTS[1])?, "843");
-    assert_eq!(solver(Part2, INPUTS[0])?, "93");
-    assert_eq!(solver(Part2, INPUTS[1])?, "27625");
+    assert_eq!(solver(Part1, INPUTS[0])?, 24);
+    assert_eq!(solver(Part1, INPUTS[1])?, 843);
+    assert_eq!(solver(Part2, INPUTS[0])?, 93);
+    assert_eq!(solver(Part2, INPUTS[1])?, 27625);
     Ok(())
 }

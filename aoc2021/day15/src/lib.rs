@@ -6,7 +6,7 @@ use common::prelude::*;
 use utils::{char10, neighbors, parse_to_grid, HeuristicItem};
 
 /// Chiton
-pub fn solver(part: Part, input: &str) -> Result<String> {
+pub fn solver(part: Part, input: &str) -> Result<u32> {
     let (grid, nrows, ncols) = {
         let mut grid = parse_to_grid(input.lines(), char10::<u32>)?;
         let mut nrows = grid.len();
@@ -55,9 +55,7 @@ pub fn solver(part: Part, input: &str) -> Result<String> {
             }
         }
     }
-    Ok(risks[nrows - 1][ncols - 1]
-        .context("Did not reach the end")?
-        .to_string())
+    risks[nrows - 1][ncols - 1].context("Did not reach the end")
 }
 
 pub const INPUTS: [&str; 2] = [
@@ -77,9 +75,9 @@ pub const INPUTS: [&str; 2] = [
 
 #[test]
 fn solver_21_15() -> Result<()> {
-    assert_eq!(solver(Part1, INPUTS[0])?, "40");
-    assert_eq!(solver(Part1, INPUTS[1])?, "656");
-    assert_eq!(solver(Part2, INPUTS[0])?, "315");
-    assert_eq!(solver(Part2, INPUTS[1])?, "2979");
+    assert_eq!(solver(Part1, INPUTS[0])?, 40);
+    assert_eq!(solver(Part1, INPUTS[1])?, 656);
+    assert_eq!(solver(Part2, INPUTS[0])?, 315);
+    assert_eq!(solver(Part2, INPUTS[1])?, 2979);
     Ok(())
 }

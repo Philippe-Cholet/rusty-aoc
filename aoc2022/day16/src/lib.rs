@@ -8,7 +8,7 @@ use common::{prelude::*, Ok};
 use utils::{HeuristicItem, OkIterator};
 
 /// Proboscidea Volcanium
-pub fn solver(part: Part, input: &str) -> Result<String> {
+pub fn solver(part: Part, input: &str) -> Result<u32> {
     let data = input
         .lines()
         .map(|line| {
@@ -32,8 +32,7 @@ pub fn solver(part: Part, input: &str) -> Result<String> {
     Ok(match part {
         Part1 => best_pressure::<1>(&rates, &distances, 30),
         Part2 => best_pressure::<2>(&rates, &distances, 26),
-    }
-    .to_string())
+    })
 }
 
 fn valuable_valves(data: &[(&str, u32, Vec<&str>)]) -> Result<(Vec<u32>, Vec<Vec<u32>>)> {
@@ -230,9 +229,9 @@ Valve JJ has flow rate=21; tunnel leads to valve II
 
 #[test]
 fn solver_22_16() -> Result<()> {
-    assert_eq!(solver(Part1, INPUTS[0])?, "1651");
-    assert_eq!(solver(Part1, INPUTS[1])?, "2059");
-    assert_eq!(solver(Part2, INPUTS[0])?, "1707");
-    assert_eq!(solver(Part2, INPUTS[1])?, "2790");
+    assert_eq!(solver(Part1, INPUTS[0])?, 1651);
+    assert_eq!(solver(Part1, INPUTS[1])?, 2059);
+    assert_eq!(solver(Part2, INPUTS[0])?, 1707);
+    assert_eq!(solver(Part2, INPUTS[1])?, 2790);
     Ok(())
 }

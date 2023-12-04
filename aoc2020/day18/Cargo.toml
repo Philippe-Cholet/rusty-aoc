@@ -16,4 +16,3 @@ itertools.workspace = true
 pest.workspace = true
 pest_derive.workspace = true
 common = { path = "../../common" }
-utils = { path = "../../utils" }

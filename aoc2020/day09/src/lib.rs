@@ -4,15 +4,14 @@ use common::prelude::*;
 use utils::OkIterator;
 
 /// Encoding Error
-pub fn solver(part: Part, input: &str) -> Result<String> {
+pub fn solver(part: Part, input: &str) -> Result<u64> {
     let xmas: Vec<u64> = input.lines().map(str::parse).ok_collect()?;
     let invalid_idx = get_invalid(&xmas, 25).context("No invalid number")?;
-    Ok(match part {
-        Part1 => xmas[invalid_idx],
+    match part {
+        Part1 => Ok(xmas[invalid_idx]),
         Part2 => get_contiguous_set(&xmas, invalid_idx)
-            .context("No contiguous set that sums to the invalid number")?,
+            .context("No contiguous set that sums to the invalid number"),
     }
-    .to_string())
 }
 
 fn get_invalid(xmas: &[u64], n: usize) -> Option<usize> {
@@ -47,8 +46,8 @@ pub const INPUTS: [&str; 1] = [include_str!("input.txt")];
 
 #[test]
 fn solver_20_09() -> Result<()> {
-    assert_eq!(solver(Part1, INPUTS[0])?, "10884537");
-    assert_eq!(solver(Part2, INPUTS[0])?, "1261309");
+    assert_eq!(solver(Part1, INPUTS[0])?, 10884537);
+    assert_eq!(solver(Part2, INPUTS[0])?, 1261309);
     Ok(())
 }
 

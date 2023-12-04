@@ -2,7 +2,7 @@ use common::prelude::*;
 use utils::{char10, neighbors, parse_to_grid};
 
 /// Dumbo Octopus
-pub fn solver(part: Part, input: &str) -> Result<String> {
+pub fn solver(part: Part, input: &str) -> Result<usize> {
     let mut grid = parse_to_grid(input.lines(), char10)?;
     let ncols = grid.first().context("Empty grid")?.len();
     let nrows = grid.len();
@@ -14,7 +14,7 @@ pub fn solver(part: Part, input: &str) -> Result<String> {
     let mut stack = vec![];
     let mut been = HashSet::new();
     let mut step = 0;
-    let result = loop {
+    Ok(loop {
         step += 1;
         debug_assert!(stack.is_empty() && been.is_empty());
         for (r, row) in grid.iter_mut().enumerate() {
@@ -62,8 +62,7 @@ pub fn solver(part: Part, input: &str) -> Result<String> {
             _ => {}
         }
         been.clear();
-    };
-    Ok(result.to_string())
+    })
 }
 
 pub const INPUTS: [&str; 2] = [
@@ -83,9 +82,9 @@ pub const INPUTS: [&str; 2] = [
 
 #[test]
 fn solver_21_11() -> Result<()> {
-    assert_eq!(solver(Part1, INPUTS[0])?, "1656");
-    assert_eq!(solver(Part1, INPUTS[1])?, "1617");
-    assert_eq!(solver(Part2, INPUTS[0])?, "195");
-    assert_eq!(solver(Part2, INPUTS[1])?, "258");
+    assert_eq!(solver(Part1, INPUTS[0])?, 1656);
+    assert_eq!(solver(Part1, INPUTS[1])?, 1617);
+    assert_eq!(solver(Part2, INPUTS[0])?, 195);
+    assert_eq!(solver(Part2, INPUTS[1])?, 258);
     Ok(())
 }

@@ -42,16 +42,15 @@ const fn sum_divisors_with_upperbound(n: u32, upper_bound: u32) -> u32 {
 }
 
 /// Infinite Elves and Infinite Houses
-pub fn solver(part: Part, input: &str) -> Result<String> {
+pub fn solver(part: Part, input: &str) -> Result<u32> {
     let n: u32 = input.trim_end().parse()?;
     // Commented out code works just fine but is a bit slow.
-    // Ok((0..=u32::MAX)
+    // (0..=u32::MAX)
     //     .find(|&k| match part {
     //         Part1 => 10 * sum_divisors(k),
     //         Part2 => 11 * sum_divisors_with_upperbound(k, 50),
     //     } >= n)
-    //     .context("No u32 solution")?
-    // .to_string())
+    //     .context("No u32 solution")
     let sum_lower_bound = n / part.value(10, 11);
     // Compute `solution_lower_bound` is fast and it cuts off
     // the section `0..solution_lower_bound` of the search below.
@@ -61,13 +60,12 @@ pub fn solver(part: Part, input: &str) -> Result<String> {
     // Part 1: 736_811 (for a solution below of 831_600).
     // Part 2: 671_426 (for a solution below of 884_520).
     // So respectively 88% and 75% of the search is cut off.
-    Ok((solution_lower_bound..=u32::MAX)
+    (solution_lower_bound..=u32::MAX)
         .find(|&k| match part {
             Part1 => sum_divisors(k),
             Part2 => sum_divisors_with_upperbound(k, 50),
         } >= sum_lower_bound)
-        .context("No u32 solution")?
-        .to_string())
+        .context("No u32 solution")
 }
 
 /// See [wikipedia](https://en.wikipedia.org/wiki/Euler's_constant).
@@ -109,7 +107,7 @@ pub const INPUTS: [&str; 1] = [include_str!("input.txt")];
 
 #[test]
 fn solver_15_20() -> Result<()> {
-    assert_eq!(solver(Part1, INPUTS[0])?, "831600");
-    assert_eq!(solver(Part2, INPUTS[0])?, "884520");
+    assert_eq!(solver(Part1, INPUTS[0])?, 831600);
+    assert_eq!(solver(Part2, INPUTS[0])?, 884520);
     Ok(())
 }

@@ -2,8 +2,8 @@ use common::prelude::*;
 use utils::OkIterator;
 
 /// I Was Told There Would Be No Math
-pub fn solver(part: Part, input: &str) -> Result<String> {
-    Ok(input
+pub fn solver(part: Part, input: &str) -> Result<u32> {
+    input
         .lines()
         .map(|line| {
             line.split('x')
@@ -19,15 +19,14 @@ pub fn solver(part: Part, input: &str) -> Result<String> {
                     }
                 })
         })
-        .ok_sum::<u32>()?
-        .to_string())
+        .sum()
 }
 
 pub const INPUTS: [&str; 1] = [include_str!("input.txt")];
 
 #[test]
 fn solver_15_02() -> Result<()> {
-    assert_eq!(solver(Part1, INPUTS[0])?, "1586300");
-    assert_eq!(solver(Part2, INPUTS[0])?, "3737498");
+    assert_eq!(solver(Part1, INPUTS[0])?, 1586300);
+    assert_eq!(solver(Part2, INPUTS[0])?, 3737498);
     Ok(())
 }

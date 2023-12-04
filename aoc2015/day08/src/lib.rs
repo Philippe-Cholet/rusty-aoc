@@ -2,8 +2,8 @@ use common::prelude::*;
 use utils::OkIterator;
 
 /// Matchsticks
-pub fn solver(part: Part, input: &str) -> Result<String> {
-    Ok(input
+pub fn solver(part: Part, input: &str) -> Result<usize> {
+    input
         .lines()
         .map(|s| match part {
             Part1 => {
@@ -33,8 +33,7 @@ pub fn solver(part: Part, input: &str) -> Result<String> {
             }
             Part2 => Ok(format!("{s:?}").len() - s.len()),
         })
-        .ok_sum::<usize>()?
-        .to_string())
+        .sum()
 }
 
 pub const INPUTS: [&str; 2] = [
@@ -48,9 +47,9 @@ pub const INPUTS: [&str; 2] = [
 
 #[test]
 fn solver_15_08() -> Result<()> {
-    assert_eq!(solver(Part1, INPUTS[0])?, "12");
-    assert_eq!(solver(Part1, INPUTS[1])?, "1371");
-    assert_eq!(solver(Part2, INPUTS[0])?, "19");
-    assert_eq!(solver(Part2, INPUTS[1])?, "2117");
+    assert_eq!(solver(Part1, INPUTS[0])?, 12);
+    assert_eq!(solver(Part1, INPUTS[1])?, 1371);
+    assert_eq!(solver(Part2, INPUTS[0])?, 19);
+    assert_eq!(solver(Part2, INPUTS[1])?, 2117);
     Ok(())
 }

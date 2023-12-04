@@ -3,8 +3,8 @@ use serde_json::Value;
 use common::prelude::*;
 
 /// JSAbacusFramework.io
-pub fn solver(part: Part, input: &str) -> Result<String> {
-    Ok(sum_ints(&input.parse()?, part.two())?.to_string())
+pub fn solver(part: Part, input: &str) -> Result<i64> {
+    sum_ints(&input.parse()?, part.two())
 }
 
 fn sum_ints(data: &Value, not_reds: bool) -> Result<i64> {
@@ -44,12 +44,12 @@ pub const INPUTS: [&str; 12] = [
 #[test]
 fn solver_15_12() -> Result<()> {
     for (input, answer) in INPUTS.into_iter().zip([6, 6, 3, 3, 0, 0, 0, 0]) {
-        assert_eq!(solver(Part1, input)?, answer.to_string());
+        assert_eq!(solver(Part1, input)?, answer);
     }
-    assert_eq!(solver(Part1, INPUTS[11])?, "156366");
+    assert_eq!(solver(Part1, INPUTS[11])?, 156366);
     for (idx, answer) in [0, 8, 9, 10].into_iter().zip([6, 4, 0, 6]) {
-        assert_eq!(solver(Part2, INPUTS[idx])?, answer.to_string());
+        assert_eq!(solver(Part2, INPUTS[idx])?, answer);
     }
-    assert_eq!(solver(Part2, INPUTS[11])?, "96852");
+    assert_eq!(solver(Part2, INPUTS[11])?, 96852);
     Ok(())
 }

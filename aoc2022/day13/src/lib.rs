@@ -69,7 +69,7 @@ impl Ord for Packet {
 }
 
 /// Distress Signal
-pub fn solver(part: Part, input: &str) -> Result<String> {
+pub fn solver(part: Part, input: &str) -> Result<usize> {
     Ok(match part {
         Part1 => input
             .split("\n\n")
@@ -102,8 +102,7 @@ pub fn solver(part: Part, input: &str) -> Result<String> {
                     .position(|p| p == &packet6)
                     .context("Did not find packet6")?)
         }
-    }
-    .to_string())
+    })
 }
 
 pub const INPUTS: [&str; 2] = [
@@ -136,9 +135,9 @@ pub const INPUTS: [&str; 2] = [
 
 #[test]
 fn solver_22_13() -> Result<()> {
-    assert_eq!(solver(Part1, INPUTS[0])?, "13");
-    assert_eq!(solver(Part1, INPUTS[1])?, "5555");
-    assert_eq!(solver(Part2, INPUTS[0])?, "140");
-    assert_eq!(solver(Part2, INPUTS[1])?, "22852");
+    assert_eq!(solver(Part1, INPUTS[0])?, 13);
+    assert_eq!(solver(Part1, INPUTS[1])?, 5555);
+    assert_eq!(solver(Part2, INPUTS[0])?, 140);
+    assert_eq!(solver(Part2, INPUTS[1])?, 22852);
     Ok(())
 }

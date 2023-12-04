@@ -226,7 +226,7 @@ fn find_position_after_void_v2(
 }
 
 /// Monkey Map
-pub fn solver(part: Part, input: &str) -> Result<String> {
+pub fn solver(part: Part, input: &str) -> Result<usize> {
     let (grid, line) = input
         .trim_end()
         .split_once("\n\n")
@@ -268,8 +268,7 @@ pub fn solver(part: Part, input: &str) -> Result<String> {
         Part1 => follow_instructions(&instructions, &grid)?,
         Part2 => follow_instructions_v2(&instructions, &grid)?,
     };
-    let result = 1000 * r + 4 * c + d.facing();
-    Ok(result.to_string())
+    Ok(1000 * r + 4 * c + d.facing())
 }
 
 pub const INPUTS: [&str; 2] = [
@@ -293,10 +292,10 @@ pub const INPUTS: [&str; 2] = [
 
 #[test]
 fn solver_22_22() -> Result<()> {
-    assert_eq!(solver(Part1, INPUTS[0])?, "6032");
-    assert_eq!(solver(Part1, INPUTS[1])?, "30552");
+    assert_eq!(solver(Part1, INPUTS[0])?, 6032);
+    assert_eq!(solver(Part1, INPUTS[1])?, 30552);
     // This does not pass tests yet as my implementation relies on my input layout and size.
-    // assert_eq!(solver(Part2, INPUTS[0])?, "5031");
-    assert_eq!(solver(Part2, INPUTS[1])?, "184106");
+    // assert_eq!(solver(Part2, INPUTS[0])?, 5031);
+    assert_eq!(solver(Part2, INPUTS[1])?, 184106);
     Ok(())
 }

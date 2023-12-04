@@ -1,8 +1,8 @@
 use common::prelude::*;
 
 /// Binary Diagnostic
-pub fn solver(part: Part, input: &str) -> Result<String> {
-    let result: u32 = match part {
+pub fn solver(part: Part, input: &str) -> Result<u32> {
+    Ok(match part {
         Part1 => {
             let mut counts = vec![];
             for line in input.lines() {
@@ -59,8 +59,7 @@ pub fn solver(part: Part, input: &str) -> Result<String> {
             let co2_scrubber = get_rating(lines, |n0, n1| n1 < n0)?;
             oxygen_generator * co2_scrubber // life_support
         }
-    };
-    Ok(result.to_string())
+    })
 }
 
 pub const INPUTS: [&str; 2] = [
@@ -82,9 +81,9 @@ pub const INPUTS: [&str; 2] = [
 
 #[test]
 fn solver_21_03() -> Result<()> {
-    assert_eq!(solver(Part1, INPUTS[0])?, "198");
-    assert_eq!(solver(Part1, INPUTS[1])?, "3958484");
-    assert_eq!(solver(Part2, INPUTS[0])?, "230");
-    assert_eq!(solver(Part2, INPUTS[1])?, "1613181");
+    assert_eq!(solver(Part1, INPUTS[0])?, 198);
+    assert_eq!(solver(Part1, INPUTS[1])?, 3958484);
+    assert_eq!(solver(Part2, INPUTS[0])?, 230);
+    assert_eq!(solver(Part2, INPUTS[1])?, 1613181);
     Ok(())
 }

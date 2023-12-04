@@ -4,7 +4,7 @@ use common::prelude::*;
 use utils::{permutations_map, OkIterator};
 
 /// Knights of the Dinner Table
-pub fn solver(part: Part, input: &str) -> Result<String> {
+pub fn solver(part: Part, input: &str) -> Result<i32> {
     let data = input
         .lines()
         .map(|line| {
@@ -34,15 +34,14 @@ pub fn solver(part: Part, input: &str) -> Result<String> {
     for (src, dst, happiness) in data {
         happinesses[name2idx[&src]][name2idx[&dst]] = happiness;
     }
-    Ok(permutations_map(&mut (0..nb_people).collect_vec(), |idxs| {
+    permutations_map(&mut (0..nb_people).collect_vec(), |idxs| {
         idxs.iter()
             .circular_tuple_windows()
             .map(|(src, dst)| happinesses[*src][*dst] + happinesses[*dst][*src])
             .sum::<i32>()
     })
     .max()
-    .context("No people around the rable")?
-    .to_string())
+    .context("No people around the rable")
 }
 
 pub const INPUTS: [&str; 2] = [
@@ -65,8 +64,8 @@ David would gain 41 happiness units by sitting next to Carol.
 
 #[test]
 fn solver_15_13() -> Result<()> {
-    assert_eq!(solver(Part1, INPUTS[0])?, "330");
-    assert_eq!(solver(Part1, INPUTS[1])?, "618");
-    assert_eq!(solver(Part2, INPUTS[1])?, "601");
+    assert_eq!(solver(Part1, INPUTS[0])?, 330);
+    assert_eq!(solver(Part1, INPUTS[1])?, 618);
+    assert_eq!(solver(Part2, INPUTS[1])?, 601);
     Ok(())
 }

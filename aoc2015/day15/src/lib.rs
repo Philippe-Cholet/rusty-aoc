@@ -2,7 +2,7 @@ use common::prelude::*;
 use utils::OkIterator;
 
 /// Science for Hungry People
-pub fn solver(part: Part, input: &str) -> Result<String> {
+pub fn solver(part: Part, input: &str) -> Result<i32> {
     let data = input
         .lines()
         .map(|line| {
@@ -36,7 +36,6 @@ pub fn solver(part: Part, input: &str) -> Result<String> {
         4 => highest_score::<4>(part.one(), &data),
         _ => bail!("Currently only 2 or 4 ingredients are allowed!"),
     }
-    .map(|score| score.to_string())
     .context("No valid recipe")
 }
 
@@ -83,9 +82,9 @@ Cinnamon: capacity 2, durability 3, flavor -2, texture -1, calories 3
 
 #[test]
 fn solver_15_15() -> Result<()> {
-    assert_eq!(solver(Part1, INPUTS[0])?, "62842880");
-    assert_eq!(solver(Part1, INPUTS[1])?, "13882464");
-    assert_eq!(solver(Part2, INPUTS[0])?, "57600000");
-    assert_eq!(solver(Part2, INPUTS[1])?, "11171160");
+    assert_eq!(solver(Part1, INPUTS[0])?, 62842880);
+    assert_eq!(solver(Part1, INPUTS[1])?, 13882464);
+    assert_eq!(solver(Part2, INPUTS[0])?, 57600000);
+    assert_eq!(solver(Part2, INPUTS[1])?, 11171160);
     Ok(())
 }

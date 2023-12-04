@@ -1,16 +1,15 @@
 use std::ops::{BitAnd, BitOr};
 
 use common::prelude::*;
-use utils::OkIterator;
 
 /// Custom Customs
-pub fn solver(part: Part, input: &str) -> Result<String> {
+pub fn solver(part: Part, input: &str) -> Result<u32> {
     ensure!(
         input.chars().all(|ch| matches!(ch, 'a'..='z' | '\n')),
         "Not a-z",
     );
     // The first 26 bits of u32 represent the set of the 26 chars "a..=z".
-    Ok(input
+    input
         .split("\n\n")
         .map(|group| {
             group
@@ -23,8 +22,7 @@ pub fn solver(part: Part, input: &str) -> Result<String> {
                 .map(u32::count_ones) // Count the chars.
                 .context("Empty group")
         })
-        .ok_sum::<u32>()?
-        .to_string())
+        .sum()
 }
 
 pub const INPUTS: [&str; 2] = [
@@ -34,9 +32,9 @@ pub const INPUTS: [&str; 2] = [
 
 #[test]
 fn solver_20_06() -> Result<()> {
-    assert_eq!(solver(Part1, INPUTS[0])?, "11");
-    assert_eq!(solver(Part1, INPUTS[1])?, "6748");
-    assert_eq!(solver(Part2, INPUTS[0])?, "6");
-    assert_eq!(solver(Part2, INPUTS[1])?, "3445");
+    assert_eq!(solver(Part1, INPUTS[0])?, 11);
+    assert_eq!(solver(Part1, INPUTS[1])?, 6748);
+    assert_eq!(solver(Part2, INPUTS[0])?, 6);
+    assert_eq!(solver(Part2, INPUTS[1])?, 3445);
     Ok(())
 }

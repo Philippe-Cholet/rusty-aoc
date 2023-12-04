@@ -2,13 +2,13 @@ use common::prelude::*;
 use utils::OkIterator;
 
 /// Crab Combat
-pub fn solver(part: Part, input: &str) -> Result<String> {
+pub fn solver(part: Part, input: &str) -> Result<usize> {
     let mut ferris_combat: DeckGame = input.parse()?;
     let am_i_winning = match part {
         Part1 => ferris_combat.combat(),
         Part2 => ferris_combat.recursive_combat(),
     };
-    Ok(ferris_combat.score(am_i_winning).to_string())
+    Ok(ferris_combat.score(am_i_winning))
 }
 
 #[derive(Debug)]
@@ -124,9 +124,9 @@ pub const INPUTS: [&str; 2] = [
 
 #[test]
 fn solver_20_22() -> Result<()> {
-    assert_eq!(solver(Part1, INPUTS[0])?, "306");
-    assert_eq!(solver(Part1, INPUTS[1])?, "29764");
-    assert_eq!(solver(Part2, INPUTS[0])?, "291");
-    assert_eq!(solver(Part2, INPUTS[1])?, "32588");
+    assert_eq!(solver(Part1, INPUTS[0])?, 306);
+    assert_eq!(solver(Part1, INPUTS[1])?, 29764);
+    assert_eq!(solver(Part2, INPUTS[0])?, 291);
+    assert_eq!(solver(Part2, INPUTS[1])?, 32588);
     Ok(())
 }

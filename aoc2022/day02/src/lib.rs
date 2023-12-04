@@ -1,5 +1,4 @@
 use common::prelude::*;
-use utils::OkIterator;
 
 use Outcome::{Draw, Lose, Win};
 use Shape::{Paper, Rock, Scissors};
@@ -53,8 +52,8 @@ impl Outcome {
 }
 
 /// Rock Paper Scissors
-pub fn solver(part: Part, input: &str) -> Result<String> {
-    Ok(input
+pub fn solver(part: Part, input: &str) -> Result<u32> {
+    input
         .lines()
         .map(|line| {
             let (abc, xyz) = line.split_once(' ').context("No space")?;
@@ -75,17 +74,16 @@ pub fn solver(part: Part, input: &str) -> Result<String> {
             };
             Ok(me.fight_outcome(&elf).score() + me.score())
         })
-        .ok_sum::<u32>()?
-        .to_string())
+        .sum()
 }
 
 pub const INPUTS: [&str; 2] = ["A Y\nB X\nC Z\n", include_str!("input.txt")];
 
 #[test]
 fn solver_22_02() -> Result<()> {
-    assert_eq!(solver(Part1, INPUTS[0])?, "15");
-    assert_eq!(solver(Part1, INPUTS[1])?, "11767");
-    assert_eq!(solver(Part2, INPUTS[0])?, "12");
-    assert_eq!(solver(Part2, INPUTS[1])?, "13886");
+    assert_eq!(solver(Part1, INPUTS[0])?, 15);
+    assert_eq!(solver(Part1, INPUTS[1])?, 11767);
+    assert_eq!(solver(Part2, INPUTS[0])?, 12);
+    assert_eq!(solver(Part2, INPUTS[1])?, 13886);
     Ok(())
 }

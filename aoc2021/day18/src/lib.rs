@@ -309,8 +309,8 @@ mod tests {
 }
 
 /// Snailfish
-pub fn solver(part: Part, input: &str) -> Result<String> {
-    let result = match part {
+pub fn solver(part: Part, input: &str) -> Result<u32> {
+    Ok(match part {
         Part1 => input
             .lines()
             .map(str::parse)
@@ -323,8 +323,7 @@ pub fn solver(part: Part, input: &str) -> Result<String> {
             .map(|(a, b)| common::Ok((a.parse::<Snailfish>()? + b.parse()?).magnitude()))
             .ok_max()?
             .context("empty input")?,
-    };
-    Ok(result.to_string())
+    })
 }
 
 pub const INPUTS: [&str; 2] = [
@@ -344,9 +343,9 @@ pub const INPUTS: [&str; 2] = [
 
 #[test]
 fn solver_21_18() -> Result<()> {
-    assert_eq!(solver(Part1, INPUTS[0])?, "4140");
-    assert_eq!(solver(Part1, INPUTS[1])?, "4347");
-    assert_eq!(solver(Part2, INPUTS[0])?, "3993");
-    assert_eq!(solver(Part2, INPUTS[1])?, "4721");
+    assert_eq!(solver(Part1, INPUTS[0])?, 4140);
+    assert_eq!(solver(Part1, INPUTS[1])?, 4347);
+    assert_eq!(solver(Part2, INPUTS[0])?, 3993);
+    assert_eq!(solver(Part2, INPUTS[1])?, 4721);
     Ok(())
 }

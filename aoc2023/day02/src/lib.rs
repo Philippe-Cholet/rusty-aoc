@@ -3,8 +3,8 @@ use itertools::Itertools;
 use common::prelude::*;
 
 /// Cube Conundrum
-pub fn solver(part: Part, input: &str) -> Result<String> {
-    Ok(input
+pub fn solver(part: Part, input: &str) -> Result<u32> {
+    input
         .lines()
         .map(|line| {
             let (game, line) = line.split_once(": ").context("colon delimiter")?;
@@ -33,10 +33,9 @@ pub fn solver(part: Part, input: &str) -> Result<String> {
         .process_results(|it| match part {
             Part1 => it
                 .filter_map(|(id, [r, g, b])| (r <= 12 && g <= 13 && b <= 14).then_some(id))
-                .sum::<u32>(),
+                .sum(),
             Part2 => it.map(|(_, [r, g, b])| r * g * b).sum(),
-        })?
-        .to_string())
+        })
 }
 
 pub const INPUTS: [&str; 2] = [
@@ -52,9 +51,9 @@ Game 5: 6 red, 1 blue, 3 green; 2 blue, 1 red, 2 green
 
 #[test]
 fn solver_23_02() -> Result<()> {
-    assert_eq!(solver(Part1, INPUTS[0])?, "8");
-    assert_eq!(solver(Part1, INPUTS[1])?, "2685");
-    assert_eq!(solver(Part2, INPUTS[0])?, "2286");
-    assert_eq!(solver(Part2, INPUTS[1])?, "83707");
+    assert_eq!(solver(Part1, INPUTS[0])?, 8);
+    assert_eq!(solver(Part1, INPUTS[1])?, 2685);
+    assert_eq!(solver(Part2, INPUTS[0])?, 2286);
+    assert_eq!(solver(Part2, INPUTS[1])?, 83707);
     Ok(())
 }

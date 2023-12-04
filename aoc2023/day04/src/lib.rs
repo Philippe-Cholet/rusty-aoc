@@ -3,7 +3,7 @@ use itertools::Itertools;
 use common::prelude::*;
 
 /// Scratchcards
-pub fn solver(part: Part, input: &str) -> Result<String> {
+pub fn solver(part: Part, input: &str) -> Result<u32> {
     let data: Vec<u8> = input
         .lines()
         .enumerate()
@@ -25,7 +25,7 @@ pub fn solver(part: Part, input: &str) -> Result<String> {
         Part1 => data
             .iter()
             .filter_map(|n| n.checked_sub(1).map(|times_doubled| 1u32 << times_doubled))
-            .sum::<u32>(),
+            .sum(),
         Part2 => {
             let mut counts = vec![1; data.len()];
             for (idx, new_cards) in data.iter().enumerate().rev() {
@@ -36,8 +36,7 @@ pub fn solver(part: Part, input: &str) -> Result<String> {
             }
             counts.into_iter().sum()
         }
-    }
-    .to_string())
+    })
 }
 
 pub const INPUTS: [&str; 2] = [
@@ -54,9 +53,9 @@ Card 6: 31 18 13 56 72 | 74 77 10 23 35 67 36 11
 
 #[test]
 fn solver_23_04() -> Result<()> {
-    assert_eq!(solver(Part1, INPUTS[0])?, "13");
-    assert_eq!(solver(Part1, INPUTS[1])?, "17803");
-    assert_eq!(solver(Part2, INPUTS[0])?, "30");
-    assert_eq!(solver(Part2, INPUTS[1])?, "5554894");
+    assert_eq!(solver(Part1, INPUTS[0])?, 13);
+    assert_eq!(solver(Part1, INPUTS[1])?, 17803);
+    assert_eq!(solver(Part2, INPUTS[0])?, 30);
+    assert_eq!(solver(Part2, INPUTS[1])?, 5554894);
     Ok(())
 }

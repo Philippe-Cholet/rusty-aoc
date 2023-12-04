@@ -128,7 +128,7 @@ impl WorryManagement {
 }
 
 /// Monkey in the Middle
-pub fn solver(part: Part, input: &str) -> Result<String> {
+pub fn solver(part: Part, input: &str) -> Result<usize> {
     let mut monkeys: Vec<Monkey> = input.split("\n\n").map(str::parse).ok_collect()?;
     ensure!(
         monkeys.iter().enumerate().all(|(i, m)| i == m.index),
@@ -173,7 +173,7 @@ pub fn solver(part: Part, input: &str) -> Result<String> {
         }
         */
     }
-    let result: usize = monkeys
+    Ok(monkeys
         .into_iter()
         .map(|m| m.inspected_items)
         // https://github.com/rust-itertools/itertools/issues/586
@@ -181,8 +181,7 @@ pub fn solver(part: Part, input: &str) -> Result<String> {
         .map(std::cmp::Reverse) // reverse comparisons
         .k_smallest(2) // get smallests
         .map(|rev| rev.0) // unpack reversed
-        .product();
-    Ok(result.to_string())
+        .product())
 }
 
 pub const INPUTS: [&str; 2] = [
@@ -219,9 +218,9 @@ Monkey 3:
 
 #[test]
 fn solver_22_11() -> Result<()> {
-    assert_eq!(solver(Part1, INPUTS[0])?, "10605");
-    assert_eq!(solver(Part1, INPUTS[1])?, "99852");
-    assert_eq!(solver(Part2, INPUTS[0])?, "2713310158");
-    assert_eq!(solver(Part2, INPUTS[1])?, "25935263541");
+    assert_eq!(solver(Part1, INPUTS[0])?, 10605);
+    assert_eq!(solver(Part1, INPUTS[1])?, 99852);
+    assert_eq!(solver(Part2, INPUTS[0])?, 2713310158);
+    assert_eq!(solver(Part2, INPUTS[1])?, 25935263541);
     Ok(())
 }

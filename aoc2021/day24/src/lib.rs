@@ -2,7 +2,7 @@
 use common::prelude::*;
 
 /// Arithmetic Logic Unit
-pub fn solver(part: Part, input: &str) -> Result<String> {
+pub fn solver(part: Part, input: &str) -> Result<u64> {
     let pattern = parser::check_input(input)?;
     let ds = deductions::get_possibilities(pattern)?;
     if cfg!(debug_assertions) {
@@ -18,15 +18,15 @@ pub fn solver(part: Part, input: &str) -> Result<String> {
     let model_number = model_digits
         .into_iter()
         .fold(0u64, |res, digit| res * 10 + digit as u64);
-    Ok(model_number.to_string())
+    Ok(model_number)
 }
 
 pub const INPUTS: [&str; 1] = [include_str!("input.txt")];
 
 #[test]
 fn solver_21_24() -> Result<()> {
-    assert_eq!(solver(Part1, INPUTS[0])?, "99919692496939");
-    assert_eq!(solver(Part2, INPUTS[0])?, "81914111161714");
+    assert_eq!(solver(Part1, INPUTS[0])?, 99919692496939);
+    assert_eq!(solver(Part2, INPUTS[0])?, 81914111161714);
     Ok(())
 }
 

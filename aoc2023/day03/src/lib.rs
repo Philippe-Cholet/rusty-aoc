@@ -4,7 +4,7 @@ use common::prelude::*;
 use utils::neighbors;
 
 /// Gear Ratios
-pub fn solver(part: Part, input: &str) -> Result<String> {
+pub fn solver(part: Part, input: &str) -> Result<u32> {
     // Collect numbers and location of each symbol.
     let mut numbers = Vec::new();
     let mut symbols = HashMap::new();
@@ -49,7 +49,7 @@ pub fn solver(part: Part, input: &str) -> Result<String> {
             })
             .unique()
             .map(|idx| numbers[idx])
-            .sum::<u32>(),
+            .sum(),
         // Neighboring numbers of stars, multiply & sum.
         Part2 => {
             // A symbol could have up to 6 neighboring numbers.
@@ -73,8 +73,7 @@ pub fn solver(part: Part, input: &str) -> Result<String> {
                 })
                 .sum()
         }
-    }
-    .to_string())
+    })
 }
 
 pub const INPUTS: [&str; 2] = [
@@ -95,9 +94,9 @@ pub const INPUTS: [&str; 2] = [
 
 #[test]
 fn solver_23_03() -> Result<()> {
-    assert_eq!(solver(Part1, INPUTS[0])?, "4361");
-    assert_eq!(solver(Part1, INPUTS[1])?, "527364");
-    assert_eq!(solver(Part2, INPUTS[0])?, "467835");
-    assert_eq!(solver(Part2, INPUTS[1])?, "79026871");
+    assert_eq!(solver(Part1, INPUTS[0])?, 4361);
+    assert_eq!(solver(Part1, INPUTS[1])?, 527364);
+    assert_eq!(solver(Part2, INPUTS[0])?, 467835);
+    assert_eq!(solver(Part2, INPUTS[1])?, 79026871);
     Ok(())
 }

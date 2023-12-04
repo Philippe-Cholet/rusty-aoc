@@ -1,12 +1,11 @@
 use itertools::Itertools;
 
 use common::prelude::*;
-use utils::OkIterator;
 
 const AZAZ: &str = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
 
 /// Rucksack Reorganization
-pub fn solver(part: Part, input: &str) -> Result<String> {
+pub fn solver(part: Part, input: &str) -> Result<usize> {
     let priority = |ch| Ok(AZAZ.find(ch).context("Not a-zA-Z")? + 1);
     let common_item = |h1: HashSet<_>, h2| {
         h1.intersection(&h2)
@@ -15,7 +14,7 @@ pub fn solver(part: Part, input: &str) -> Result<String> {
             .copied()
             .context("The intersection is not of a single item")
     };
-    Ok(match part {
+    match part {
         Part1 => input
             .lines()
             .map(|line| {
@@ -25,7 +24,7 @@ pub fn solver(part: Part, input: &str) -> Result<String> {
                 let h2 = line[n / 2..n].chars().collect();
                 priority(common_item(h1, h2)?)
             })
-            .ok_sum::<usize>()?,
+            .sum(),
         Part2 => input
             .lines()
             .chunks(3)
@@ -37,9 +36,8 @@ pub fn solver(part: Part, input: &str) -> Result<String> {
                     .context("Not a chunk of 3 lines")?;
                 priority(common_item(h1, &h2 & &h3)?)
             })
-            .ok_sum()?,
+            .sum(),
     }
-    .to_string())
 }
 
 pub const INPUTS: [&str; 2] = [
@@ -55,9 +53,9 @@ CrZsJsPPZsGzwwsLwLmpwMDw
 
 #[test]
 fn solver_22_03() -> Result<()> {
-    assert_eq!(solver(Part1, INPUTS[0])?, "157");
-    assert_eq!(solver(Part1, INPUTS[1])?, "7997");
-    assert_eq!(solver(Part2, INPUTS[0])?, "70");
-    assert_eq!(solver(Part2, INPUTS[1])?, "2545");
+    assert_eq!(solver(Part1, INPUTS[0])?, 157);
+    assert_eq!(solver(Part1, INPUTS[1])?, 7997);
+    assert_eq!(solver(Part2, INPUTS[0])?, 70);
+    assert_eq!(solver(Part2, INPUTS[1])?, 2545);
     Ok(())
 }

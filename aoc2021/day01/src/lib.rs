@@ -4,7 +4,7 @@ use common::prelude::*;
 use utils::OkIterator;
 
 /// Sonar Sweep
-pub fn solver(part: Part, input: &str) -> Result<String> {
+pub fn solver(part: Part, input: &str) -> Result<usize> {
     let mut v: Vec<u32> = input.lines().map(str::parse).ok_collect()?;
     if part.two() {
         v = v
@@ -14,8 +14,7 @@ pub fn solver(part: Part, input: &str) -> Result<String> {
             .collect();
     }
     let pairs = v.iter().tuple_windows();
-    let res = pairs.filter(|(a, b)| a < b).count();
-    Ok(res.to_string())
+    Ok(pairs.filter(|(a, b)| a < b).count())
 }
 
 pub const INPUTS: [&str; 2] = [
@@ -35,9 +34,9 @@ pub const INPUTS: [&str; 2] = [
 
 #[test]
 fn solver_21_01() -> Result<()> {
-    assert_eq!(solver(Part1, INPUTS[0])?, "7");
-    assert_eq!(solver(Part1, INPUTS[1])?, "1665");
-    assert_eq!(solver(Part2, INPUTS[0])?, "5");
-    assert_eq!(solver(Part2, INPUTS[1])?, "1702");
+    assert_eq!(solver(Part1, INPUTS[0])?, 7);
+    assert_eq!(solver(Part1, INPUTS[1])?, 1665);
+    assert_eq!(solver(Part2, INPUTS[0])?, 5);
+    assert_eq!(solver(Part2, INPUTS[1])?, 1702);
     Ok(())
 }

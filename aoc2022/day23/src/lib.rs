@@ -106,7 +106,7 @@ fn display_grid(grid: &[Vec<bool>]) {
 }
 
 /// Unstable Diffusion
-pub fn solver(part: Part, input: &str) -> Result<String> {
+pub fn solver(part: Part, input: &str) -> Result<usize> {
     let mut grid = parse_to_grid(input.lines(), |ch| {
         Ok(match ch {
             '.' => false,
@@ -198,8 +198,7 @@ pub fn solver(part: Part, input: &str) -> Result<String> {
                 enlarge(&mut grid, &mut nrows, &mut ncols, [r0, r1, c0, c1]);
                 continue;
             }
-        }
-        .to_string());
+        });
     }
     unreachable!("Endless loop");
 }
@@ -218,9 +217,9 @@ pub const INPUTS: [&str; 2] = [
 
 #[test]
 fn solver_22_23() -> Result<()> {
-    assert_eq!(solver(Part1, INPUTS[0])?, "110");
-    assert_eq!(solver(Part1, INPUTS[1])?, "4068");
-    assert_eq!(solver(Part2, INPUTS[0])?, "20");
-    assert_eq!(solver(Part2, INPUTS[1])?, "968");
+    assert_eq!(solver(Part1, INPUTS[0])?, 110);
+    assert_eq!(solver(Part1, INPUTS[1])?, 4068);
+    assert_eq!(solver(Part2, INPUTS[0])?, 20);
+    assert_eq!(solver(Part2, INPUTS[1])?, 968);
     Ok(())
 }

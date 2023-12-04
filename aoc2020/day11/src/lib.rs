@@ -14,7 +14,7 @@ const NEIGHBORS_8: [(isize, isize); 8] = [
 const OCCUPIED: Option<bool> = Some(false); // Some seat that is NOT available.
 
 /// Seating System
-pub fn solver(part: Part, input: &str) -> Result<String> {
+pub fn solver(part: Part, input: &str) -> Result<usize> {
     let mut available_seats = parse_to_grid(input.lines(), |ch| match ch {
         'L' => Ok(Some(true)),
         '.' => Ok(None),
@@ -74,8 +74,7 @@ pub fn solver(part: Part, input: &str) -> Result<String> {
         .into_iter()
         .flatten()
         .filter(|cell| cell == &OCCUPIED)
-        .count()
-        .to_string())
+        .count())
 }
 
 pub const INPUTS: [&str; 2] = [
@@ -96,9 +95,9 @@ L.LLLLL.LL
 
 #[test]
 fn solver_20_11() -> Result<()> {
-    assert_eq!(solver(Part1, INPUTS[0])?, "37");
-    assert_eq!(solver(Part1, INPUTS[1])?, "2354");
-    assert_eq!(solver(Part2, INPUTS[0])?, "26");
-    assert_eq!(solver(Part2, INPUTS[1])?, "2072");
+    assert_eq!(solver(Part1, INPUTS[0])?, 37);
+    assert_eq!(solver(Part1, INPUTS[1])?, 2354);
+    assert_eq!(solver(Part2, INPUTS[0])?, 26);
+    assert_eq!(solver(Part2, INPUTS[1])?, 2072);
     Ok(())
 }

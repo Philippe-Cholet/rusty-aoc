@@ -6,9 +6,9 @@ use utils::OkIterator;
 const TOTAL: u32 = 2020;
 
 /// Report Repair
-pub fn solver(part: Part, input: &str) -> Result<String> {
+pub fn solver(part: Part, input: &str) -> Result<u32> {
     let items = input.lines().map(str::parse::<u32>).ok_collect_hset()?;
-    Ok(match part {
+    match part {
         Part1 => items.iter().find_map(|a| {
             let b = TOTAL.checked_sub(*a)?;
             items.contains(&b).then(|| a * b)
@@ -18,8 +18,7 @@ pub fn solver(part: Part, input: &str) -> Result<String> {
             items.contains(&c).then(|| a * b * c)
         }),
     }
-    .context("No solution")?
-    .to_string())
+    .context("No solution")
 }
 
 pub const INPUTS: [&str; 2] = [
@@ -35,9 +34,9 @@ pub const INPUTS: [&str; 2] = [
 
 #[test]
 fn solver_20_01() -> Result<()> {
-    assert_eq!(solver(Part1, INPUTS[0])?, "514579"); // 1721 * 299
-    assert_eq!(solver(Part1, INPUTS[1])?, "1016964");
-    assert_eq!(solver(Part2, INPUTS[0])?, "241861950"); // 979 * 366 * 675
-    assert_eq!(solver(Part2, INPUTS[1])?, "182588480");
+    assert_eq!(solver(Part1, INPUTS[0])?, 514579); // 1721 * 299
+    assert_eq!(solver(Part1, INPUTS[1])?, 1016964);
+    assert_eq!(solver(Part2, INPUTS[0])?, 241861950); // 979 * 366 * 675
+    assert_eq!(solver(Part2, INPUTS[1])?, 182588480);
     Ok(())
 }

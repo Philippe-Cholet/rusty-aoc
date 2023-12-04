@@ -152,9 +152,9 @@ impl Blueprint {
 }
 
 /// Not Enough Minerals
-pub fn solver(part: Part, input: &str) -> Result<String> {
+pub fn solver(part: Part, input: &str) -> Result<u32> {
     let data: Vec<Blueprint> = input.lines().map(str::parse).ok_collect()?;
-    let result: Result<u32> = match part {
+    match part {
         Part1 => data
             .iter()
             .map(|bp| {
@@ -168,8 +168,7 @@ pub fn solver(part: Part, input: &str) -> Result<String> {
             .filter(|bp| bp.id <= 3)
             .map(|bp| bp.maximise_geodes(32).map(u32::from))
             .product(),
-    };
-    Ok(result?.to_string())
+    }
 }
 
 pub const INPUTS: [&str; 2] = [
@@ -190,9 +189,9 @@ Each geode robot costs 3 ore and 12 obsidian.
 #[test]
 #[cfg_attr(feature = "lp", ignore)] // slow (roughly 30 seconds)
 fn solver_22_19() -> Result<()> {
-    assert_eq!(solver(Part1, INPUTS[0])?, "33");
-    assert_eq!(solver(Part1, INPUTS[1])?, "1981");
-    assert_eq!(solver(Part2, INPUTS[0])?, (56 * 62).to_string());
-    assert_eq!(solver(Part2, INPUTS[1])?, "10962");
+    assert_eq!(solver(Part1, INPUTS[0])?, 33);
+    assert_eq!(solver(Part1, INPUTS[1])?, 1981);
+    assert_eq!(solver(Part2, INPUTS[0])?, 56 * 62);
+    assert_eq!(solver(Part2, INPUTS[1])?, 10962);
     Ok(())
 }

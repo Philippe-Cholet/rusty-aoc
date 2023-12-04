@@ -6,7 +6,7 @@ use common::prelude::*;
 use utils::OkIterator;
 
 /// Aunt Sue
-pub fn solver(part: Part, input: &str) -> Result<String> {
+pub fn solver(part: Part, input: &str) -> Result<usize> {
     let msg: HashMap<_, _> = [
         ("children", 3),
         ("cats", 7),
@@ -38,8 +38,7 @@ pub fn solver(part: Part, input: &str) -> Result<String> {
                 .map(|kvs| (aunt_id, kvs))
         })
         .ok_collect_vec()?;
-    Ok(data
-        .into_iter()
+    data.into_iter()
         .filter_map(|(aunt_id, keyed_values)| {
             keyed_values
                 .into_iter()
@@ -54,15 +53,14 @@ pub fn solver(part: Part, input: &str) -> Result<String> {
                 .then_some(aunt_id)
         })
         .exactly_one()
-        .map_err(|it| format_err!("Not one aunt but {}.", it.count()))?
-        .to_string())
+        .map_err(|it| format_err!("Not one aunt but {}.", it.count()))
 }
 
 pub const INPUTS: [&str; 1] = [include_str!("input.txt")];
 
 #[test]
 fn solver_15_16() -> Result<()> {
-    assert_eq!(solver(Part1, INPUTS[0])?, "373");
-    assert_eq!(solver(Part2, INPUTS[0])?, "260");
+    assert_eq!(solver(Part1, INPUTS[0])?, 373);
+    assert_eq!(solver(Part2, INPUTS[0])?, 260);
     Ok(())
 }

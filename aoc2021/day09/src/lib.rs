@@ -4,7 +4,7 @@ use common::prelude::*;
 use utils::{char10, neighbors, parse_to_grid};
 
 /// Smoke Basin
-pub fn solver(part: Part, input: &str) -> Result<String> {
+pub fn solver(part: Part, input: &str) -> Result<usize> {
     let grid = parse_to_grid(input.lines(), char10::<u32>)?;
     let ncols = grid.first().context("No line")?.len();
     let nrows = grid.len();
@@ -13,11 +13,8 @@ pub fn solver(part: Part, input: &str) -> Result<String> {
             .into_iter()
             .all(|(r1, c1)| grid[r1][c1] > grid[*r][*c])
     });
-    match part {
-        Part1 => {
-            let result: u32 = low_points.map(|(r, c)| grid[r][c] + 1).sum();
-            Ok(result.to_string())
-        }
+    Ok(match part {
+        Part1 => low_points.map(|(r, c)| grid[r][c] as usize + 1).sum(),
         Part2 => {
             let mut areas: Vec<usize> = low_points
                 .map(|low| {
@@ -38,10 +35,9 @@ pub fn solver(part: Part, input: &str) -> Result<String> {
                 })
                 .collect();
             areas.sort_unstable();
-            let result: usize = areas.into_iter().rev().take(3).product();
-            Ok(result.to_string())
+            areas.into_iter().rev().take(3).product()
         }
-    }
+    })
 }
 
 pub const INPUTS: [&str; 2] = [
@@ -56,9 +52,9 @@ pub const INPUTS: [&str; 2] = [
 
 #[test]
 fn solver_21_09() -> Result<()> {
-    assert_eq!(solver(Part1, INPUTS[0])?, "15");
-    assert_eq!(solver(Part1, INPUTS[1])?, "524");
-    assert_eq!(solver(Part2, INPUTS[0])?, "1134"); // 9 * 14 * 9
-    assert_eq!(solver(Part2, INPUTS[1])?, "1235430");
+    assert_eq!(solver(Part1, INPUTS[0])?, 15);
+    assert_eq!(solver(Part1, INPUTS[1])?, 524);
+    assert_eq!(solver(Part2, INPUTS[0])?, 1134); // 9 * 14 * 9
+    assert_eq!(solver(Part2, INPUTS[1])?, 1235430);
     Ok(())
 }

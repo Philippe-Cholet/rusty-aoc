@@ -2,7 +2,7 @@ use common::prelude::*;
 use utils::OkIterator;
 
 /// No Such Thing as Too Much
-pub fn solver(part: Part, input: &str) -> Result<String> {
+pub fn solver(part: Part, input: &str) -> Result<u32> {
     let containers: Vec<usize> = input.lines().map(str::parse).ok_collect()?;
     let size = if containers.iter().copied().sum::<usize>() >= 150 {
         150
@@ -37,17 +37,16 @@ pub fn solver(part: Part, input: &str) -> Result<String> {
                 .find(|&nb| nb != 0)
                 .unwrap_or_default()
         }
-    }
-    .to_string())
+    })
 }
 
 pub const INPUTS: [&str; 2] = ["20\n15\n10\n5\n5\n", include_str!("input.txt")];
 
 #[test]
 fn solver_15_17() -> Result<()> {
-    assert_eq!(solver(Part1, INPUTS[0])?, "4");
-    assert_eq!(solver(Part1, INPUTS[1])?, "1304");
-    assert_eq!(solver(Part2, INPUTS[0])?, "3");
-    assert_eq!(solver(Part2, INPUTS[1])?, "18");
+    assert_eq!(solver(Part1, INPUTS[0])?, 4);
+    assert_eq!(solver(Part1, INPUTS[1])?, 1304);
+    assert_eq!(solver(Part2, INPUTS[0])?, 3);
+    assert_eq!(solver(Part2, INPUTS[1])?, 18);
     Ok(())
 }

@@ -13,7 +13,7 @@ fn range_inclusive(a: u32, b: u32) -> impl Iterator<Item = u32> {
 }
 
 /// Hydrothermal Venture
-pub fn solver(part: Part, input: &str) -> Result<String> {
+pub fn solver(part: Part, input: &str) -> Result<usize> {
     let data = input
         .lines()
         .map(|line| {
@@ -36,8 +36,7 @@ pub fn solver(part: Part, input: &str) -> Result<String> {
                 .for_each(&mut increment);
         }
     }
-    let result = counts.into_values().filter(|&value| value > 1).count();
-    Ok(result.to_string())
+    Ok(counts.into_values().filter(|&value| value > 1).count())
 }
 
 pub const INPUTS: [&str; 2] = [
@@ -57,9 +56,9 @@ pub const INPUTS: [&str; 2] = [
 
 #[test]
 fn solver_21_05() -> Result<()> {
-    assert_eq!(solver(Part1, INPUTS[0])?, "5");
-    assert_eq!(solver(Part1, INPUTS[1])?, "5698");
-    assert_eq!(solver(Part2, INPUTS[0])?, "12");
-    assert_eq!(solver(Part2, INPUTS[1])?, "15463");
+    assert_eq!(solver(Part1, INPUTS[0])?, 5);
+    assert_eq!(solver(Part1, INPUTS[1])?, 5698);
+    assert_eq!(solver(Part2, INPUTS[0])?, 12);
+    assert_eq!(solver(Part2, INPUTS[1])?, 15463);
     Ok(())
 }

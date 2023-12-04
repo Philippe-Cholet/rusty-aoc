@@ -5,7 +5,7 @@ use common::prelude::*;
 use utils::OkIterator;
 
 /// Medicine for Rudolph
-pub fn solver(part: Part, input: &str) -> Result<String> {
+pub fn solver(part: Part, input: &str) -> Result<usize> {
     let (repls, molecule) = input
         .trim_end()
         .split_once("\n\n")
@@ -25,8 +25,7 @@ pub fn solver(part: Part, input: &str) -> Result<String> {
             .count(),
         Part2 => beam_search("e", molecule, repls, 75).context("Too small beam width")?,
         // NOTE: The beam search does not guarantee an optimal solution.
-    }
-    .to_string())
+    })
 }
 
 fn replacements<'a>(s: &'a str, repls: &'a [(&str, &str)]) -> impl Iterator<Item = Repl<'a>> + 'a {
@@ -153,11 +152,11 @@ HOHOHO
 
 #[test]
 fn solver_15_19() -> Result<()> {
-    assert_eq!(solver(Part1, INPUTS[0])?, "4");
-    assert_eq!(solver(Part1, INPUTS[1])?, "7");
-    assert_eq!(solver(Part1, INPUTS[4])?, "509");
-    assert_eq!(solver(Part2, INPUTS[2])?, "3");
-    assert_eq!(solver(Part2, INPUTS[3])?, "6");
-    assert_eq!(solver(Part2, INPUTS[4])?, "195");
+    assert_eq!(solver(Part1, INPUTS[0])?, 4);
+    assert_eq!(solver(Part1, INPUTS[1])?, 7);
+    assert_eq!(solver(Part1, INPUTS[4])?, 509);
+    assert_eq!(solver(Part2, INPUTS[2])?, 3);
+    assert_eq!(solver(Part2, INPUTS[3])?, 6);
+    assert_eq!(solver(Part2, INPUTS[4])?, 195);
     Ok(())
 }

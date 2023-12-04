@@ -113,7 +113,7 @@ impl Cuboid {
 }
 
 /// Reactor Reboot
-pub fn solver(part: Part, input: &str) -> Result<String> {
+pub fn solver(part: Part, input: &str) -> Result<usize> {
     let data = input
         .lines()
         .map(|line| {
@@ -160,8 +160,7 @@ pub fn solver(part: Part, input: &str) -> Result<String> {
         .iter()
         .tuple_combinations()
         .all(|(c, d)| c.intersection(d).is_none()));
-    let volume: usize = cuboids.iter().map(Cuboid::volume).sum();
-    Ok(volume.to_string())
+    Ok(cuboids.iter().map(Cuboid::volume).sum())
 }
 
 pub const INPUTS: [&str; 4] = [
@@ -259,15 +258,15 @@ off x=-93533..-4276,y=-16170..68771,z=-104985..-24507
 
 #[test]
 fn solver_21_22() -> Result<()> {
-    assert_eq!(solver(Part1, INPUTS[0])?, "39");
-    assert_eq!(solver(Part1, INPUTS[1])?, "590784");
-    assert_eq!(solver(Part1, INPUTS[3])?, "568000");
-    assert_eq!(solver(Part1, INPUTS[2])?, "474140"); // test given in part 2 about part 1
+    assert_eq!(solver(Part1, INPUTS[0])?, 39);
+    assert_eq!(solver(Part1, INPUTS[1])?, 590784);
+    assert_eq!(solver(Part1, INPUTS[3])?, 568000);
+    assert_eq!(solver(Part1, INPUTS[2])?, 474140); // test given in part 2 about part 1
 
-    assert_eq!(solver(Part2, INPUTS[0])?, "39");
+    assert_eq!(solver(Part2, INPUTS[0])?, 39);
     // nothing about input #1
-    assert_eq!(solver(Part2, INPUTS[2])?, "2758514936282235");
-    assert_eq!(solver(Part2, INPUTS[3])?, "1177411289280259");
+    assert_eq!(solver(Part2, INPUTS[2])?, 2758514936282235);
+    assert_eq!(solver(Part2, INPUTS[3])?, 1177411289280259);
 
     Ok(())
 }

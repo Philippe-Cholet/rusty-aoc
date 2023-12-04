@@ -52,7 +52,7 @@ pub fn solver(part: Part, input: &str) -> Result<String> {
     stacks
         .into_iter()
         .map(|mut stack| stack.pop().context("empty stack"))
-        .ok_collect()
+        .collect()
 }
 
 pub const INPUTS: [&str; 2] = [

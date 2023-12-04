@@ -4,7 +4,7 @@ use common::prelude::*;
 use utils::{char10, OkIterator};
 
 /// Crab Cups
-pub fn solver(part: Part, input: &str) -> Result<String> {
+pub fn solver(part: Part, input: &str) -> Result<u64> {
     let mut cups = input
         .trim_end()
         .chars()
@@ -59,13 +59,13 @@ pub fn solver(part: Part, input: &str) -> Result<String> {
                 (10 * res + n, table[n as usize])
             })
             .0
-            .to_string(),
+            .into(),
         Part2 => {
             let star1 = table[1];
             let star2 = table[star1 as usize];
             #[cfg(debug_assertions)]
             println!("Stars under cups {star1} and {star2}");
-            (u64::from(star1) * u64::from(star2)).to_string()
+            u64::from(star1) * u64::from(star2)
         }
     })
 }
@@ -74,9 +74,9 @@ pub const INPUTS: [&str; 2] = ["389125467", include_str!("input.txt")];
 
 #[test]
 fn solver_20_23() -> Result<()> {
-    assert_eq!(solver(Part1, INPUTS[0])?, "67384529");
-    assert_eq!(solver(Part1, INPUTS[1])?, "27956483");
-    assert_eq!(solver(Part2, INPUTS[0])?, "149245887792"); // 934001 * 159792
-    assert_eq!(solver(Part2, INPUTS[1])?, "18930983775");
+    assert_eq!(solver(Part1, INPUTS[0])?, 67384529);
+    assert_eq!(solver(Part1, INPUTS[1])?, 27956483);
+    assert_eq!(solver(Part2, INPUTS[0])?, 149245887792); // 934001 * 159792
+    assert_eq!(solver(Part2, INPUTS[1])?, 18930983775);
     Ok(())
 }

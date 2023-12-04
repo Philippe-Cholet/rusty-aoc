@@ -50,7 +50,7 @@ fn get_tail_positions<const NB_KNOTS: usize>(moves: &[(Pt, usize)]) -> Result<Ve
 }
 
 /// Rope Bridge
-pub fn solver(part: Part, input: &str) -> Result<String> {
+pub fn solver(part: Part, input: &str) -> Result<usize> {
     let moves = input
         .lines()
         .map(|line| {
@@ -69,8 +69,7 @@ pub fn solver(part: Part, input: &str) -> Result<String> {
         Part1 => get_tail_positions::<2>(&moves)?,
         Part2 => get_tail_positions::<10>(&moves)?,
     };
-    let result = tail_pos.into_iter().unique().count();
-    Ok(result.to_string())
+    Ok(tail_pos.into_iter().unique().count())
 }
 
 pub const INPUTS: [&str; 3] = [
@@ -97,10 +96,10 @@ U 20
 
 #[test]
 fn solver_22_09() -> Result<()> {
-    assert_eq!(solver(Part1, INPUTS[0])?, "13");
-    assert_eq!(solver(Part1, INPUTS[2])?, "6037");
-    assert_eq!(solver(Part2, INPUTS[0])?, "1");
-    assert_eq!(solver(Part2, INPUTS[1])?, "36");
-    assert_eq!(solver(Part2, INPUTS[2])?, "2485");
+    assert_eq!(solver(Part1, INPUTS[0])?, 13);
+    assert_eq!(solver(Part1, INPUTS[2])?, 6037);
+    assert_eq!(solver(Part2, INPUTS[0])?, 1);
+    assert_eq!(solver(Part2, INPUTS[1])?, 36);
+    assert_eq!(solver(Part2, INPUTS[2])?, 2485);
     Ok(())
 }

@@ -4,7 +4,7 @@ use common::{prelude::*, Ok};
 use utils::OkIterator;
 
 /// Extended Polymerization
-pub fn solver(part: Part, input: &str) -> Result<String> {
+pub fn solver(part: Part, input: &str) -> Result<usize> {
     let (template, rules) = input
         .split_once("\n\n")
         .context("No empty line before the rules")?;
@@ -58,12 +58,12 @@ pub fn solver(part: Part, input: &str) -> Result<String> {
         *counts.entry(last_elem).or_insert(0) += 1;
         counts
     };
-    let (min, max) = counts
+    counts
         .into_values()
         .minmax()
         .into_option()
-        .context("empty template")?;
-    Ok((max - min).to_string())
+        .map(|(min, max)| max - min)
+        .context("empty template")
 }
 
 pub const INPUTS: [&str; 2] = [
@@ -91,9 +91,9 @@ CN -> C
 
 #[test]
 fn solver_21_14() -> Result<()> {
-    assert_eq!(solver(Part1, INPUTS[0])?, "1588");
-    assert_eq!(solver(Part1, INPUTS[1])?, "4517");
-    assert_eq!(solver(Part2, INPUTS[0])?, "2188189693529");
-    assert_eq!(solver(Part2, INPUTS[1])?, "4704817645083");
+    assert_eq!(solver(Part1, INPUTS[0])?, 1588);
+    assert_eq!(solver(Part1, INPUTS[1])?, 4517);
+    assert_eq!(solver(Part2, INPUTS[0])?, 2188189693529);
+    assert_eq!(solver(Part2, INPUTS[1])?, 4704817645083);
     Ok(())
 }

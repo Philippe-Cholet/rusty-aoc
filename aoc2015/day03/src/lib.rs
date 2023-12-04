@@ -2,7 +2,7 @@ use common::prelude::*;
 use utils::OkIterator;
 
 /// Perfectly Spherical Houses in a Vacuum
-pub fn solver(part: Part, input: &str) -> Result<String> {
+pub fn solver(part: Part, input: &str) -> Result<usize> {
     let data = input
         .trim_end()
         .chars()
@@ -41,14 +41,14 @@ pub fn solver(part: Part, input: &str) -> Result<String> {
         }
     };
     houses.insert((0, 0));
-    Ok(houses.len().to_string())
+    Ok(houses.len())
 }
 
 pub const INPUTS: [&str; 1] = [include_str!("input.txt")];
 
 #[test]
 fn solver_15_03() -> Result<()> {
-    assert_eq!(solver(Part1, INPUTS[0])?, "2572");
-    assert_eq!(solver(Part2, INPUTS[0])?, "2631");
+    assert_eq!(solver(Part1, INPUTS[0])?, 2572);
+    assert_eq!(solver(Part2, INPUTS[0])?, 2631);
     Ok(())
 }

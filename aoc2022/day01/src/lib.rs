@@ -2,7 +2,7 @@ use common::prelude::*;
 use utils::OkIterator;
 
 /// Calorie Counting
-pub fn solver(part: Part, input: &str) -> Result<String> {
+pub fn solver(part: Part, input: &str) -> Result<u32> {
     let mut counts = input
         .split("\n\n")
         .map(|snacks| snacks.lines().map(str::parse::<u32>).ok_sum::<u32>())
@@ -15,8 +15,7 @@ pub fn solver(part: Part, input: &str) -> Result<String> {
                 + counts.pop().context("Only one elf")?
                 + *counts.peek().context("Only two elves")?
         }
-    }
-    .to_string())
+    })
 }
 
 pub const INPUTS: [&str; 2] = [
@@ -40,9 +39,9 @@ pub const INPUTS: [&str; 2] = [
 
 #[test]
 fn solver_22_01() -> Result<()> {
-    assert_eq!(solver(Part1, INPUTS[0])?, "24000");
-    assert_eq!(solver(Part1, INPUTS[1])?, "71124");
-    assert_eq!(solver(Part2, INPUTS[0])?, "45000");
-    assert_eq!(solver(Part2, INPUTS[1])?, "204639");
+    assert_eq!(solver(Part1, INPUTS[0])?, 24000);
+    assert_eq!(solver(Part1, INPUTS[1])?, 71124);
+    assert_eq!(solver(Part2, INPUTS[0])?, 45000);
+    assert_eq!(solver(Part2, INPUTS[1])?, 204639);
     Ok(())
 }

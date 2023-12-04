@@ -16,7 +16,7 @@ macro_rules! seat_position {
 }
 
 /// Binary Boarding
-pub fn solver(part: Part, input: &str) -> Result<String> {
+pub fn solver(part: Part, input: &str) -> Result<u16> {
     let mut seat_ids = input
         .lines()
         .map(|line| {
@@ -38,17 +38,16 @@ pub fn solver(part: Part, input: &str) -> Result<String> {
                 .context("No missing seat ID?!")
         }
     }
-    .map(|seat_id| seat_id.to_string())
 }
 
 pub const INPUTS: [&str; 1] = [include_str!("input.txt")];
 
 #[test]
 fn solver_20_05() -> Result<()> {
-    assert_eq!(solver(Part1, "BFFFBBFRRR")?, "567");
-    assert_eq!(solver(Part1, "FFFBBBFRRR")?, "119");
-    assert_eq!(solver(Part1, "BBFFBBFRLL")?, "820");
-    assert_eq!(solver(Part1, INPUTS[0])?, "989");
-    assert_eq!(solver(Part2, INPUTS[0])?, "548");
+    assert_eq!(solver(Part1, "BFFFBBFRRR")?, 567);
+    assert_eq!(solver(Part1, "FFFBBBFRRR")?, 119);
+    assert_eq!(solver(Part1, "BBFFBBFRLL")?, 820);
+    assert_eq!(solver(Part1, INPUTS[0])?, 989);
+    assert_eq!(solver(Part2, INPUTS[0])?, 548);
     Ok(())
 }

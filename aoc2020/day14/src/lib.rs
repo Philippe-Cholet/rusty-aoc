@@ -16,7 +16,7 @@ enum DecoderChip {
 }
 
 /// Docking Data
-pub fn solver(part: Part, input: &str) -> Result<String> {
+pub fn solver(part: Part, input: &str) -> Result<u64> {
     let initialization: Vec<Instruction> = input.lines().map(str::parse).ok_collect()?;
     #[cfg(debug_assertions)]
     for instruction in &initialization {
@@ -33,7 +33,7 @@ pub fn solver(part: Part, input: &str) -> Result<String> {
             Mem { addr, value } => decoder.access_memory(addr, value, mask),
         }
     }
-    Ok(decoder.sum().to_string())
+    Ok(decoder.sum())
 }
 
 impl DecoderChip {
@@ -140,9 +140,9 @@ mem[26] = 1
 
 #[test]
 fn solver_20_14() -> Result<()> {
-    assert_eq!(solver(Part1, INPUTS[0])?, "165");
-    assert_eq!(solver(Part1, INPUTS[2])?, "9615006043476");
-    assert_eq!(solver(Part2, INPUTS[1])?, "208");
-    assert_eq!(solver(Part2, INPUTS[2])?, "4275496544925");
+    assert_eq!(solver(Part1, INPUTS[0])?, 165);
+    assert_eq!(solver(Part1, INPUTS[2])?, 9615006043476);
+    assert_eq!(solver(Part2, INPUTS[1])?, 208);
+    assert_eq!(solver(Part2, INPUTS[2])?, 4275496544925);
     Ok(())
 }

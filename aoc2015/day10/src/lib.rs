@@ -2,7 +2,7 @@ use common::prelude::*;
 use utils::{char10, OkIterator};
 
 /// Elves Look, Elves Say
-pub fn solver(part: Part, input: &str) -> Result<String> {
+pub fn solver(part: Part, input: &str) -> Result<usize> {
     let mut ns = input
         .trim_end()
         .chars()
@@ -20,7 +20,7 @@ pub fn solver(part: Part, input: &str) -> Result<String> {
         ns = {
             let mut it = ns.into_iter();
             let Some(mut number) = it.next() else {
-                return Ok(0.to_string());
+                return Ok(0);
             };
             let mut ns = vec![];
             let mut count = 1;
@@ -39,14 +39,14 @@ pub fn solver(part: Part, input: &str) -> Result<String> {
             ns
         };
     }
-    Ok(ns.len().to_string())
+    Ok(ns.len())
 }
 
 pub const INPUTS: [&str; 1] = [include_str!("input.txt")];
 
 #[test]
 fn solver_15_10() -> Result<()> {
-    assert_eq!(solver(Part1, INPUTS[0])?, "252594");
-    assert_eq!(solver(Part2, INPUTS[0])?, "3579328");
+    assert_eq!(solver(Part1, INPUTS[0])?, 252594);
+    assert_eq!(solver(Part2, INPUTS[0])?, 3579328);
     Ok(())
 }

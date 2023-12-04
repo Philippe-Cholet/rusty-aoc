@@ -54,7 +54,7 @@ impl<'a> TryFrom<&'a str> for LsEntry<'a> {
 
 /// No Space Left On Device
 #[allow(clippy::expect_used)]
-pub fn solver(part: Part, input: &str) -> Result<String> {
+pub fn solver(part: Part, input: &str) -> Result<usize> {
     let mut cmds = vec![];
     for line in input.lines() {
         if let Ok(cmd) = line.try_into() {
@@ -98,7 +98,7 @@ pub fn solver(part: Part, input: &str) -> Result<String> {
             }
         }
     }
-    let result: usize = match part {
+    Ok(match part {
         Part1 => folder_sizes
             .into_values()
             .filter(|size| size <= &100_000)
@@ -115,8 +115,7 @@ pub fn solver(part: Part, input: &str) -> Result<String> {
                 .min()
                 .context("No solution")?
         }
-    };
-    Ok(result.to_string())
+    })
 }
 
 pub const INPUTS: [&str; 2] = [
@@ -149,9 +148,9 @@ $ ls
 
 #[test]
 fn solver_22_07() -> Result<()> {
-    assert_eq!(solver(Part1, INPUTS[0])?, "95437");
-    assert_eq!(solver(Part1, INPUTS[1])?, "1334506");
-    assert_eq!(solver(Part2, INPUTS[0])?, "24933642");
-    assert_eq!(solver(Part2, INPUTS[1])?, "7421137");
+    assert_eq!(solver(Part1, INPUTS[0])?, 95437);
+    assert_eq!(solver(Part1, INPUTS[1])?, 1334506);
+    assert_eq!(solver(Part2, INPUTS[0])?, 24933642);
+    assert_eq!(solver(Part2, INPUTS[1])?, 7421137);
     Ok(())
 }

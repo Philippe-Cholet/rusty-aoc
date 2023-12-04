@@ -5,7 +5,7 @@ use itertools::iproduct;
 use common::prelude::*;
 
 /// Trick Shot
-pub fn solver(part: Part, input: &str) -> Result<String> {
+pub fn solver(part: Part, input: &str) -> Result<i32> {
     let (xs, ys) = input
         .trim_end()
         .strip_prefix("target area: x=")
@@ -45,10 +45,10 @@ pub fn solver(part: Part, input: &str) -> Result<String> {
             }
         }
     });
-    Ok(match part {
-        Part1 => shots.max().context("Always Off Target!")?.to_string(),
-        Part2 => shots.count().to_string(),
-    })
+    match part {
+        Part1 => shots.max().context("Always Off Target!"),
+        Part2 => Ok(shots.count().try_into()?),
+    }
 }
 
 pub const INPUTS: [&str; 2] = [
@@ -58,9 +58,9 @@ pub const INPUTS: [&str; 2] = [
 
 #[test]
 fn solver_21_17() -> Result<()> {
-    assert_eq!(solver(Part1, INPUTS[0])?, "45");
-    assert_eq!(solver(Part1, INPUTS[1])?, "10585");
-    assert_eq!(solver(Part2, INPUTS[0])?, "112");
-    assert_eq!(solver(Part2, INPUTS[1])?, "5247");
+    assert_eq!(solver(Part1, INPUTS[0])?, 45);
+    assert_eq!(solver(Part1, INPUTS[1])?, 10585);
+    assert_eq!(solver(Part2, INPUTS[0])?, 112);
+    assert_eq!(solver(Part2, INPUTS[1])?, 5247);
     Ok(())
 }

@@ -4,7 +4,7 @@ use utils::{OkIterator, SliceExt};
 const DECRYPTION_KEY: i64 = 811_589_153;
 
 /// Grove Positioning System
-pub fn solver(part: Part, input: &str) -> Result<String> {
+pub fn solver(part: Part, input: &str) -> Result<i64> {
     let mut file: Vec<i64> = input.lines().map(str::parse).ok_collect()?;
     let nb = file.len();
     // Otherwise, `nb - 1` would overflow or `rem_euclid(modulus)` below would panic.
@@ -28,15 +28,14 @@ pub fn solver(part: Part, input: &str) -> Result<String> {
         .iter()
         .position(|(_, v)| v == &0)
         .context("data does not contain 0")?;
-    let result = data[(i0 + 1000) % nb].1 + data[(i0 + 2000) % nb].1 + data[(i0 + 3000) % nb].1;
-    Ok(result.to_string())
+    Ok(data[(i0 + 1000) % nb].1 + data[(i0 + 2000) % nb].1 + data[(i0 + 3000) % nb].1)
 }
 
 pub const INPUTS: [&str; 2] = ["1\n2\n-3\n3\n-2\n0\n4\n", include_str!("input.txt")];
 
 #[test]
 fn solver_22_20() -> Result<()> {
-    assert_eq!(solver(Part1, INPUTS[1])?, "988");
-    assert_eq!(solver(Part2, INPUTS[1])?, "7768531372516");
+    assert_eq!(solver(Part1, INPUTS[1])?, 988);
+    assert_eq!(solver(Part2, INPUTS[1])?, 7768531372516);
     Ok(())
 }

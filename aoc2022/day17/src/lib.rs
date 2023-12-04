@@ -228,10 +228,9 @@ impl std::str::FromStr for TetrisSolver {
 }
 
 /// Pyroclastic Flow
-pub fn solver(part: Part, input: &str) -> Result<String> {
+pub fn solver(part: Part, input: &str) -> Result<usize> {
     let nb_steps = part.value(2022, 1_000_000_000_000);
-    let height = input.parse::<TetrisSolver>()?.solve(nb_steps);
-    Ok(height.to_string())
+    Ok(input.parse::<TetrisSolver>()?.solve(nb_steps))
 }
 
 pub const INPUTS: [&str; 2] = [
@@ -241,9 +240,9 @@ pub const INPUTS: [&str; 2] = [
 
 #[test]
 fn solver_22_17() -> Result<()> {
-    assert_eq!(solver(Part1, INPUTS[0])?, "3068");
-    assert_eq!(solver(Part1, INPUTS[1])?, "3157"); // 10h14
-    assert_eq!(solver(Part2, INPUTS[0])?, "1514285714288");
-    assert_eq!(solver(Part2, INPUTS[1])?, "1581449275319"); // 12h35
+    assert_eq!(solver(Part1, INPUTS[0])?, 3068);
+    assert_eq!(solver(Part1, INPUTS[1])?, 3157); // 10h14
+    assert_eq!(solver(Part2, INPUTS[0])?, 1514285714288);
+    assert_eq!(solver(Part2, INPUTS[1])?, 1581449275319); // 12h35
     Ok(())
 }

@@ -13,4 +13,3 @@ doctest = false
 
 [dependencies]
 common = { path = "../../common" }
-utils = { path = "../../utils" }

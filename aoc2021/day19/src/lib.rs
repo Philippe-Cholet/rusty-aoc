@@ -132,7 +132,7 @@ fn merge12(
 }
 
 /// Beacon Scanner
-pub fn solver(part: Part, input: &str) -> Result<String> {
+pub fn solver(part: Part, input: &str) -> Result<u32> {
     let mut data = input.split("\n\n").map(|group| {
         group
             .lines()
@@ -162,25 +162,24 @@ pub fn solver(part: Part, input: &str) -> Result<String> {
         });
         ensure!(!no_reunion, "Scanners can not be grouped together");
     }
-    Ok(match part {
-        Part1 => beacons.len().to_string(),
+    match part {
+        Part1 => Ok(beacons.len().try_into()?),
         Part2 => scanners
             .iter()
             .tuple_combinations()
             .map(|(a, b)| (b - a).norm())
             .max()
-            .context("No offset")?
-            .to_string(),
-    })
+            .context("No offset"),
+    }
 }
 
 pub const INPUTS: [&str; 2] = [include_str!("input0.txt"), include_str!("input.txt")];
 
 #[test]
 fn solver_21_19() -> Result<()> {
-    assert_eq!(solver(Part1, INPUTS[0])?, "79");
-    assert_eq!(solver(Part1, INPUTS[1])?, "434");
-    assert_eq!(solver(Part2, INPUTS[0])?, "3621");
-    assert_eq!(solver(Part2, INPUTS[1])?, "11906");
+    assert_eq!(solver(Part1, INPUTS[0])?, 79);
+    assert_eq!(solver(Part1, INPUTS[1])?, 434);
+    assert_eq!(solver(Part2, INPUTS[0])?, 3621);
+    assert_eq!(solver(Part2, INPUTS[1])?, 11906);
     Ok(())
 }

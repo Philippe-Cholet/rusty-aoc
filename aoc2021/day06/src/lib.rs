@@ -2,7 +2,7 @@ use common::prelude::*;
 use utils::OkIterator;
 
 /// Lanternfish
-pub fn solver(part: Part, input: &str) -> Result<String> {
+pub fn solver(part: Part, input: &str) -> Result<usize> {
     let days = part.value(80, 256);
     let ages: Vec<usize> = input.split(',').map(str::parse).ok_collect()?;
     let mut state = [0usize; 9];
@@ -25,17 +25,16 @@ pub fn solver(part: Part, input: &str) -> Result<String> {
             println!("After {day: >2} days: {state:?}");
         }
     }
-    let result: usize = state.iter().sum();
-    Ok(result.to_string())
+    Ok(state.iter().sum())
 }
 
 pub const INPUTS: [&str; 2] = ["3,4,3,1,2", include_str!("input.txt")];
 
 #[test]
 fn solver_21_06() -> Result<()> {
-    assert_eq!(solver(Part1, INPUTS[0])?, "5934");
-    assert_eq!(solver(Part1, INPUTS[1])?, "363101");
-    assert_eq!(solver(Part2, INPUTS[0])?, "26984457539");
-    assert_eq!(solver(Part2, INPUTS[1])?, "1644286074024");
+    assert_eq!(solver(Part1, INPUTS[0])?, 5934);
+    assert_eq!(solver(Part1, INPUTS[1])?, 363101);
+    assert_eq!(solver(Part2, INPUTS[0])?, 26984457539);
+    assert_eq!(solver(Part2, INPUTS[1])?, 1644286074024);
     Ok(())
 }

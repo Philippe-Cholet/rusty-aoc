@@ -157,9 +157,9 @@ impl BlizzardGrid {
 }
 
 /// Blizzard Basin
-pub fn solver(part: Part, input: &str) -> Result<String> {
+pub fn solver(part: Part, input: &str) -> Result<usize> {
     let mut bgrid: BlizzardGrid = input.parse()?;
-    Ok(bgrid.find_multi_path(part.value(0, 1))?.to_string())
+    bgrid.find_multi_path(part.value(0, 1))
 }
 
 pub const INPUTS: [&str; 2] = [
@@ -176,9 +176,9 @@ pub const INPUTS: [&str; 2] = [
 
 #[test]
 fn solver_22_24() -> Result<()> {
-    assert_eq!(solver(Part1, INPUTS[0])?, "18");
-    assert_eq!(solver(Part1, INPUTS[1])?, "279");
-    assert_eq!(solver(Part2, INPUTS[0])?, "54");
-    assert_eq!(solver(Part2, INPUTS[1])?, "762");
+    assert_eq!(solver(Part1, INPUTS[0])?, 18);
+    assert_eq!(solver(Part1, INPUTS[1])?, 279);
+    assert_eq!(solver(Part2, INPUTS[0])?, 54);
+    assert_eq!(solver(Part2, INPUTS[1])?, 762);
     Ok(())
 }

@@ -61,7 +61,7 @@ impl<const N: usize> std::hash::Hash for State<N> {
 type AmphipodMap = Vec<Vec<(Vec<Loc>, u32)>>;
 
 /// Amphipod
-pub fn solver(part: Part, input: &str) -> Result<String> {
+pub fn solver(part: Part, input: &str) -> Result<u32> {
     Ok(match part {
         Part1 => input.parse::<State<2>>()?.minimize_energy()?,
         Part2 => {
@@ -71,8 +71,7 @@ pub fn solver(part: Part, input: &str) -> Result<String> {
             let new_input = lines.join("\n");
             new_input.parse::<State<4>>()?.minimize_energy()?
         }
-    }
-    .to_string())
+    })
 }
 
 impl Amphipod {
@@ -464,9 +463,9 @@ pub const INPUTS: [&str; 2] = [
 
 #[test]
 fn solver_21_23() -> Result<()> {
-    assert_eq!(solver(Part1, INPUTS[0])?, "12521");
-    assert_eq!(solver(Part1, INPUTS[1])?, "16157");
-    assert_eq!(solver(Part2, INPUTS[0])?, "44169");
-    assert_eq!(solver(Part2, INPUTS[1])?, "43481");
+    assert_eq!(solver(Part1, INPUTS[0])?, 12521);
+    assert_eq!(solver(Part1, INPUTS[1])?, 16157);
+    assert_eq!(solver(Part2, INPUTS[0])?, 44169);
+    assert_eq!(solver(Part2, INPUTS[1])?, 43481);
     Ok(())
 }

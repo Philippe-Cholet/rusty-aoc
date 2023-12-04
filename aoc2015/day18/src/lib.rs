@@ -7,7 +7,7 @@ use utils::parse_to_grid;
 const N: usize = 100;
 
 /// Like a GIF For Your Yard
-pub fn solver(part: Part, input: &str) -> Result<String> {
+pub fn solver(part: Part, input: &str) -> Result<usize> {
     let grid = parse_to_grid(input.lines(), |ch| match ch {
         '#' => Ok(true),
         '.' => Ok(false),
@@ -43,15 +43,14 @@ pub fn solver(part: Part, input: &str) -> Result<String> {
         .into_raw_vec()
         .into_iter()
         .filter(|&is_on| is_on)
-        .count()
-        .to_string())
+        .count())
 }
 
 pub const INPUTS: [&str; 1] = [include_str!("input.txt")];
 
 #[test]
 fn solver_15_18() -> Result<()> {
-    assert_eq!(solver(Part1, INPUTS[0])?, "768");
-    assert_eq!(solver(Part2, INPUTS[0])?, "781");
+    assert_eq!(solver(Part1, INPUTS[0])?, 768);
+    assert_eq!(solver(Part2, INPUTS[0])?, 781);
     Ok(())
 }

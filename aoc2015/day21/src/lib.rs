@@ -18,9 +18,9 @@ struct Item {
 }
 
 /// RPG Simulator 20XX
-pub fn solver(part: Part, input: &str) -> Result<String> {
+pub fn solver(part: Part, input: &str) -> Result<u16> {
     let boss: Unit = input.parse()?;
-    Ok(match part {
+    match part {
         Part1 => Item::shopping_possibilities()
             .sorted_by_key(|items| items.cost)
             .find_map(|items| {
@@ -28,7 +28,7 @@ pub fn solver(part: Part, input: &str) -> Result<String> {
                 player.equip(&items);
                 player.fight(&mut boss.clone()).then_some(items.cost)
             })
-            .context("Can't win against the boss, even well armed")?,
+            .context("Can't win against the boss, even well armed"),
         Part2 => Item::shopping_possibilities()
             .sorted_by_key(|items| items.cost)
             .rev()
@@ -37,9 +37,8 @@ pub fn solver(part: Part, input: &str) -> Result<String> {
                 player.equip(&items);
                 (!player.fight(&mut boss.clone())).then_some(items.cost)
             })
-            .context("Can't lose against the boss, even badly armed")?,
+            .context("Can't lose against the boss, even badly armed"),
     }
-    .to_string())
 }
 
 impl Item {
@@ -168,7 +167,7 @@ pub const INPUTS: [&str; 1] = [include_str!("input.txt")];
 
 #[test]
 fn solver_15_21() -> Result<()> {
-    assert_eq!(solver(Part1, INPUTS[0])?, "91");
-    assert_eq!(solver(Part2, INPUTS[0])?, "158");
+    assert_eq!(solver(Part1, INPUTS[0])?, 91);
+    assert_eq!(solver(Part2, INPUTS[0])?, 158);
     Ok(())
 }

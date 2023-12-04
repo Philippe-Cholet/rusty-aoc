@@ -4,7 +4,7 @@ use common::{prelude::*, Ok};
 use utils::OkIterator;
 
 /// Handy Haversacks
-pub fn solver(part: Part, input: &str) -> Result<String> {
+pub fn solver(part: Part, input: &str) -> Result<usize> {
     let data = input
         .lines()
         .map(|line| {
@@ -35,14 +35,14 @@ pub fn solver(part: Part, input: &str) -> Result<String> {
         data.iter()
             .flat_map(|(u, vs)| vs.iter().map(|(_, v)| (*v, *u))),
     );
-    Ok(match part {
+    match part {
         Part1 => {
             let mut dfs = Dfs::new(&graph, "shiny gold");
             let mut nb_colors: usize = 0;
             while dfs.next(&graph).is_some() {
                 nb_colors += 1;
             }
-            nb_colors.checked_sub(1).context("shiny gold is missing")?
+            nb_colors.checked_sub(1).context("shiny gold is missing")
         }
         Part2 => {
             let order =
@@ -74,12 +74,12 @@ pub fn solver(part: Part, input: &str) -> Result<String> {
             }
             #[cfg(debug_assertions)]
             println!("{nb_bags_per_color:?}");
-            *nb_bags_per_color
+            nb_bags_per_color
                 .get(&"shiny gold")
-                .context("shiny gold is missing")?
+                .copied()
+                .context("shiny gold is missing")
         }
     }
-    .to_string())
 }
 
 pub const INPUTS: [&str; 3] = [
@@ -106,10 +106,10 @@ dark violet bags contain no other bags.
 
 #[test]
 fn solver_20_07() -> Result<()> {
-    assert_eq!(solver(Part1, INPUTS[0])?, "4");
-    assert_eq!(solver(Part1, INPUTS[2])?, "274");
-    assert_eq!(solver(Part2, INPUTS[0])?, "32");
-    assert_eq!(solver(Part2, INPUTS[1])?, "126");
-    assert_eq!(solver(Part2, INPUTS[2])?, "158730");
+    assert_eq!(solver(Part1, INPUTS[0])?, 4);
+    assert_eq!(solver(Part1, INPUTS[2])?, 274);
+    assert_eq!(solver(Part2, INPUTS[0])?, 32);
+    assert_eq!(solver(Part2, INPUTS[1])?, 126);
+    assert_eq!(solver(Part2, INPUTS[2])?, 158730);
     Ok(())
 }

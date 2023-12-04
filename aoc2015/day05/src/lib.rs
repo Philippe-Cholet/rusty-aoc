@@ -3,7 +3,7 @@ use itertools::Itertools;
 use common::prelude::*;
 
 /// Doesn't He Have Intern-Elves For This?
-pub fn solver(part: Part, input: &str) -> Result<String> {
+pub fn solver(part: Part, input: &str) -> Result<usize> {
     Ok(input
         .lines()
         .filter(|line| match part {
@@ -19,15 +19,14 @@ pub fn solver(part: Part, input: &str) -> Result<String> {
                     && line.chars().tuple_windows().any(|(a, _, b)| a == b)
             }
         })
-        .count()
-        .to_string())
+        .count())
 }
 
 pub const INPUTS: [&str; 1] = [include_str!("input.txt")];
 
 #[test]
 fn solver_15_05() -> Result<()> {
-    assert_eq!(solver(Part1, INPUTS[0])?, "236");
-    assert_eq!(solver(Part2, INPUTS[0])?, "51");
+    assert_eq!(solver(Part1, INPUTS[0])?, 236);
+    assert_eq!(solver(Part2, INPUTS[0])?, 51);
     Ok(())
 }

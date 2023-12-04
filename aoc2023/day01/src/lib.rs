@@ -3,7 +3,7 @@ use itertools::Itertools;
 use common::prelude::*;
 
 /// Trebuchet?!
-pub fn solver(part: Part, input: &str) -> Result<String> {
+pub fn solver(part: Part, input: &str) -> Result<u32> {
     let digits: &[&str] = part.value(
         &["1", "2", "3", "4", "5", "6", "7", "8", "9"],
         &[
@@ -30,7 +30,7 @@ pub fn solver(part: Part, input: &str) -> Result<String> {
                 .context("No last digit found, but a first was?!")?;
             Ok((first as u32 % 9 + 1, last as u32 % 9 + 1))
         })
-        .process_results(|it| it.map(|(c1, c2)| c1 * 10 + c2).sum::<u32>().to_string())
+        .process_results(|it| it.map(|(c1, c2)| c1 * 10 + c2).sum())
 }
 
 pub const INPUTS: [&str; 3] = [
@@ -54,9 +54,9 @@ zoneight234
 
 #[test]
 fn solver_23_01() -> Result<()> {
-    assert_eq!(solver(Part1, INPUTS[0])?, "142");
-    assert_eq!(solver(Part1, INPUTS[2])?, "54990");
-    assert_eq!(solver(Part2, INPUTS[1])?, "281");
-    assert_eq!(solver(Part2, INPUTS[2])?, "54473");
+    assert_eq!(solver(Part1, INPUTS[0])?, 142);
+    assert_eq!(solver(Part1, INPUTS[2])?, 54990);
+    assert_eq!(solver(Part2, INPUTS[1])?, 281);
+    assert_eq!(solver(Part2, INPUTS[2])?, 54473);
     Ok(())
 }

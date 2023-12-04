@@ -3,7 +3,7 @@ use itertools::{iproduct, Itertools};
 use common::prelude::*;
 
 /// Dirac Dice
-pub fn solver(part: Part, input: &str) -> Result<String> {
+pub fn solver(part: Part, input: &str) -> Result<usize> {
     let (line1, line2) = input.lines().collect_tuple().context("Not 2 lines")?;
     let pos1: usize = line1
         .strip_prefix("Player 1 starting position: ")
@@ -29,7 +29,7 @@ pub fn solver(part: Part, input: &str) -> Result<String> {
                 if scores[idx] >= 1000 {
                     let losing_score = scores[1 - idx];
                     let nb_rolls = deterministic_dice.next().context("Broken dice?!")?.0;
-                    return Ok((losing_score * nb_rolls).to_string());
+                    return Ok(losing_score * nb_rolls);
                 }
             }
             unreachable!("Endless loop...");
@@ -43,8 +43,7 @@ pub fn solver(part: Part, input: &str) -> Result<String> {
                 // player1 still loses AND player2 finally wins
                 wins2 += player1[turn].0 * player2[turn].1;
             }
-            let most_wins = wins1.max(wins2);
-            Ok(most_wins.to_string())
+            Ok(wins1.max(wins2))
             // The only times player 2 wins in more universes than player 1 is when player 2
             // starts at position 1 and player 1 starts in a positions 3..=8 (so 6 cases on 100).
         }
@@ -89,9 +88,9 @@ Player 2 starting position: 8
 
 #[test]
 fn solver_21_21() -> Result<()> {
-    assert_eq!(solver(Part1, INPUTS[0])?, "739785");
-    assert_eq!(solver(Part1, INPUTS[1])?, "888735");
-    assert_eq!(solver(Part2, INPUTS[0])?, "444356092776315");
-    assert_eq!(solver(Part2, INPUTS[1])?, "647608359455719");
+    assert_eq!(solver(Part1, INPUTS[0])?, 739785);
+    assert_eq!(solver(Part1, INPUTS[1])?, 888735);
+    assert_eq!(solver(Part2, INPUTS[0])?, 444356092776315);
+    assert_eq!(solver(Part2, INPUTS[1])?, 647608359455719);
     Ok(())
 }

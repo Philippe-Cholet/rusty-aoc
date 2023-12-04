@@ -27,7 +27,7 @@ impl Instruction {
 }
 
 /// Probably a Fire Hazard
-pub fn solver(part: Part, input: &str) -> Result<String> {
+pub fn solver(part: Part, input: &str) -> Result<usize> {
     let changes = input
         .lines()
         .map(|line| {
@@ -56,8 +56,7 @@ pub fn solver(part: Part, input: &str) -> Result<String> {
             }
             grid.into_raw_vec().into_iter().map(usize::from).sum()
         }
-    }
-    .to_string())
+    })
 }
 
 impl std::str::FromStr for Instruction {
@@ -77,7 +76,7 @@ pub const INPUTS: [&str; 1] = [include_str!("input.txt")];
 
 #[test]
 fn solver_15_06() -> Result<()> {
-    assert_eq!(solver(Part1, INPUTS[0])?, "400410");
-    assert_eq!(solver(Part2, INPUTS[0])?, "15343601");
+    assert_eq!(solver(Part1, INPUTS[0])?, 400410);
+    assert_eq!(solver(Part2, INPUTS[0])?, 15343601);
     Ok(())
 }

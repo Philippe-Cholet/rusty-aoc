@@ -2,7 +2,7 @@ use common::{prelude::*, Ok};
 use utils::OkIterator;
 
 /// Dive!
-pub fn solver(part: Part, input: &str) -> Result<String> {
+pub fn solver(part: Part, input: &str) -> Result<i32> {
     let mut position: i32 = 0;
     let mut depth: i32 = 0;
     let mut aim: i32 = 0;
@@ -27,8 +27,7 @@ pub fn solver(part: Part, input: &str) -> Result<String> {
             _ => bail!("Invalid submarine command"),
         }
     }
-    let result = position * depth;
-    Ok(result.to_string())
+    Ok(position * depth)
 }
 
 pub const INPUTS: [&str; 2] = [
@@ -44,9 +43,9 @@ forward 2
 
 #[test]
 fn solver_21_02() -> Result<()> {
-    assert_eq!(solver(Part1, INPUTS[0])?, "150");
-    assert_eq!(solver(Part1, INPUTS[1])?, "1507611");
-    assert_eq!(solver(Part2, INPUTS[0])?, "900");
-    assert_eq!(solver(Part2, INPUTS[1])?, "1880593125");
+    assert_eq!(solver(Part1, INPUTS[0])?, 150);
+    assert_eq!(solver(Part1, INPUTS[1])?, 1507611);
+    assert_eq!(solver(Part2, INPUTS[0])?, 900);
+    assert_eq!(solver(Part2, INPUTS[1])?, 1880593125);
     Ok(())
 }

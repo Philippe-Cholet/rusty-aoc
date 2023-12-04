@@ -76,7 +76,7 @@ impl SensorData {
 }
 
 /// Beacon Exclusion Zone
-pub fn solver(part: Part, input: &str) -> Result<String> {
+pub fn solver(part: Part, input: &str) -> Result<i64> {
     let datas: Vec<SensorData> = input.lines().map(str::parse).ok_collect()?;
     // NOTE: tricky, but since some parameters are not provided in inputs...
     let small = datas
@@ -84,17 +84,17 @@ pub fn solver(part: Part, input: &str) -> Result<String> {
         .flat_map(|data| [data.sensor.0, data.sensor.1, data.beacon.0, data.beacon.1])
         .all(|x| x < 1000);
     let mut intervals = Vec::with_capacity(datas.len());
-    Ok(match part {
+    match part {
         Part1 => {
             let y = if small { 10 } else { 2_000_000 };
             SensorData::x_intervals(&datas, y, None, &mut intervals);
-            intervals
+            Ok(intervals
                 .into_iter()
                 .fold((0, i64::MIN), |(total, cur_x), (x0, x1)| {
                     let interval_length = (x0.max(cur_x) - x1).abs();
                     (total + interval_length, x1)
                 })
-                .0
+                .0)
         }
         Part2 => {
             let maxi = if small { 20 } else { 4_000_000 };
@@ -117,10 +117,9 @@ pub fn solver(part: Part, input: &str) -> Result<String> {
                     // NOTE: The type i64 is required for this multiplication:
                     Some(4_000_000 * x + y)
                 })
-                .context("no solution")?
+                .context("no solution")
         }
     }
-    .to_string())
 }
 
 pub const INPUTS: [&str; 2] = [
@@ -144,9 +143,9 @@ Sensor at x=20, y=1: closest beacon is at x=15, y=3
 
 #[test]
 fn solver_22_15() -> Result<()> {
-    assert_eq!(solver(Part1, INPUTS[0])?, "26");
-    assert_eq!(solver(Part1, INPUTS[1])?, "5083287");
-    assert_eq!(solver(Part2, INPUTS[0])?, "56000011");
-    assert_eq!(solver(Part2, INPUTS[1])?, "13134039205729");
+    assert_eq!(solver(Part1, INPUTS[0])?, 26);
+    assert_eq!(solver(Part1, INPUTS[1])?, 5083287);
+    assert_eq!(solver(Part2, INPUTS[0])?, 56000011);
+    assert_eq!(solver(Part2, INPUTS[1])?, 13134039205729);
     Ok(())
 }

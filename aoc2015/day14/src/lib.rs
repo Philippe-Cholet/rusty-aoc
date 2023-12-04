@@ -4,7 +4,7 @@ use common::{prelude::*, Ok};
 use utils::OkIterator;
 
 /// Reindeer Olympics
-pub fn solver(part: Part, input: &str) -> Result<String> {
+pub fn solver(part: Part, input: &str) -> Result<u16> {
     let data: Vec<[u16; 3]> = input
         .lines()
         .map(|line| {
@@ -20,7 +20,7 @@ pub fn solver(part: Part, input: &str) -> Result<String> {
         .ok_collect()?;
     let nb_reindeers = data.len();
     let race_secs = if nb_reindeers == 2 { 1000 } else { 2503 };
-    Ok(match part {
+    match part {
         Part1 => data
             .into_iter()
             .map(|[speed, time_active, time_resting]| {
@@ -70,8 +70,7 @@ pub fn solver(part: Part, input: &str) -> Result<String> {
             pts.into_iter().max()
         }
     }
-    .context("No reindeer racing")?
-    .to_string())
+    .context("No reindeer racing")
 }
 
 pub const INPUTS: [&str; 2] = [
@@ -84,9 +83,9 @@ Dancer can fly 16 km/s for 11 seconds, but then must rest for 162 seconds.
 
 #[test]
 fn solver_15_14() -> Result<()> {
-    assert_eq!(solver(Part1, INPUTS[0])?, "1120");
-    assert_eq!(solver(Part1, INPUTS[1])?, "2640");
-    assert_eq!(solver(Part2, INPUTS[0])?, "689");
-    assert_eq!(solver(Part2, INPUTS[1])?, "1102");
+    assert_eq!(solver(Part1, INPUTS[0])?, 1120);
+    assert_eq!(solver(Part1, INPUTS[1])?, 2640);
+    assert_eq!(solver(Part2, INPUTS[0])?, 689);
+    assert_eq!(solver(Part2, INPUTS[1])?, 1102);
     Ok(())
 }

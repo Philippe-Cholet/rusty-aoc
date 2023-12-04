@@ -2,11 +2,10 @@ use itertools::Itertools;
 use pest::{iterators::Pair, Parser};
 
 use common::prelude::*;
-use utils::OkIterator;
 
 /// Operation Order
-pub fn solver(part: Part, input: &str) -> Result<String> {
-    Ok(input
+pub fn solver(part: Part, input: &str) -> Result<u64> {
+    input
         .lines()
         .map(|line| {
             let pair = ExprParser::parse(Rule::expr, line)?
@@ -15,8 +14,7 @@ pub fn solver(part: Part, input: &str) -> Result<String> {
                 .context("Not ONE expression")?;
             eval(part, pair)
         })
-        .ok_sum::<u64>()?
-        .to_string())
+        .sum()
 }
 
 #[derive(pest_derive::Parser)] // It implements the above `Parser` trait.
@@ -85,21 +83,21 @@ pub const INPUTS: [&str; 7] = [
 
 #[test]
 fn solver_20_18() -> Result<()> {
-    assert_eq!(solver(Part1, INPUTS[0])?, "71");
-    assert_eq!(solver(Part1, INPUTS[1])?, "51");
-    assert_eq!(solver(Part1, INPUTS[2])?, "26");
-    assert_eq!(solver(Part1, INPUTS[3])?, "437");
-    assert_eq!(solver(Part1, INPUTS[4])?, "12240");
-    assert_eq!(solver(Part1, INPUTS[5])?, "13632");
-    assert_eq!(solver(Part1, INPUTS[6])?, "280014646144");
+    assert_eq!(solver(Part1, INPUTS[0])?, 71);
+    assert_eq!(solver(Part1, INPUTS[1])?, 51);
+    assert_eq!(solver(Part1, INPUTS[2])?, 26);
+    assert_eq!(solver(Part1, INPUTS[3])?, 437);
+    assert_eq!(solver(Part1, INPUTS[4])?, 12240);
+    assert_eq!(solver(Part1, INPUTS[5])?, 13632);
+    assert_eq!(solver(Part1, INPUTS[6])?, 280014646144);
 
-    assert_eq!(solver(Part2, INPUTS[0])?, "231");
-    assert_eq!(solver(Part2, INPUTS[1])?, "51");
-    assert_eq!(solver(Part2, INPUTS[2])?, "46");
-    assert_eq!(solver(Part2, INPUTS[3])?, "1445");
-    assert_eq!(solver(Part2, INPUTS[4])?, "669060");
-    assert_eq!(solver(Part2, INPUTS[5])?, "23340");
-    assert_eq!(solver(Part2, INPUTS[6])?, "9966990988262");
+    assert_eq!(solver(Part2, INPUTS[0])?, 231);
+    assert_eq!(solver(Part2, INPUTS[1])?, 51);
+    assert_eq!(solver(Part2, INPUTS[2])?, 46);
+    assert_eq!(solver(Part2, INPUTS[3])?, 1445);
+    assert_eq!(solver(Part2, INPUTS[4])?, 669060);
+    assert_eq!(solver(Part2, INPUTS[5])?, 23340);
+    assert_eq!(solver(Part2, INPUTS[6])?, 9966990988262);
 
     Ok(())
 }

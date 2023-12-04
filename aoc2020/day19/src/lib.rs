@@ -27,7 +27,7 @@ fn backtrack(mut chars: std::str::Chars, indexes: &mut Vec<usize>, rules: &Vec<R
 }
 
 /// Monster Messages
-pub fn solver(part: Part, input: &str) -> Result<String> {
+pub fn solver(part: Part, input: &str) -> Result<usize> {
     let (rules, messages) = input.split_once("\n\n").context("No blank line")?;
     let mut rules = rules
         .lines()
@@ -60,8 +60,7 @@ pub fn solver(part: Part, input: &str) -> Result<String> {
     Ok(messages
         .lines()
         .filter(|s| backtrack(s.chars(), &mut vec![0], &rules)) // Must match rule 0.
-        .count()
-        .to_string())
+        .count())
 }
 
 impl Rule {
@@ -163,9 +162,9 @@ aabbbbbaabbbaaaaaabbbbbababaaaaabbaaabba
 
 #[test]
 fn solver_20_19() -> Result<()> {
-    assert_eq!(solver(Part1, INPUTS[0])?, "2");
-    assert_eq!(solver(Part1, INPUTS[2])?, "208");
-    assert_eq!(solver(Part2, INPUTS[1])?, "12");
-    assert_eq!(solver(Part2, INPUTS[2])?, "316");
+    assert_eq!(solver(Part1, INPUTS[0])?, 2);
+    assert_eq!(solver(Part1, INPUTS[2])?, 208);
+    assert_eq!(solver(Part2, INPUTS[1])?, 12);
+    assert_eq!(solver(Part2, INPUTS[2])?, 316);
     Ok(())
 }

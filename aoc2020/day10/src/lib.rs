@@ -2,7 +2,7 @@ use common::prelude::*;
 use utils::OkIterator;
 
 /// Adapter Array
-pub fn solver(part: Part, input: &str) -> Result<String> {
+pub fn solver(part: Part, input: &str) -> Result<usize> {
     let mut data = input.lines().map(str::parse::<usize>).ok_collect_vec()?;
     data.push(0);
     data.sort_unstable();
@@ -34,8 +34,7 @@ pub fn solver(part: Part, input: &str) -> Result<String> {
             }
             nb_paths[max]
         }
-    }
-    .to_string())
+    })
 }
 
 pub const INPUTS: [&str; 3] = [
@@ -46,11 +45,11 @@ pub const INPUTS: [&str; 3] = [
 
 #[test]
 fn solver_20_10() -> Result<()> {
-    assert_eq!(solver(Part1, INPUTS[0])?, "35"); // 7 * 5
-    assert_eq!(solver(Part1, INPUTS[1])?, "220"); // 22 * 10
-    assert_eq!(solver(Part1, INPUTS[2])?, "2170"); // 70 * 31
-    assert_eq!(solver(Part2, INPUTS[0])?, "8");
-    assert_eq!(solver(Part2, INPUTS[1])?, "19208");
-    assert_eq!(solver(Part2, INPUTS[2])?, "24803586664192");
+    assert_eq!(solver(Part1, INPUTS[0])?, 35); // 7 * 5
+    assert_eq!(solver(Part1, INPUTS[1])?, 220); // 22 * 10
+    assert_eq!(solver(Part1, INPUTS[2])?, 2170); // 70 * 31
+    assert_eq!(solver(Part2, INPUTS[0])?, 8);
+    assert_eq!(solver(Part2, INPUTS[1])?, 19208);
+    assert_eq!(solver(Part2, INPUTS[2])?, 24803586664192);
     Ok(())
 }

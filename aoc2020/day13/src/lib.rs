@@ -2,14 +2,14 @@ use common::prelude::*;
 use utils::OkIterator;
 
 /// Shuttle Search
-pub fn solver(part: Part, input: &str) -> Result<String> {
+pub fn solver(part: Part, input: &str) -> Result<i64> {
     let (timestamp, bus_ids) = input.trim_end().split_once('\n').context("Not two lines")?;
     let timestamp = timestamp.parse::<i64>()?;
     let bus_ids = bus_ids
         .split(',')
         .map(|s| (s != "x").then(|| s.parse::<i64>()).transpose())
         .ok_collect_vec()?;
-    Ok(match part {
+    match part {
         Part1 => bus_ids
             .into_iter()
             .flatten()
@@ -20,7 +20,7 @@ pub fn solver(part: Part, input: &str) -> Result<String> {
             })
             .min_by_key(|(_, time)| *time)
             .map(|(bus_id, time)| bus_id * time)
-            .context("No bus")?,
+            .context("No bus"),
         Part2 => {
             #[allow(clippy::cast_possible_wrap)] // Issue only for VERY LARGE inputs!!!
             let modular_equation: Vec<_> = bus_ids
@@ -40,11 +40,10 @@ pub fn solver(part: Part, input: &str) -> Result<String> {
                         .map(|n0_inv| n0 * n0_inv * -k)
                         .with_context(|| format_err!("{} has no inverse mod {}", n0, m))
                 })
-                .ok_sum::<i64>()?
-                .rem_euclid(n)
+                .ok_sum()
+                .map(|res: i64| res.rem_euclid(n))
         }
     }
-    .to_string())
 }
 
 fn mod_inv(a: i64, n: i64) -> Option<i64> {
@@ -61,20 +60,20 @@ pub const INPUTS: [&str; 2] = ["939\n7,13,x,x,59,x,31,19\n", include_str!("input
 
 #[test]
 fn solver_20_13() -> Result<()> {
-    assert_eq!(solver(Part1, INPUTS[0])?, "295");
-    assert_eq!(solver(Part1, INPUTS[1])?, "4938");
-    assert_eq!(solver(Part2, INPUTS[0])?, "1068781");
-    assert_eq!(solver(Part2, INPUTS[1])?, "230903629977901");
+    assert_eq!(solver(Part1, INPUTS[0])?, 295);
+    assert_eq!(solver(Part1, INPUTS[1])?, 4938);
+    assert_eq!(solver(Part2, INPUTS[0])?, 1068781);
+    assert_eq!(solver(Part2, INPUTS[1])?, 230903629977901);
     Ok(())
 }
 
 #[test]
 #[ignore]
 fn examples() -> Result<()> {
-    assert_eq!(solver(Part2, "0\n17,x,13,19")?, "3417");
-    assert_eq!(solver(Part2, "0\n67,7,59,61")?, "754018");
-    assert_eq!(solver(Part2, "0\n67,x,7,59,61")?, "779210");
-    assert_eq!(solver(Part2, "0\n67,7,x,59,61")?, "1261476");
-    assert_eq!(solver(Part2, "0\n1789,37,47,1889")?, "1202161486");
+    assert_eq!(solver(Part2, "0\n17,x,13,19")?, 3417);
+    assert_eq!(solver(Part2, "0\n67,7,59,61")?, 754018);
+    assert_eq!(solver(Part2, "0\n67,x,7,59,61")?, 779210);
+    assert_eq!(solver(Part2, "0\n67,7,x,59,61")?, 1261476);
+    assert_eq!(solver(Part2, "0\n1789,37,47,1889")?, 1202161486);
     Ok(())
 }

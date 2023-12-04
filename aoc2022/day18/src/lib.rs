@@ -15,7 +15,7 @@ const fn neighbors((x, y, z): (i32, i32, i32)) -> [(i32, i32, i32); 6] {
 }
 
 /// Boiling Boulders
-pub fn solver(part: Part, input: &str) -> Result<String> {
+pub fn solver(part: Part, input: &str) -> Result<usize> {
     let lava = input
         .lines()
         .map(|line| {
@@ -27,7 +27,7 @@ pub fn solver(part: Part, input: &str) -> Result<String> {
             Ok((x?, y?, z?))
         })
         .ok_collect_hset()?;
-    let result = match part {
+    Ok(match part {
         Part1 => lava
             .iter()
             .flat_map(|&point| neighbors(point))
@@ -80,8 +80,7 @@ pub fn solver(part: Part, input: &str) -> Result<String> {
             }
             lava_surface.len()
         }
-    };
-    Ok(result.to_string())
+    })
 }
 
 pub const INPUTS: [&str; 2] = [
@@ -104,9 +103,9 @@ pub const INPUTS: [&str; 2] = [
 
 #[test]
 fn solver_22_18() -> Result<()> {
-    assert_eq!(solver(Part1, INPUTS[0])?, "64");
-    assert_eq!(solver(Part1, INPUTS[1])?, "3494");
-    assert_eq!(solver(Part2, INPUTS[0])?, "58");
-    assert_eq!(solver(Part2, INPUTS[1])?, "2062");
+    assert_eq!(solver(Part1, INPUTS[0])?, 64);
+    assert_eq!(solver(Part1, INPUTS[1])?, 3494);
+    assert_eq!(solver(Part2, INPUTS[0])?, 58);
+    assert_eq!(solver(Part2, INPUTS[1])?, 2062);
     Ok(())
 }

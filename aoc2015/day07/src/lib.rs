@@ -18,7 +18,7 @@ enum Operation<'a> {
 }
 
 /// Some Assembly Required
-pub fn solver(part: Part, input: &str) -> Result<String> {
+pub fn solver(part: Part, input: &str) -> Result<u16> {
     let mut data = input
         .lines()
         .map(|line| {
@@ -35,7 +35,7 @@ pub fn solver(part: Part, input: &str) -> Result<String> {
         *b_op = Operation::Value(Value::Int(a));
         a = Operation::find_a(&data)?;
     }
-    Ok(a.to_string())
+    Ok(a)
 }
 
 impl<'a> Value<'a> {
@@ -105,7 +105,7 @@ pub const INPUTS: [&str; 1] = [include_str!("input.txt")];
 
 #[test]
 fn solver_15_07() -> Result<()> {
-    assert_eq!(solver(Part1, INPUTS[0])?, "46065");
-    assert_eq!(solver(Part2, INPUTS[0])?, "14134");
+    assert_eq!(solver(Part1, INPUTS[0])?, 46065);
+    assert_eq!(solver(Part2, INPUTS[0])?, 14134);
     Ok(())
 }

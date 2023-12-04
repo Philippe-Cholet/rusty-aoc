@@ -2,7 +2,7 @@ use common::prelude::*;
 use utils::parse_to_grid;
 
 /// Toboggan Trajectory
-pub fn solver(part: Part, input: &str) -> Result<String> {
+pub fn solver(part: Part, input: &str) -> Result<usize> {
     let data = parse_to_grid(input.lines(), |ch| match ch {
         '#' => Ok(true),
         '.' => Ok(false),
@@ -26,8 +26,7 @@ pub fn solver(part: Part, input: &str) -> Result<String> {
             .map(count_trees)
             .into_iter()
             .product(),
-    }
-    .to_string())
+    })
 }
 
 pub const INPUTS: [&str; 2] = [
@@ -49,9 +48,9 @@ pub const INPUTS: [&str; 2] = [
 
 #[test]
 fn solver_20_03() -> Result<()> {
-    assert_eq!(solver(Part1, INPUTS[0])?, "7");
-    assert_eq!(solver(Part1, INPUTS[1])?, "218");
-    assert_eq!(solver(Part2, INPUTS[0])?, "336");
-    assert_eq!(solver(Part2, INPUTS[1])?, "3847183340");
+    assert_eq!(solver(Part1, INPUTS[0])?, 7);
+    assert_eq!(solver(Part1, INPUTS[1])?, 218);
+    assert_eq!(solver(Part2, INPUTS[0])?, 336);
+    assert_eq!(solver(Part2, INPUTS[1])?, 3847183340);
     Ok(())
 }

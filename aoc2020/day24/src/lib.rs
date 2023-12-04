@@ -46,7 +46,7 @@ impl CubeCoords {
 }
 
 /// Lobby Layout
-pub fn solver(part: Part, input: &str) -> Result<String> {
+pub fn solver(part: Part, input: &str) -> Result<usize> {
     let data = input
         .lines()
         .map(|line| {
@@ -96,7 +96,7 @@ pub fn solver(part: Part, input: &str) -> Result<String> {
         });
         pts = new_pts;
     }
-    Ok(pts.len().to_string())
+    Ok(pts.len())
 }
 
 pub const INPUTS: [&str; 2] = [
@@ -127,9 +127,9 @@ wseweeenwnesenwwwswnew
 
 #[test]
 fn solver_20_24() -> Result<()> {
-    assert_eq!(solver(Part1, INPUTS[0])?, "10");
-    assert_eq!(solver(Part1, INPUTS[1])?, "293");
-    assert_eq!(solver(Part2, INPUTS[0])?, "2208");
-    assert_eq!(solver(Part2, INPUTS[1])?, "3967");
+    assert_eq!(solver(Part1, INPUTS[0])?, 10);
+    assert_eq!(solver(Part1, INPUTS[1])?, 293);
+    assert_eq!(solver(Part2, INPUTS[0])?, 2208);
+    assert_eq!(solver(Part2, INPUTS[1])?, 3967);
     Ok(())
 }

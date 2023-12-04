@@ -5,7 +5,7 @@ use Direction::{East, North, South, West};
 use Turn::{Back, Left, Right};
 
 /// Rain Risk
-pub fn solver(part: Part, input: &str) -> Result<String> {
+pub fn solver(part: Part, input: &str) -> Result<i32> {
     let data: Vec<Action> = input.lines().map(str::parse).ok_collect()?;
     let instrument = match part {
         Part1 => Instrument::Directional(East),
@@ -20,7 +20,7 @@ pub fn solver(part: Part, input: &str) -> Result<String> {
     for action in data {
         ship.navigate(action);
     }
-    Ok(ship.manhattan().to_string())
+    Ok(ship.manhattan())
 }
 
 #[derive(Debug, Clone, Copy)]
@@ -170,9 +170,9 @@ pub const INPUTS: [&str; 2] = ["F10\nN3\nF7\nR90\nF11\n", include_str!("input.tx
 
 #[test]
 fn solver_20_12() -> Result<()> {
-    assert_eq!(solver(Part1, INPUTS[0])?, "25");
-    assert_eq!(solver(Part1, INPUTS[1])?, "415");
-    assert_eq!(solver(Part2, INPUTS[0])?, "286");
-    assert_eq!(solver(Part2, INPUTS[1])?, "29401");
+    assert_eq!(solver(Part1, INPUTS[0])?, 25);
+    assert_eq!(solver(Part1, INPUTS[1])?, 415);
+    assert_eq!(solver(Part2, INPUTS[0])?, 286);
+    assert_eq!(solver(Part2, INPUTS[1])?, 29401);
     Ok(())
 }

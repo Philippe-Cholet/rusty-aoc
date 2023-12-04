@@ -8,7 +8,7 @@ enum Chunks {
 }
 
 /// Syntax Scoring
-pub fn solver(part: Part, input: &str) -> Result<String> {
+pub fn solver(part: Part, input: &str) -> Result<usize> {
     let forbidden_chars: String = input
         .chars()
         .collect::<HashSet<_>>()
@@ -71,8 +71,7 @@ pub fn solver(part: Part, input: &str) -> Result<String> {
             scores.sort_unstable();
             scores[scores.len() / 2]
         }
-    }
-    .to_string())
+    })
 }
 
 pub const INPUTS: [&str; 2] = [
@@ -92,9 +91,9 @@ pub const INPUTS: [&str; 2] = [
 
 #[test]
 fn solver_21_10() -> Result<()> {
-    assert_eq!(solver(Part1, INPUTS[0])?, "26397");
-    assert_eq!(solver(Part1, INPUTS[1])?, "341823");
-    assert_eq!(solver(Part2, INPUTS[0])?, "288957");
-    assert_eq!(solver(Part2, INPUTS[1])?, "2801302861");
+    assert_eq!(solver(Part1, INPUTS[0])?, 26397);
+    assert_eq!(solver(Part1, INPUTS[1])?, 341823);
+    assert_eq!(solver(Part2, INPUTS[0])?, 288957);
+    assert_eq!(solver(Part2, INPUTS[1])?, 2801302861);
     Ok(())
 }

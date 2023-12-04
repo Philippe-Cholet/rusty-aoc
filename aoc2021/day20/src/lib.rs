@@ -4,7 +4,7 @@ use common::prelude::*;
 use utils::OkIterator;
 
 /// Trench Map
-pub fn solver(part: Part, input: &str) -> Result<String> {
+pub fn solver(part: Part, input: &str) -> Result<usize> {
     let char2bool = |ch: char| -> Result<bool> {
         Ok(match ch {
             '#' => true,
@@ -61,8 +61,7 @@ pub fn solver(part: Part, input: &str) -> Result<String> {
         image = new_image;
         display_image(&image);
     }
-    let result = image.iter().flatten().filter(|&b| *b).count();
-    Ok(result.to_string())
+    Ok(image.iter().flatten().filter(|&b| *b).count())
 }
 
 pub const INPUTS: [&str; 2] = [
@@ -85,9 +84,9 @@ pub const INPUTS: [&str; 2] = [
 
 #[test]
 fn solver_21_20() -> Result<()> {
-    assert_eq!(solver(Part1, INPUTS[0])?, "35");
-    assert_eq!(solver(Part1, INPUTS[1])?, "4917");
-    assert_eq!(solver(Part2, INPUTS[0])?, "3351");
-    assert_eq!(solver(Part2, INPUTS[1])?, "16389");
+    assert_eq!(solver(Part1, INPUTS[0])?, 35);
+    assert_eq!(solver(Part1, INPUTS[1])?, 4917);
+    assert_eq!(solver(Part2, INPUTS[0])?, 3351);
+    assert_eq!(solver(Part2, INPUTS[1])?, 16389);
     Ok(())
 }

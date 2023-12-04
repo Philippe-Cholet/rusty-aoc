@@ -2,13 +2,12 @@ use common::prelude::*;
 use utils::OkIterator;
 
 /// Handheld Halting
-pub fn solver(part: Part, input: &str) -> Result<String> {
+pub fn solver(part: Part, input: &str) -> Result<i32> {
     let mut sequence = BootSequence(input.lines().map(str::parse).ok_collect()?);
-    Ok(match part {
-        Part1 => sequence.run()?.0,
-        Part2 => sequence.switch_one_to_boot()?,
+    match part {
+        Part1 => sequence.run().map(|(accum, _)| accum),
+        Part2 => sequence.switch_one_to_boot(),
     }
-    .to_string())
 }
 
 struct BootSequence(Vec<Operation>);
@@ -115,9 +114,9 @@ acc +6
 
 #[test]
 fn solver_20_08() -> Result<()> {
-    assert_eq!(solver(Part1, INPUTS[0])?, "5");
-    assert_eq!(solver(Part1, INPUTS[1])?, "1654");
-    assert_eq!(solver(Part2, INPUTS[0])?, "8");
-    assert_eq!(solver(Part2, INPUTS[1])?, "833");
+    assert_eq!(solver(Part1, INPUTS[0])?, 5);
+    assert_eq!(solver(Part1, INPUTS[1])?, 1654);
+    assert_eq!(solver(Part2, INPUTS[0])?, 8);
+    assert_eq!(solver(Part2, INPUTS[1])?, 833);
     Ok(())
 }

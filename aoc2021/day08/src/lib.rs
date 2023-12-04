@@ -95,7 +95,7 @@ impl Segm7 {
 }
 
 /// Seven Segment Search
-pub fn solver(part: Part, input: &str) -> Result<String> {
+pub fn solver(part: Part, input: &str) -> Result<usize> {
     let data: Vec<([Segm7; 10], [Segm7; 4])> = input
         .lines()
         .map(|line| {
@@ -112,12 +112,12 @@ pub fn solver(part: Part, input: &str) -> Result<String> {
             ))
         })
         .ok_collect()?;
-    Ok(match part {
-        Part1 => data
+    match part {
+        Part1 => Ok(data
             .into_iter()
             .flat_map(|line| line.1)
             .filter(|seg| [2, 3, 4, 7].contains(&seg.count_segments()))
-            .count(),
+            .count()),
         Part2 => {
             let digit_bitset = Segm7::bitset(&Segm7::DIGITS);
             let mut all_perm7 = Vec::with_capacity(5040); // There are `7!` (5040) permutations.
@@ -136,10 +136,9 @@ pub fn solver(part: Part, input: &str) -> Result<String> {
                         })
                         .context("No solution")
                 })
-                .ok_sum()?
+                .sum()
         }
     }
-    .to_string())
 }
 
 pub const INPUTS: [&str; 3] = [
@@ -160,11 +159,11 @@ gcafb gcf dcaebfg ecagb gf abcdeg gaef cafbge fdbac fegbdc | fgae cfgab fg bagce
 
 #[test]
 fn solver_21_08() -> Result<()> {
-    assert_eq!(solver(Part1, INPUTS[0])?, "0");
-    assert_eq!(solver(Part1, INPUTS[1])?, "26");
-    assert_eq!(solver(Part1, INPUTS[2])?, "301");
-    assert_eq!(solver(Part2, INPUTS[0])?, "5353");
-    assert_eq!(solver(Part2, INPUTS[1])?, "61229");
-    assert_eq!(solver(Part2, INPUTS[2])?, "908067");
+    assert_eq!(solver(Part1, INPUTS[0])?, 0);
+    assert_eq!(solver(Part1, INPUTS[1])?, 26);
+    assert_eq!(solver(Part1, INPUTS[2])?, 301);
+    assert_eq!(solver(Part2, INPUTS[0])?, 5353);
+    assert_eq!(solver(Part2, INPUTS[1])?, 61229);
+    assert_eq!(solver(Part2, INPUTS[2])?, 908067);
     Ok(())
 }
