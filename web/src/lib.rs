@@ -17,6 +17,9 @@ pub enum Error {
     #[error("Failed to open a web page: {0}")]
     OpenWebpage(io::Error),
 
+    #[error("Failed to create a TLS connector: {0}")]
+    NewTlsConnector(native_tls::Error),
+
     #[error("Invalid session cookie: {0}")]
     InvalidSessionCookie(String),
 
@@ -104,8 +107,10 @@ struct AocAgent {
 
 impl AocAgent {
     fn from_token(token: &str) -> Result<Self> {
+        let tls = native_tls::TlsConnector::new().map_err(Error::NewTlsConnector)?;
         let agent = ureq::AgentBuilder::new()
             .https_only(true)
+            .tls_connector(std::sync::Arc::new(tls))
             .user_agent("github.com/Philippe-Cholet/rusty-aoc")
             .build();
         let token = token.trim();
