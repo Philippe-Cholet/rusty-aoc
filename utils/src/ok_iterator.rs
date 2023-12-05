@@ -150,11 +150,8 @@ where
     where
         F: FnMut(B, T) -> B,
     {
-        let mut accum = init;
-        for res in self {
-            accum = f(accum, res.map_err(Into::into)?);
-        }
-        Ok(accum)
+        self.try_fold(init, |accum, res| res.map(|v| f(accum, v)))
+            .map_err(Into::into)
     }
 
     #[inline]
