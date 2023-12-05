@@ -16,12 +16,12 @@ where
     E: Into<Error>,
 {
     #[inline]
-    fn ok_count(self) -> Result<usize> {
+    fn ok_count(&mut self) -> Result<usize> {
         self.ok_fold(0, |count, _value| count + 1)
     }
 
     #[inline]
-    fn ok_last(self) -> Result<Option<T>> {
+    fn ok_last(&mut self) -> Result<Option<T>> {
         self.ok_fold(None, |_, x| Some(x))
     }
 
@@ -39,7 +39,7 @@ where
     // Like the (unstable) `try_collect` method but only for results,
     // since it's the only thing I consider here.
     #[inline]
-    fn ok_collect<B>(self) -> Result<B>
+    fn ok_collect<B>(&mut self) -> Result<B>
     where
         B: FromIterator<T>,
     {
@@ -48,19 +48,19 @@ where
 
     // Let's make some shortcuts to usual types...
     #[inline]
-    fn ok_collect_vec(self) -> Result<Vec<T>> {
+    fn ok_collect_vec(&mut self) -> Result<Vec<T>> {
         self.ok_collect()
     }
 
     #[inline]
-    fn ok_collect_array<const N: usize>(self) -> Result<[T; N]> {
+    fn ok_collect_array<const N: usize>(&mut self) -> Result<[T; N]> {
         self.ok_collect_vec()?
             .try_into()
             .map_err(|err: Vec<_>| format_err!("Not {} long but {}", N, err.len()))
     }
 
     #[inline]
-    fn ok_collect_str(self) -> Result<String>
+    fn ok_collect_str(&mut self) -> Result<String>
     where
         String: FromIterator<T>,
     {
@@ -68,17 +68,17 @@ where
     }
 
     #[inline]
-    fn ok_collect_vecd(self) -> Result<VecDeque<T>> {
+    fn ok_collect_vecd(&mut self) -> Result<VecDeque<T>> {
         self.ok_collect()
     }
 
     #[inline]
-    fn ok_collect_list(self) -> Result<LinkedList<T>> {
+    fn ok_collect_list(&mut self) -> Result<LinkedList<T>> {
         self.ok_collect()
     }
 
     #[inline]
-    fn ok_collect_heap(self) -> Result<BinaryHeap<T>>
+    fn ok_collect_heap(&mut self) -> Result<BinaryHeap<T>>
     where
         T: Ord,
     {
@@ -86,7 +86,7 @@ where
     }
 
     #[inline]
-    fn ok_collect_hset(self) -> Result<HashSet<T>>
+    fn ok_collect_hset(&mut self) -> Result<HashSet<T>>
     where
         T: Eq + Hash,
     {
@@ -94,7 +94,7 @@ where
     }
 
     #[inline]
-    fn ok_collect_btset(self) -> Result<BTreeSet<T>>
+    fn ok_collect_btset(&mut self) -> Result<BTreeSet<T>>
     where
         T: Eq + Hash + Ord,
     {
@@ -102,7 +102,7 @@ where
     }
 
     #[inline]
-    fn ok_collect_hmap<K, V>(self) -> Result<HashMap<K, V>>
+    fn ok_collect_hmap<K, V>(&mut self) -> Result<HashMap<K, V>>
     where
         T: Into<(K, V)>,
         K: Eq + Hash,
@@ -111,7 +111,7 @@ where
     }
 
     #[inline]
-    fn ok_collect_btmap<K, V>(self) -> Result<BTreeMap<K, V>>
+    fn ok_collect_btmap<K, V>(&mut self) -> Result<BTreeMap<K, V>>
     where
         T: Into<(K, V)>,
         K: Eq + Hash + Ord,
@@ -119,7 +119,7 @@ where
         self.map(|res| res.map(Into::into)).ok_collect()
     }
 
-    fn ok_partition<B, F>(self, f: F) -> Result<(B, B)>
+    fn ok_partition<B, F>(&mut self, f: F) -> Result<(B, B)>
     where
         B: Default + Extend<T>,
         F: FnMut(&T) -> bool,
@@ -146,7 +146,7 @@ where
     }
 
     #[inline]
-    fn ok_fold<B, F>(self, init: B, mut f: F) -> Result<B>
+    fn ok_fold<B, F>(&mut self, init: B, mut f: F) -> Result<B>
     where
         F: FnMut(B, T) -> B,
     {
@@ -158,7 +158,7 @@ where
     }
 
     #[inline]
-    fn ok_reduce<F>(mut self, f: F) -> Result<Option<T>>
+    fn ok_reduce<F>(&mut self, f: F) -> Result<Option<T>>
     where
         F: FnMut(T, T) -> T,
     {
@@ -268,7 +268,7 @@ where
     }
 
     #[inline]
-    fn ok_max(self) -> Result<Option<T>>
+    fn ok_max(&mut self) -> Result<Option<T>>
     where
         T: Ord,
     {
@@ -276,7 +276,7 @@ where
     }
 
     #[inline]
-    fn ok_max_by_key<B, F>(self, mut f: F) -> Result<Option<T>>
+    fn ok_max_by_key<B, F>(&mut self, mut f: F) -> Result<Option<T>>
     where
         F: FnMut(&T) -> B,
         B: Ord,
@@ -291,7 +291,7 @@ where
     }
 
     #[inline]
-    fn ok_max_by<F>(self, mut compare: F) -> Result<Option<T>>
+    fn ok_max_by<F>(&mut self, mut compare: F) -> Result<Option<T>>
     where
         F: FnMut(&T, &T) -> Ordering,
     {
@@ -299,7 +299,7 @@ where
     }
 
     #[inline]
-    fn ok_min(self) -> Result<Option<T>>
+    fn ok_min(&mut self) -> Result<Option<T>>
     where
         T: Ord,
     {
@@ -307,7 +307,7 @@ where
     }
 
     #[inline]
-    fn ok_min_by_key<B, F>(self, mut f: F) -> Result<Option<T>>
+    fn ok_min_by_key<B, F>(&mut self, mut f: F) -> Result<Option<T>>
     where
         F: FnMut(&T) -> B,
         B: Ord,
@@ -322,7 +322,7 @@ where
     }
 
     #[inline]
-    fn ok_min_by<F>(self, mut compare: F) -> Result<Option<T>>
+    fn ok_min_by<F>(&mut self, mut compare: F) -> Result<Option<T>>
     where
         F: FnMut(&T, &T) -> Ordering,
     {
@@ -332,7 +332,7 @@ where
     // ok_unzip
 
     #[inline]
-    fn ok_sum<S>(self) -> Result<S>
+    fn ok_sum<S>(&mut self) -> Result<S>
     where
         S: Sum<T>,
     {
@@ -340,7 +340,7 @@ where
     }
 
     #[inline]
-    fn ok_product<P>(self) -> Result<P>
+    fn ok_product<P>(&mut self) -> Result<P>
     where
         P: Product<T>,
     {
