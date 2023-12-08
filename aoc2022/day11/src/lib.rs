@@ -138,9 +138,7 @@ pub fn solver(part: Part, input: &str) -> Result<usize> {
     let (nb_rounds, worry_management) = match part {
         Part1 => (20, WorryManagement::DividedBy3),
         Part2 => {
-            // (Least) Common Multiple  (well, here it is the product not the least,
-            // but they are different primes numbers, so yeah it's the least in tests).
-            let lcm = monkeys.iter().map(|m| m.divisor).product();
+            let lcm = monkeys.iter().map(|m| m.divisor).fold(1, num_integer::lcm);
             (10000, WorryManagement::Explode(lcm))
         }
     };

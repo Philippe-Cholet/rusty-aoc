@@ -76,22 +76,10 @@ pub fn solver(part: Part, input: &str) -> Result<usize> {
                         .next()
                         .expect("Endless loop")
                 })
-                .reduce(lcm)
+                .reduce(num_integer::lcm)
                 .context("No start")?
         }
     })
-}
-
-// I definitely should have more math utilities at disposal.
-const fn gcd(mut a: usize, mut b: usize) -> usize {
-    while b != 0 {
-        (a, b) = (b, a % b);
-    }
-    a
-}
-
-const fn lcm(a: usize, b: usize) -> usize {
-    a / gcd(a, b) * b
 }
 
 pub const INPUTS: [&str; 4] = [

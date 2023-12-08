@@ -72,6 +72,7 @@ The session cookie can be hold in an environment variable (`AOC_TOKEN` by defaul
 - **itertools:** iterators are nice
 - **petgraph:** graph algorithms
 - **ndarray:** n-dimensional arrays
+- **num-integer:** integer operations
 - **pest:** Parsing Expression Grammar
 - **md5:** hash function
 - **serde_json:** handle JSON

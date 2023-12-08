@@ -13,4 +13,5 @@ doctest = false
 
 [dependencies]
 itertools.workspace = true
+num-integer.workspace = true
 common = { path = "../../common" }
