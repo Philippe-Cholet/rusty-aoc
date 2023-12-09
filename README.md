@@ -39,7 +39,8 @@ And reports are so much cleaner.
     cargo nextest run -r [--run-ignored [ignored-only|all]]
 
 #### Faster solvers
-I use the [flamegraph](https://crates.io/crates/flamegraph) crate to easily detect where my code is not efficient enough.
+I use the [flamegraph](https://crates.io/crates/flamegraph) crate to easily detect where my code is not efficient enough
+([basic usage](https://ntietz.com/blog/profiling-rust-programs-the-easy-way/)).
 
 Here is what I learnt so far:
 
