@@ -39,13 +39,12 @@ pub fn solver(part: Part, input: &str) -> Result<i64> {
                 n += 1;
             }
         })
-        .map(|(mut line, n)| {
+        .flat_map(|(mut line, n)| {
             if part.one() {
                 line.reverse();
             }
             itertools::izip!(&binomials[n][1..], line, [1, -1].iter().cycle())
                 .map(|(binom, val, e)| binom * i64::from(val) * e)
-                .sum::<i64>()
         })
         .sum())
 }
