@@ -15,7 +15,7 @@ pub fn solver(part: Part, input: &str) -> Result<usize> {
             let mut nbs: Vec<u8> = nbs.split(',').map(str::parse).try_collect()?;
             if part.two() {
                 let len = records.len();
-                records.reserve((len * 5 + 4).saturating_sub(records.capacity()));
+                records.reserve(len * 4 + 4);
                 for _ in 0..4 {
                     records.push(Unknown);
                     for i in 0..len {

@@ -103,7 +103,7 @@ fn merge12(
     group: &[Xyz],
     offsets: &mut HashMap<Xyz, usize>,
 ) -> Option<(Xyz, Vec<Xyz>)> {
-    offsets.reserve((positions.len() * group.len()).saturating_sub(offsets.capacity()));
+    offsets.reserve((positions.len() * group.len()).saturating_sub(offsets.len()));
     let mut aligned = Vec::with_capacity(group.len());
     iproduct!(
         [Axis3D::X, Axis3D::Y, Axis3D::Z],
