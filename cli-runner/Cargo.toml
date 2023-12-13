@@ -124,3 +124,4 @@ aoc23-09 = { path = "../aoc2023/day09" }
 aoc23-10 = { path = "../aoc2023/day10" }
 aoc23-11 = { path = "../aoc2023/day11" }
 aoc23-12 = { path = "../aoc2023/day12" }
+aoc23-13 = { path = "../aoc2023/day13" }
