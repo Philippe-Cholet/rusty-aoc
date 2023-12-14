@@ -57,7 +57,7 @@ accszExk
 acctuvwj
 abdefghi
 ",
-    include_str!("input.txt"),
+    include_input!(22 12),
 ];
 
 #[test]

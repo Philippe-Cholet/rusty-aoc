@@ -185,7 +185,7 @@ O.#..O.#.#
 #....###..
 #OO..#....
 ",
-    include_str!("input.txt"),
+    include_input!(23 14),
 ];
 
 #[test]

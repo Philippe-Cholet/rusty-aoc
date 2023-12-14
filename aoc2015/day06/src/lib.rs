@@ -72,7 +72,7 @@ impl std::str::FromStr for Instruction {
     }
 }
 
-pub const INPUTS: [&str; 1] = [include_str!("input.txt")];
+pub const INPUTS: [&str; 1] = [include_input!(15 06)];
 
 #[test]
 fn solver_15_06() -> Result<()> {

@@ -109,7 +109,7 @@ acc +1
 jmp -4
 acc +6
 ",
-    include_str!("input.txt"),
+    include_input!(20 08),
 ];
 
 #[test]

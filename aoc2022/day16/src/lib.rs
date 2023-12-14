@@ -224,7 +224,7 @@ Valve HH has flow rate=22; tunnel leads to valve GG
 Valve II has flow rate=0; tunnels lead to valves AA, JJ
 Valve JJ has flow rate=21; tunnel leads to valve II
 ",
-    include_str!("input.txt"),
+    include_input!(22 16),
 ];
 
 #[test]

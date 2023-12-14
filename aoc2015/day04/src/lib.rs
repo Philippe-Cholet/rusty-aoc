@@ -18,7 +18,7 @@ pub fn solver(part: Part, input: &str) -> Result<u64> {
     }
 }
 
-pub const INPUTS: [&str; 2] = ["abcdef", include_str!("input.txt")];
+pub const INPUTS: [&str; 2] = ["abcdef", include_input!(15 04)];
 
 #[test]
 fn solver_15_04() -> Result<()> {

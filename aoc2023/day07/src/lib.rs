@@ -170,7 +170,7 @@ KK677 28
 KTJJT 220
 QQQJA 483
 ",
-    include_str!("input.txt"),
+    include_input!(23 07),
 ];
 
 #[test]

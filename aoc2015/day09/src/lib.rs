@@ -62,7 +62,7 @@ London to Dublin = 464
 London to Belfast = 518
 Dublin to Belfast = 141
 ",
-    include_str!("input.txt"),
+    include_input!(15 09),
 ];
 
 #[test]

@@ -135,7 +135,7 @@ mem[42] = 100
 mask = 00000000000000000000000000000000X0XX
 mem[26] = 1
 ",
-    include_str!("input.txt"),
+    include_input!(20 14),
 ];
 
 #[test]

@@ -49,7 +49,7 @@ xtwone3four
 zoneight234
 7pqrstsixteen
 ",
-    include_str!("input.txt"),
+    include_input!(23 01),
 ];
 
 #[test]

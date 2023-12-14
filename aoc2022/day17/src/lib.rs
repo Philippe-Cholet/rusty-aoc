@@ -235,7 +235,7 @@ pub fn solver(part: Part, input: &str) -> Result<usize> {
 
 pub const INPUTS: [&str; 2] = [
     ">>><<><>><<<>><>>><<<>>><<<><<<>><>><<>>\n",
-    include_str!("input.txt"),
+    include_input!(22 17),
 ];
 
 #[test]

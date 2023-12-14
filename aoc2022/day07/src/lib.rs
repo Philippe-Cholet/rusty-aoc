@@ -143,7 +143,7 @@ $ ls
 5626152 d.ext
 7214296 k
 ",
-    include_str!("input.txt"),
+    include_input!(22 07),
 ];
 
 #[test]

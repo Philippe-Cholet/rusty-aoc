@@ -42,7 +42,7 @@ fn get_contiguous_set(xmas: &[u64], invalid_idx: usize) -> Option<u64> {
         })
 }
 
-pub const INPUTS: [&str; 1] = [include_str!("input.txt")];
+pub const INPUTS: [&str; 1] = [include_input!(20 09)];
 
 #[test]
 fn solver_20_09() -> Result<()> {

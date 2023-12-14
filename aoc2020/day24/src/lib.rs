@@ -122,7 +122,7 @@ eneswnwswnwsenenwnwnwwseeswneewsenese
 neswnwewnwnwseenwseesewsenwsweewe
 wseweeenwnesenwwwswnew
 ",
-    include_str!("input.txt"),
+    include_input!(20 24),
 ];
 
 #[test]

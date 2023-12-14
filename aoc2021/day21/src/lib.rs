@@ -83,7 +83,7 @@ pub const INPUTS: [&str; 2] = [
     "Player 1 starting position: 4
 Player 2 starting position: 8
 ",
-    include_str!("input.txt"),
+    include_input!(21 21),
 ];
 
 #[test]

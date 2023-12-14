@@ -95,7 +95,7 @@ pub const INPUTS: [&str; 2] = [
 fold along y=7
 fold along x=5
 ",
-    include_str!("input.txt"),
+    include_input!(21 13),
 ];
 
 #[test]

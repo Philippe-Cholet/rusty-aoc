@@ -101,7 +101,7 @@ impl<'a> TryFrom<&'a str> for Operation<'a> {
     }
 }
 
-pub const INPUTS: [&str; 1] = [include_str!("input.txt")];
+pub const INPUTS: [&str; 1] = [include_input!(15 07)];
 
 #[test]
 fn solver_15_07() -> Result<()> {

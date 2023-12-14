@@ -12,6 +12,7 @@ pub mod prelude {
     pub use crate::{Part, Part1, Part2};
     // My solvers do not need `Day`, `Year` and `AocSolver`.
     pub use crate::hash::prelude::*;
+    pub use crate::include_input;
 }
 
 use std::str::FromStr;
@@ -20,6 +21,19 @@ use std::time::{Duration, Instant};
 pub use anyhow::{bail, ensure, format_err, Context, Error, Ok, Result};
 
 pub use self::{Day::*, Part::*, Year::*};
+
+#[macro_export]
+macro_rules! include_input {
+    ($year:literal $day:literal) => {
+        include_str!(concat!(
+            "../../../inputs/20",
+            stringify!($year),
+            "/",
+            stringify!($day),
+            ".txt"
+        ));
+    };
+}
 
 pub trait AocSolver {
     fn solve(&self, part: Part, input: &str) -> Result<String>;

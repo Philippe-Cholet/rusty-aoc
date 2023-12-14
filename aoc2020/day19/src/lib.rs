@@ -157,7 +157,7 @@ aaaabbaabbaaaaaaabbbabbbaaabbaabaaa
 babaaabbbaaabaababbaabababaaab
 aabbbbbaabbbaaaaaabbbbbababaaaaabbaaabba
 "#,
-    include_str!("input.txt"),
+    include_input!(20 19),
 ];
 
 #[test]

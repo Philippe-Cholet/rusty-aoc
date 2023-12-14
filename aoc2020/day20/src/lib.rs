@@ -513,7 +513,7 @@ Tile 3079:
 ..#.......
 ..#.###...
 ",
-    include_str!("input.txt"),
+    include_input!(20 20),
 ];
 
 #[test]

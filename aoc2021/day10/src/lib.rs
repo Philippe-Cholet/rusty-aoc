@@ -86,7 +86,7 @@ pub const INPUTS: [&str; 2] = [
 <{([([[(<>()){}]>(<<{{
 <{([{{}}[<[[[<>{}]]]>[]]
 ",
-    include_str!("input.txt"),
+    include_input!(21 10),
 ];
 
 #[test]

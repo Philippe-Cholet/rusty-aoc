@@ -27,7 +27,7 @@ pub fn solver(part: Part, input: &str) -> Result<u32> {
 
 pub const INPUTS: [&str; 2] = [
     "abc\n\na\nb\nc\n\nab\nac\n\na\na\na\na\n\nb\n",
-    include_str!("input.txt"),
+    include_input!(20 06),
 ];
 
 #[test]

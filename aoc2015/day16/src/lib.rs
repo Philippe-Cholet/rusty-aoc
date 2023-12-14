@@ -56,7 +56,7 @@ pub fn solver(part: Part, input: &str) -> Result<usize> {
         .map_err(|it| format_err!("Not one aunt but {}.", it.count()))
 }
 
-pub const INPUTS: [&str; 1] = [include_str!("input.txt")];
+pub const INPUTS: [&str; 1] = [include_input!(15 16)];
 
 #[test]
 fn solver_15_16() -> Result<()> {

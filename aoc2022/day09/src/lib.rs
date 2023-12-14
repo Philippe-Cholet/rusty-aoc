@@ -91,7 +91,7 @@ D 10
 L 25
 U 20
 ",
-    include_str!("input.txt"),
+    include_input!(22 09),
 ];
 
 #[test]

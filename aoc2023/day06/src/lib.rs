@@ -55,7 +55,7 @@ pub const INPUTS: [&str; 2] = [
 Time:      7  15   30
 Distance:  9  40  200
 ",
-    include_str!("input.txt"),
+    include_input!(23 06),
 ];
 
 #[test]

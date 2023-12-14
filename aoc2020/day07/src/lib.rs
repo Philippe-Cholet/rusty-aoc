@@ -101,7 +101,7 @@ dark green bags contain 2 dark blue bags.
 dark blue bags contain 2 dark violet bags.
 dark violet bags contain no other bags.
 ",
-    include_str!("input.txt"),
+    include_input!(20 07),
 ];
 
 #[test]

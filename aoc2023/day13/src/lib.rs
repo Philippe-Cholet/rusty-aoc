@@ -136,7 +136,7 @@ pub const INPUTS: [&str; 2] = [
 ..##..###
 #....#..#
 ",
-    include_str!("input.txt"),
+    include_input!(23 13),
 ];
 
 #[test]

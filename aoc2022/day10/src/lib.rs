@@ -223,7 +223,7 @@ noop
 noop
 noop
 ",
-    include_str!("input.txt"),
+    include_input!(22 10),
 ];
 
 #[test]

@@ -56,7 +56,7 @@ fn mod_inv(a: i64, n: i64) -> Option<i64> {
     (r.0 <= 1).then_some(t.0)
 }
 
-pub const INPUTS: [&str; 2] = ["939\n7,13,x,x,59,x,31,19\n", include_str!("input.txt")];
+pub const INPUTS: [&str; 2] = ["939\n7,13,x,x,59,x,31,19\n", include_input!(20 13)];
 
 #[test]
 fn solver_20_13() -> Result<()> {

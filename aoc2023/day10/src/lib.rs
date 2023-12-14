@@ -236,7 +236,7 @@ L---JF-JLJ.||-FJLJJ7
 L.L7LFJ|||||FJL7||LJ
 L7JLJL-JLJLJL--JLJ.L
 ",
-    include_str!("input.txt"),
+    include_input!(23 10),
 ];
 
 #[test]

@@ -60,7 +60,7 @@ pub const INPUTS: [&str; 2] = [
 1=
 122
 ",
-    include_str!("input.txt"),
+    include_input!(22 25),
 ];
 
 const SUCCESS: &str = "It's time for the reindeer to get its star-smoothie.";

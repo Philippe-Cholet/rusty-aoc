@@ -44,7 +44,7 @@ pub const INPUTS: [&str; 6] = [
     "nppdvjthqldpwncqszvftbrmjlhg\n",
     "nznrnfrfntjfmvfwmzdfjlvtqnbhcprsg\n",
     "zcfzfwzzqfrljwzlrfnpqdbhtmscgvjw\n",
-    include_str!("input.txt"),
+    include_input!(22 06),
 ];
 
 #[test]

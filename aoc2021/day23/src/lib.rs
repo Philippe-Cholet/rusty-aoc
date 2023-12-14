@@ -458,7 +458,7 @@ pub const INPUTS: [&str; 2] = [
   #A#D#C#A#
   #########
 ",
-    include_str!("input.txt"),
+    include_input!(21 23),
 ];
 
 #[test]

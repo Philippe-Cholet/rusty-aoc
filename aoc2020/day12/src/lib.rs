@@ -166,7 +166,7 @@ impl std::str::FromStr for Action {
     }
 }
 
-pub const INPUTS: [&str; 2] = ["F10\nN3\nF7\nR90\nF11\n", include_str!("input.txt")];
+pub const INPUTS: [&str; 2] = ["F10\nN3\nF7\nR90\nF11\n", include_input!(20 12)];
 
 #[test]
 fn solver_20_12() -> Result<()> {

@@ -96,7 +96,7 @@ v>v.vv.v..
 v.v..>>v.v
 ....v..v.>
 ",
-    include_str!("input.txt"),
+    include_input!(21 25),
 ];
 
 const SUCCESS: &str = "\

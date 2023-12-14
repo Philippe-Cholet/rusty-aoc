@@ -10,7 +10,7 @@ Cargo.lock
 /html
 
 # Puzzle inputs to solve them.
-/aoc20*/day*/src/input.txt
+/inputs
 # Test other inputs.
 /cli-runner/tests
 # See https://www.reddit.com/r/adventofcode/wiki/faqs/copyright/inputs/

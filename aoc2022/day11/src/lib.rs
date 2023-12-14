@@ -211,7 +211,7 @@ Monkey 3:
     If true: throw to monkey 0
     If false: throw to monkey 1
 ",
-    include_str!("input.txt"),
+    include_input!(22 11),
 ];
 
 #[test]

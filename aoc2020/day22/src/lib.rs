@@ -119,7 +119,7 @@ impl std::str::FromStr for DeckGame {
 
 pub const INPUTS: [&str; 2] = [
     "Player 1:\n9\n2\n6\n3\n1\n\nPlayer 2:\n5\n8\n4\n7\n10\n",
-    include_str!("input.txt"),
+    include_input!(20 22),
 ];
 
 #[test]

@@ -29,7 +29,7 @@ pub const INPUTS: [&str; 2] = [
 6-6,4-6
 2-6,4-8
 ",
-    include_str!("input.txt"),
+    include_input!(22 04),
 ];
 
 #[test]

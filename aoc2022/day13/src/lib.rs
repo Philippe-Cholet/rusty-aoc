@@ -130,7 +130,7 @@ pub const INPUTS: [&str; 2] = [
 [1,[2,[3,[4,[5,6,7]]]],8,9]
 [1,[2,[3,[4,[5,6,0]]]],8,9]
 ",
-    include_str!("input.txt"),
+    include_input!(22 13),
 ];
 
 #[test]

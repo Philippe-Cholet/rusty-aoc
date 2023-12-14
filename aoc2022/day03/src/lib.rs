@@ -48,7 +48,7 @@ wMqvLMZHhHMvwLHjbvcjnnSBnvTQFn
 ttgJtRGJQctTZtZT
 CrZsJsPPZsGzwwsLwLmpwMDw
 ",
-    include_str!("input.txt"),
+    include_input!(22 03),
 ];
 
 #[test]

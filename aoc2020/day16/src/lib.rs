@@ -112,7 +112,7 @@ nearby tickets:
 55,2,20
 38,6,12
 ",
-    include_str!("input.txt"),
+    include_input!(20 16),
 ];
 
 #[test]

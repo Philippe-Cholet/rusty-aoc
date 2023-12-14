@@ -90,7 +90,7 @@ LLLLLLLLLL
 L.LLLLLL.L
 L.LLLLL.LL
 ",
-    include_str!("input.txt"),
+    include_input!(20 11),
 ];
 
 #[test]

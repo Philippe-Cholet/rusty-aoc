@@ -51,10 +51,7 @@ pub fn solver(part: Part, input: &str) -> Result<i32> {
     }
 }
 
-pub const INPUTS: [&str; 2] = [
-    "target area: x=20..30, y=-10..-5\n",
-    include_str!("input.txt"),
-];
+pub const INPUTS: [&str; 2] = ["target area: x=20..30, y=-10..-5\n", include_input!(21 17)];
 
 #[test]
 fn solver_21_17() -> Result<()> {

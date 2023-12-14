@@ -141,7 +141,7 @@ pub const INPUTS: [&str; 2] = [
 33549
 35390
 ",
-    include_str!("input.txt"),
+    include_input!(22 08),
 ];
 
 #[test]

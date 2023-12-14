@@ -71,7 +71,7 @@ pub fn solver(part: Part, input: &str) -> Result<usize> {
     Ok(count_actives(&flaten_array))
 }
 
-pub const INPUTS: [&str; 2] = [".#.\n..#\n###\n", include_str!("input.txt")];
+pub const INPUTS: [&str; 2] = [".#.\n..#\n###\n", include_input!(20 17)];
 
 #[test]
 fn solver_20_17() -> Result<()> {

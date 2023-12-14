@@ -86,7 +86,7 @@ BC -> B
 CC -> N
 CN -> C
 ",
-    include_str!("input.txt"),
+    include_input!(21 14),
 ];
 
 #[test]

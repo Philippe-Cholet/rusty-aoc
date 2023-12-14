@@ -40,7 +40,7 @@ pub fn solver(part: Part, input: &str) -> Result<u16> {
     }
 }
 
-pub const INPUTS: [&str; 1] = [include_str!("input.txt")];
+pub const INPUTS: [&str; 1] = [include_input!(20 05)];
 
 #[test]
 fn solver_20_05() -> Result<()> {

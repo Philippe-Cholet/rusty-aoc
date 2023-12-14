@@ -51,7 +51,7 @@ pub const INPUTS: [&str; 2] = [
 0,0 -> 8,8
 5,5 -> 8,2
 ",
-    include_str!("input.txt"),
+    include_input!(21 05),
 ];
 
 #[test]

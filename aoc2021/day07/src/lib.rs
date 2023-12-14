@@ -23,7 +23,7 @@ pub fn solver(part: Part, input: &str) -> Result<u32> {
         .context("empty")
 }
 
-pub const INPUTS: [&str; 2] = ["16,1,2,0,4,2,7,1,2,14\n", include_str!("input.txt")];
+pub const INPUTS: [&str; 2] = ["16,1,2,0,4,2,7,1,2,14\n", include_input!(21 07)];
 
 #[test]
 fn solver_21_07() -> Result<()> {

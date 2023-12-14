@@ -101,7 +101,7 @@ impl std::str::FromStr for Password {
     }
 }
 
-pub const INPUTS: [&str; 3] = ["abcdefgh", "ghijklmn", include_str!("input.txt")];
+pub const INPUTS: [&str; 3] = ["abcdefgh", "ghijklmn", include_input!(15 11)];
 
 #[test]
 fn solver_15_11() -> Result<()> {

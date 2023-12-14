@@ -23,7 +23,7 @@ pub fn solver(part: Part, input: &str) -> Result<i32> {
     }
 }
 
-pub const INPUTS: [&str; 1] = [include_str!("input.txt")];
+pub const INPUTS: [&str; 1] = [include_input!(15 01)];
 
 #[test]
 fn solver_15_01() -> Result<()> {

@@ -82,7 +82,7 @@ trh fvjkl sbzzf mxmxvkd (contains dairy)
 sqjhc fvjkl (contains soy)
 sqjhc mxmxvkd sbzzf (contains fish)
 ",
-    include_str!("input.txt"),
+    include_input!(20 21),
 ];
 
 #[test]

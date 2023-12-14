@@ -28,7 +28,7 @@ pub fn solver(part: Part, input: &str) -> Result<usize> {
     Ok(state.iter().sum())
 }
 
-pub const INPUTS: [&str; 2] = ["3,4,3,1,2", include_str!("input.txt")];
+pub const INPUTS: [&str; 2] = ["3,4,3,1,2", include_input!(21 06)];
 
 #[test]
 fn solver_21_06() -> Result<()> {

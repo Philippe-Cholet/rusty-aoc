@@ -44,7 +44,7 @@ pub fn solver(part: Part, input: &str) -> Result<usize> {
     Ok(houses.len())
 }
 
-pub const INPUTS: [&str; 1] = [include_str!("input.txt")];
+pub const INPUTS: [&str; 1] = [include_input!(15 03)];
 
 #[test]
 fn solver_15_03() -> Result<()> {

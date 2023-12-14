@@ -110,7 +110,7 @@ ZZZ = (ZZZ, ZZZ)
 22Z = (22B, 22B)
 XXX = (XXX, XXX)
 ",
-    include_str!("input.txt"),
+    include_input!(23 08),
 ];
 
 #[test]

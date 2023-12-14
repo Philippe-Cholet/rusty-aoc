@@ -34,7 +34,7 @@ pub const INPUTS: [&str; 2] = [
 
 10000
 ",
-    include_str!("input.txt"), // 259 elves
+    include_input!(22 01), // 259 elves
 ];
 
 #[test]

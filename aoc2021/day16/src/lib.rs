@@ -133,7 +133,7 @@ pub const INPUTS: [&str; 13] = [
     "F600BC2D8F",                 // "5 > 15" is false => 0
     "9C005AC2F8F0",               // "5 is equal to 15" is false => 0
     "9C0141080250320F1802104A08", // "1 + 3 = 2 * 2" is true => 1
-    include_str!("input.txt"),
+    include_input!(21 16),
 ];
 
 #[test]

@@ -38,7 +38,7 @@ up 3
 down 8
 forward 2
 ",
-    include_str!("input.txt"),
+    include_input!(21 02),
 ];
 
 #[test]

@@ -89,7 +89,7 @@ pub const INPUTS: [&str; 2] = [
 ...$.*....
 .664.598..
 ",
-    include_str!("input.txt"),
+    include_input!(23 03),
 ];
 
 #[test]

@@ -54,7 +54,7 @@ fn checked_mod_pow(mut n: u64, mut exp: u64, modulus: u64) -> Option<u64> {
     Some(res)
 }
 
-pub const INPUTS: [&str; 2] = ["5764801\n17807724\n", include_str!("input.txt")];
+pub const INPUTS: [&str; 2] = ["5764801\n17807724\n", include_input!(20 25)];
 
 const SUCCESS: &str = "Time to pay the resort and take a ride in Santa' sleigh.";
 

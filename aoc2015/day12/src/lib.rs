@@ -38,7 +38,7 @@ pub const INPUTS: [&str; 12] = [
     r#"[1,{"c":"red","b":2},3]"#,
     r#"{"d":"red","e":[1,2,3,4],"f":5}"#,
     r#"[1,"red",5]"#,
-    include_str!("input.txt"),
+    include_input!(15 12),
 ];
 
 #[test]

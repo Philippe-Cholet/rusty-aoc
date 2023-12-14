@@ -70,7 +70,7 @@ pub const INPUTS: [&str; 2] = [
 1293138521
 2311944581
 ",
-    include_str!("input.txt"),
+    include_input!(21 15),
 ];
 
 #[test]

@@ -22,7 +22,7 @@ pub fn solver(part: Part, input: &str) -> Result<u32> {
         .sum()
 }
 
-pub const INPUTS: [&str; 1] = [include_str!("input.txt")];
+pub const INPUTS: [&str; 1] = [include_input!(15 02)];
 
 #[test]
 fn solver_15_02() -> Result<()> {

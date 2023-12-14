@@ -171,7 +171,7 @@ pub const INPUTS: [&str; 2] = [
 #<^v^^>#
 ######.#
 ",
-    include_str!("input.txt"),
+    include_input!(22 24),
 ];
 
 #[test]

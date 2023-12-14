@@ -70,7 +70,7 @@ pub fn solver(part: Part, input: &str) -> Result<u64> {
     })
 }
 
-pub const INPUTS: [&str; 2] = ["389125467", include_str!("input.txt")];
+pub const INPUTS: [&str; 2] = ["389125467", include_input!(20 23)];
 
 #[test]
 fn solver_20_23() -> Result<()> {

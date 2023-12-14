@@ -169,7 +169,7 @@ zg-he
 pj-fs
 start-RW
 ",
-    include_str!("input.txt"),
+    include_input!(21 12),
 ];
 
 #[test]

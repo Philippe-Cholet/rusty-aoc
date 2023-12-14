@@ -183,7 +183,7 @@ Each clay robot costs 3 ore. \
 Each obsidian robot costs 3 ore and 8 clay. \
 Each geode robot costs 3 ore and 12 obsidian.
 ",
-    include_str!("input.txt"),
+    include_input!(22 19),
 ];
 
 #[test]

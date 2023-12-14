@@ -146,7 +146,7 @@ humidity-to-location map:
 60 56 37
 56 93 4
 ",
-    include_str!("input.txt"),
+    include_input!(23 05),
 ];
 
 #[test]

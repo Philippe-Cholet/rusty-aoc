@@ -22,7 +22,7 @@ pub fn solver(part: Part, input: &str) -> Result<usize> {
         .count())
 }
 
-pub const INPUTS: [&str; 1] = [include_str!("input.txt")];
+pub const INPUTS: [&str; 1] = [include_input!(15 05)];
 
 #[test]
 fn solver_15_05() -> Result<()> {

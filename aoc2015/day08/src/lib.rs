@@ -42,7 +42,7 @@ pub const INPUTS: [&str; 2] = [
 "aaa\"aaa"
 "\x27"
 "#,
-    include_str!("input.txt"),
+    include_input!(15 08),
 ];
 
 #[test]

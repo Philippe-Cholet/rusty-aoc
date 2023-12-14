@@ -163,7 +163,7 @@ impl std::iter::Sum for Item {
     }
 }
 
-pub const INPUTS: [&str; 1] = [include_str!("input.txt")];
+pub const INPUTS: [&str; 1] = [include_input!(15 21)];
 
 #[test]
 fn solver_15_21() -> Result<()> {

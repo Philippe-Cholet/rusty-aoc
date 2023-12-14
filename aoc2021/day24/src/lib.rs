@@ -21,7 +21,7 @@ pub fn solver(part: Part, input: &str) -> Result<u64> {
     Ok(model_number)
 }
 
-pub const INPUTS: [&str; 1] = [include_str!("input.txt")];
+pub const INPUTS: [&str; 1] = [include_input!(21 24)];
 
 #[test]
 fn solver_21_24() -> Result<()> {

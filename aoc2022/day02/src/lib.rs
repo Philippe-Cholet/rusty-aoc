@@ -77,7 +77,7 @@ pub fn solver(part: Part, input: &str) -> Result<u32> {
         .sum()
 }
 
-pub const INPUTS: [&str; 2] = ["A Y\nB X\nC Z\n", include_str!("input.txt")];
+pub const INPUTS: [&str; 2] = ["A Y\nB X\nC Z\n", include_input!(22 02)];
 
 #[test]
 fn solver_22_02() -> Result<()> {

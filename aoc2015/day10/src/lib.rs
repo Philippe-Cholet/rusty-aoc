@@ -42,7 +42,7 @@ pub fn solver(part: Part, input: &str) -> Result<usize> {
     Ok(ns.len())
 }
 
-pub const INPUTS: [&str; 1] = [include_str!("input.txt")];
+pub const INPUTS: [&str; 1] = [include_input!(15 10)];
 
 #[test]
 fn solver_15_10() -> Result<()> {

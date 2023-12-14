@@ -147,7 +147,7 @@ O => HH
 
 HOHOHO
 ",
-    include_str!("input.txt"),
+    include_input!(15 19),
 ];
 
 #[test]

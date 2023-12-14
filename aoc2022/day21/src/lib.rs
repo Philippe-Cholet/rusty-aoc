@@ -226,7 +226,7 @@ lgvd: ljgn * ptdq
 drzm: hmdt - zczc
 hmdt: 32
 ",
-    include_str!("input.txt"),
+    include_input!(22 21),
 ];
 
 #[test]

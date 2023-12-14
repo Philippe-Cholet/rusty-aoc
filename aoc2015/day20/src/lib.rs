@@ -103,7 +103,7 @@ fn find_robin_lower_bound(x: u32) -> u32 {
     maxi
 }
 
-pub const INPUTS: [&str; 1] = [include_str!("input.txt")];
+pub const INPUTS: [&str; 1] = [include_input!(15 20)];
 
 #[test]
 fn solver_15_20() -> Result<()> {

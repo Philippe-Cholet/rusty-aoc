@@ -40,7 +40,7 @@ pub const INPUTS: [&str; 2] = [
 1-3 b: cdefg
 2-9 c: ccccccccc
 ",
-    include_str!("input.txt"),
+    include_input!(20 02),
 ];
 
 #[test]
