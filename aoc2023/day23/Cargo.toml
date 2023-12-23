@@ -1,0 +1,18 @@
+[package]
+name = "aoc23-23"
+description = "My solution for the Advent of Code 2023 day 23"
+edition.workspace = true
+rust-version.workspace = true
+version.workspace = true
+authors.workspace = true
+repository.workspace = true
+license.workspace = true
+
+[lib]
+doctest = false
+
+[dependencies]
+itertools.workspace = true
+petgraph.workspace = true
+common = { path = "../../common" }
+utils = { path = "../../utils" }
