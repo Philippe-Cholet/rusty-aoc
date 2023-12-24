@@ -1,0 +1,19 @@
+[package]
+name = "aoc23-24"
+description = "My solution for the Advent of Code 2023 day 24"
+edition.workspace = true
+rust-version.workspace = true
+version.workspace = true
+authors.workspace = true
+repository.workspace = true
+license.workspace = true
+
+[lib]
+doctest = false
+
+[dependencies]
+itertools.workspace = true
+# z3 = "0.12.1"
+# z3 = { version = "0.12", features = ["static-link-z3"] }
+common = { path = "../../common" }
+utils = { path = "../../utils" }
