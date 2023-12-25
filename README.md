@@ -5,7 +5,7 @@ Year | Stars | When
 2022 | 50 🌟 | Dec. 2022
 2020 | 50 🌟 | Feb. 2023
 2015 | 42 🌟 | On a break
-2023 | .. 🌟 | Dec. 2023
+2023 | 50 🌟 | Dec. 2023
 
 ## About this workspace
 My main goal here is to practice and write idiomatic Rust solving "Advent of Code" puzzles.
