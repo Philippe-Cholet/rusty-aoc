@@ -79,6 +79,7 @@ The session cookie can be hold in an environment variable (`AOC_TOKEN` by defaul
 - **serde_json:** handle JSON
 - **permutohedron:** permutations using Heap's algorithm (without heap allocation)
 - **memchr:** fast substring search
+- **rand** for random algorithms
 - **good_lp (optional):** linear programming
 
 but I might need "regex", "num" at some point, eventually others.
