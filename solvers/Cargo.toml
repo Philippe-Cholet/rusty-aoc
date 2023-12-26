@@ -1,5 +1,5 @@
 [package]
-name = "cli-runner"
+name = "solvers"
 description = "Run my rust solutions to Advents of Code from the command line"
 edition.workspace = true
 rust-version.workspace = true
@@ -7,16 +7,22 @@ version.workspace = true
 authors.workspace = true
 repository.workspace = true
 license.workspace = true
-default-run = "cli-runner"
+default-run = "solvers"
 
 [[bin]]
-name = "cli-runner"
+name = "solvers"
 test = false
+
+[lib]
+doctest = false
+
+[features]
+lp = ["dep:good_lp"]
 
 [dependencies]
 aoc-macro = { path = "../aoc-macro" }
 anyhow.workspace = true
-good_lp = { version = "1.7.0", features = ["lp-solvers"], default-features = false }
+good_lp = { version = "1.7.0", features = ["lp-solvers"], default-features = false, optional = true }
 itertools.workspace = true
 md5 = "0.7.0"
 memchr = "2.6.4"

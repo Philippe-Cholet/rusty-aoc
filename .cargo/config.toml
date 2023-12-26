@@ -17,7 +17,7 @@ f = "fmt --check"
 
 clip = "clippy -- -W clippy::all -W clippy::pedantic -W clippy::nursery -W clippy::unwrap_used -W clippy::expect_used -W clippy::disallowed-types -A clippy::missing-errors-doc -A clippy::missing-panics-doc"
 
-cli = "run --bin cli-runner --profile final"
+cli = "run --bin solvers --profile final"
 
 flame = "flamegraph --profile flamegraph"
 
