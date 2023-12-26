@@ -15,6 +15,8 @@ test = false
 
 [dependencies]
 aoc-macro = { path = "../aoc-macro" }
+anyhow.workspace = true
+permutohedron.workspace = true
 common = { path = "../common" }
 aoc21-01 = { path = "../aoc2021/day01" }
 aoc21-02 = { path = "../aoc2021/day02" }
