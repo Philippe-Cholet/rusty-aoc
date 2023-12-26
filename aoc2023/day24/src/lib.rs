@@ -30,9 +30,9 @@ pub fn solver(part: Part, input: &str) -> Result<usize> {
         }
         Part2 => {
             let mut z3text = "\
-                (declare-const x0 Int) (declare-const vx0 Int)
-                (declare-const y0 Int) (declare-const vy0 Int)
-                (declare-const z0 Int) (declare-const vz0 Int)"
+                (declare-const x0 Real) (declare-const vx0 Real)
+                (declare-const y0 Real) (declare-const vy0 Real)
+                (declare-const z0 Real) (declare-const vz0 Real)"
                 .to_owned();
             hailstones.into_iter().enumerate().try_for_each(
                 |(
@@ -43,10 +43,10 @@ pub fn solver(part: Part, input: &str) -> Result<usize> {
                     },
                 )| {
                     z3text.write_fmt(format_args!(
-                        "(declare-const t{i} Int)
-                        (assert (= (+ {px} (* t{i} {vx})) (+ x0 (* t{i} vx0))))
-                        (assert (= (+ {py} (* t{i} {vy})) (+ y0 (* t{i} vy0))))
-                        (assert (= (+ {pz} (* t{i} {vz})) (+ z0 (* t{i} vz0))))"
+                        "(declare-const t{i} Real)
+                        (assert (= (+ (to_real {px}) (* t{i} (to_real {vx}))) (+ x0 (* t{i} vx0))))
+                        (assert (= (+ (to_real {py}) (* t{i} (to_real {vy}))) (+ y0 (* t{i} vy0))))
+                        (assert (= (+ (to_real {pz}) (* t{i} (to_real {vz}))) (+ z0 (* t{i} vz0))))"
                     ))
                 },
             )?;
@@ -76,7 +76,11 @@ pub fn solver(part: Part, input: &str) -> Result<usize> {
             let text = String::from_utf8(output.stdout)?;
             #[cfg(debug_assertions)]
             println!("{text}");
-            text.lines().last().context("No output")?.parse()?
+            let res: f64 = text.lines().last().context("No output")?.parse()?;
+            #[allow(clippy::cast_sign_loss, clippy::cast_possible_truncation)]
+            {
+                res.round() as usize
+            }
         }
     })
 }
