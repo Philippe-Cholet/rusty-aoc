@@ -1,10 +1,8 @@
 [workspace]
 members = [
-    "aoc20*/day*",
     "aoc-macro",
-    "cli-runner",
     "common",
-    "utils",
+    "solvers",
     "web",
 ]
 resolver = "2"
@@ -18,21 +16,9 @@ repository = "https://github.com/Philippe-Cholet/rusty-aoc"
 license = "MIT OR Apache-2.0"
 
 [workspace.dependencies]
-# Common dependencies to my solvers
 anyhow = "1.0.75"
-good_lp = { version = "1.7.0", features = ["lp-solvers"], default-features = false }
 itertools = "0.12.0"
-md5 = "0.7.0"
-memchr = "2.6.4"
-ndarray = "0.15.6"
-num-integer = "0.1.45"
-permutohedron = "0.2.4"
-pest = "2.7.5"
-pest_derive = "2.7.5"
-petgraph = "0.6.4"
-rand = "0.8.5"
 rustc-hash = "1.1.0"
-serde_json = "1.0.108"
 # Dependencies to create procedural macros
 cargo_toml = "0.17.1"
 quote = "1.0.33"
