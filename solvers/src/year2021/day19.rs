@@ -173,7 +173,7 @@ pub fn solver(part: Part, input: &str) -> Result<u32> {
     }
 }
 
-pub const INPUTS: [&str; 2] = [include_str!("example.txt"), include_input!(21 19)];
+pub const INPUTS: [&str; 2] = [include_str!("day19-example.txt"), include_input!(21 19)];
 
 #[test]
 fn solver_21_19() -> Result<()> {
