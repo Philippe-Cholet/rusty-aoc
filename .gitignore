@@ -24,4 +24,4 @@ Cargo.lock
 *.py
 *.exe
 # But accept exceptional scripts.
-!/aoc20*/day*/*.py
+!/solvers/**/*.py
