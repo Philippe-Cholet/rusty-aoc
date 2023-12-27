@@ -1,7 +1,7 @@
 use itertools::{iproduct, Itertools};
 
 use common::{prelude::*, Ok};
-use utils::OkIterator;
+use crate::utils::OkIterator;
 
 type Loc = (usize, usize);
 const START: Loc = (500, 0);

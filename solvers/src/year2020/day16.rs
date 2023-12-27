@@ -1,7 +1,7 @@
 use itertools::Itertools;
 
 use common::{prelude::*, Ok};
-use utils::OkIterator;
+use crate::utils::OkIterator;
 
 /// Ticket Translation
 pub fn solver(part: Part, input: &str) -> Result<u64> {

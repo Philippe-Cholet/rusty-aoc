@@ -1,5 +1,5 @@
 use common::prelude::*;
-use utils::OkIterator;
+use crate::utils::OkIterator;
 
 #[allow(clippy::inconsistent_digit_grouping)]
 const MOD: u64 = 2020_12_27; // a prime number

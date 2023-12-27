@@ -3,7 +3,7 @@ use std::str::FromStr;
 use itertools::Itertools;
 
 use common::prelude::*;
-use utils::{neighbors, parse_to_grid_with_loc};
+use crate::utils::{neighbors, parse_to_grid_with_loc};
 
 /// Pipe Maze
 pub fn solver(part: Part, input: &str) -> Result<usize> {

@@ -8,7 +8,7 @@ use std::{
 use itertools::{iproduct, Either, Itertools};
 
 use common::prelude::*;
-use utils::HeuristicItem;
+use crate::utils::HeuristicItem;
 
 use Amphipod::{Amber, Bronze, Copper, Desert};
 use Loc::{Hallway, Room, RoomEntrance};

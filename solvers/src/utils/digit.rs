@@ -23,7 +23,7 @@ where
 #[cfg(test)]
 mod tests {
     use super::*;
-    use crate::parse_to_grid;
+    use crate::utils::parse_to_grid;
 
     #[test]
     #[ignore]

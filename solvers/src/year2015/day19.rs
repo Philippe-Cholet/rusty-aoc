@@ -2,7 +2,7 @@ use itertools::Itertools;
 use memchr::memmem;
 
 use common::prelude::*;
-use utils::OkIterator;
+use crate::utils::{HeuristicItem, OkIterator};
 
 /// Medicine for Rudolph
 pub fn solver(part: Part, input: &str) -> Result<usize> {
@@ -64,7 +64,7 @@ fn beam_search<'a>(
                 !found
             })
             // TODO: Use `Itertools::k_smallest_by` method if it exists in the future.
-            .map(|s| utils::HeuristicItem::new(s.len(), s))
+            .map(|s| HeuristicItem::new(s.len(), s))
             .k_smallest(beam_width)
             .map(|hi| hi.item)
             .map(Into::into)

@@ -1,7 +1,7 @@
 use itertools::Itertools;
 
 use common::{prelude::*, Ok};
-use utils::OkIterator;
+use crate::utils::OkIterator;
 
 const fn neighbors((x, y, z): (i32, i32, i32)) -> [(i32, i32, i32); 6] {
     [

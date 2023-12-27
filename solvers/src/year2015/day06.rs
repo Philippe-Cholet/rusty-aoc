@@ -1,7 +1,7 @@
 use ndarray::{s, Array2};
 
 use common::prelude::*;
-use utils::OkIterator;
+use crate::utils::OkIterator;
 
 #[derive(Debug)]
 enum Instruction {

@@ -1,7 +1,7 @@
 use std::collections::BinaryHeap;
 
 use common::prelude::*;
-use utils::{char10, parse_to_grid, HeuristicItem};
+use crate::utils::{char10, parse_to_grid, HeuristicItem};
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
 enum Direction {

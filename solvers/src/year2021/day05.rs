@@ -1,7 +1,7 @@
 use itertools::Itertools;
 
 use common::prelude::*;
-use utils::OkIterator;
+use crate::utils::OkIterator;
 
 fn range_inclusive(a: u32, b: u32) -> impl Iterator<Item = u32> {
     let x: Box<dyn Iterator<Item = u32>> = if b > a {

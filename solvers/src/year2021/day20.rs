@@ -1,7 +1,7 @@
 use itertools::{iproduct, Itertools};
 
 use common::prelude::*;
-use utils::OkIterator;
+use crate::utils::OkIterator;
 
 /// Trench Map
 pub fn solver(part: Part, input: &str) -> Result<usize> {

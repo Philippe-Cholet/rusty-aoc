@@ -1,5 +1,5 @@
 use common::prelude::*;
-use utils::OkIterator;
+use crate::utils::OkIterator;
 
 /// Not Quite Lisp
 pub fn solver(part: Part, input: &str) -> Result<i32> {

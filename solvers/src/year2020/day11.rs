@@ -1,5 +1,5 @@
 use common::prelude::*;
-use utils::parse_to_grid;
+use crate::utils::parse_to_grid;
 
 const NEIGHBORS_8: [(isize, isize); 8] = [
     (-1, -1),

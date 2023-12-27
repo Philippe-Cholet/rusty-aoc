@@ -1,7 +1,7 @@
 use itertools::Itertools;
 
 use common::prelude::*;
-use utils::OkIterator;
+use crate::utils::OkIterator;
 
 /// Password Philosophy
 pub fn solver(part: Part, input: &str) -> Result<usize> {

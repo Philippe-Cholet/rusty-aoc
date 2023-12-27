@@ -1,5 +1,5 @@
 use common::{prelude::*, Ok};
-use utils::OkIterator;
+use crate::utils::OkIterator;
 
 /// Dive!
 pub fn solver(part: Part, input: &str) -> Result<i32> {

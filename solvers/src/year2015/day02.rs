@@ -1,5 +1,5 @@
 use common::prelude::*;
-use utils::OkIterator;
+use crate::utils::OkIterator;
 
 /// I Was Told There Would Be No Math
 pub fn solver(part: Part, input: &str) -> Result<u32> {

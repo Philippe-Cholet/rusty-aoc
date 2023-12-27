@@ -1,7 +1,7 @@
 use itertools::Itertools;
 
 use common::{prelude::*, Ok};
-use utils::{char16, OkIterator};
+use crate::utils::{char16, OkIterator};
 
 #[derive(Debug)]
 enum Packet {

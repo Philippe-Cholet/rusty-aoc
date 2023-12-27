@@ -1,5 +1,5 @@
 use common::prelude::*;
-use utils::U64Ascii;
+use crate::utils::U64Ascii;
 
 /// The Ideal Stocking Stuffer
 pub fn solver(part: Part, input: &str) -> Result<u64> {

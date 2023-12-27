@@ -1,7 +1,7 @@
 use itertools::Itertools;
 
 use common::prelude::*;
-use utils::OkIterator;
+use crate::utils::OkIterator;
 
 /// Encoding Error
 pub fn solver(part: Part, input: &str) -> Result<u64> {
@@ -35,7 +35,7 @@ fn get_contiguous_set(xmas: &[u64], invalid_idx: usize) -> Option<u64> {
         .tuple_combinations()
         .find_map(|(start, end)| {
             let set = &xmas[start..=end];
-            (invalid == set.iter().sum()).then(|| {
+            (invalid == set.iter().sum::<u64>()).then(|| {
                 let (mini, maxi) = set.iter().minmax().into_option().expect("can not be empty");
                 mini + maxi
             })

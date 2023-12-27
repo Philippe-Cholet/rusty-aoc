@@ -1,7 +1,7 @@
 use std::collections::VecDeque;
 
 use common::prelude::*;
-use utils::{neighbors, parse_to_grid_with_loc};
+use crate::utils::{neighbors, parse_to_grid_with_loc};
 
 #[derive(Debug, Clone)]
 enum Cell {

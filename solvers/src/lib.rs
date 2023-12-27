@@ -1,3 +1,5 @@
+pub mod utils;
+
 macro_rules! pub_mod {
     ($($year:literal => $($day:literal)*),* $(,)?) => {
         paste::paste! {

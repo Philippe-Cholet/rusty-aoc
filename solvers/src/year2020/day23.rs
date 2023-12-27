@@ -1,7 +1,7 @@
 use itertools::Itertools;
 
 use common::prelude::*;
-use utils::{char10, OkIterator};
+use crate::utils::{char10, OkIterator};
 
 /// Crab Cups
 pub fn solver(part: Part, input: &str) -> Result<u64> {

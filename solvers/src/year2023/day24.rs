@@ -4,7 +4,7 @@ use std::process::Stdio;
 use itertools::Itertools;
 
 use common::prelude::*;
-use utils::OkIterator;
+use crate::utils::OkIterator;
 
 #[derive(Debug)]
 struct Hailstone {

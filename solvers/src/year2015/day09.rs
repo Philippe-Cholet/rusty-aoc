@@ -1,7 +1,7 @@
 use itertools::{iproduct, Itertools};
 
 use common::prelude::*;
-use utils::{permutations_map, OkIterator};
+use crate::utils::{permutations_map, OkIterator};
 
 /// All in a Single Night
 pub fn solver(part: Part, input: &str) -> Result<u32> {

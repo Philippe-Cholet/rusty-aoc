@@ -1,7 +1,7 @@
 use itertools::Itertools;
 
 use common::prelude::*;
-use utils::OkIterator;
+use crate::utils::OkIterator;
 
 /// Sonar Sweep
 pub fn solver(part: Part, input: &str) -> Result<usize> {

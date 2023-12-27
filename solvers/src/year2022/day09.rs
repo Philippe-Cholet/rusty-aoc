@@ -1,7 +1,7 @@
 use itertools::Itertools;
 
 use common::prelude::*;
-use utils::OkIterator;
+use crate::utils::OkIterator;
 
 #[derive(Debug, Hash, PartialEq, Eq, Clone, Copy)]
 struct Pt(i32, i32);

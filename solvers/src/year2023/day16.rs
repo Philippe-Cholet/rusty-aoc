@@ -1,5 +1,5 @@
 use common::prelude::*;
-use utils::parse_to_grid;
+use crate::utils::parse_to_grid;
 
 #[derive(Debug, Clone, Copy)]
 enum Object {

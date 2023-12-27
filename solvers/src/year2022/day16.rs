@@ -5,7 +5,7 @@ use itertools::Itertools;
 use petgraph::{algo::floyd_warshall, graph::NodeIndex, Graph, Undirected};
 
 use common::{prelude::*, Ok};
-use utils::{HeuristicItem, OkIterator};
+use crate::utils::{HeuristicItem, OkIterator};
 
 /// Proboscidea Volcanium
 pub fn solver(part: Part, input: &str) -> Result<u32> {

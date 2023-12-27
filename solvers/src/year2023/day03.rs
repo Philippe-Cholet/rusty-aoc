@@ -1,7 +1,7 @@
 use itertools::Itertools;
 
 use common::prelude::*;
-use utils::neighbors;
+use crate::utils::neighbors;
 
 /// Gear Ratios
 pub fn solver(part: Part, input: &str) -> Result<u32> {

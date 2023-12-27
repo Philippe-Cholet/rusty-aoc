@@ -3,7 +3,7 @@ use std::iter::repeat;
 use itertools::Itertools;
 
 use common::prelude::*;
-use utils::{parse_to_grid, OkIterator};
+use crate::utils::{parse_to_grid, OkIterator};
 
 #[derive(Debug, Clone, Copy)]
 enum Direction {

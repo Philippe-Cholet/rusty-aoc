@@ -6,7 +6,7 @@ use std::{
 use itertools::{iproduct, Itertools};
 
 use common::prelude::*;
-use utils::OkIterator;
+use crate::utils::OkIterator;
 
 #[derive(Debug, PartialEq)]
 struct Cuboid {

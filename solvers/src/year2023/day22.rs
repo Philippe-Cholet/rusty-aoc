@@ -1,7 +1,7 @@
 use itertools::Itertools;
 
 use common::prelude::*;
-use utils::OkIterator;
+use crate::utils::OkIterator;
 
 #[derive(Debug)]
 struct SandBlock([u32; 3], [u32; 3]);

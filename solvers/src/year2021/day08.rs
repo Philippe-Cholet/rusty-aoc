@@ -1,5 +1,5 @@
 use common::prelude::*;
-use utils::{permutations_map, OkIterator};
+use crate::utils::{permutations_map, OkIterator};
 
 #[derive(Debug, Clone, Copy, PartialEq)]
 struct Segm7(u8);

@@ -2,7 +2,7 @@ use itertools::Itertools;
 use petgraph::{algo::all_simple_paths, graphmap::GraphMap, Directed, EdgeType, Undirected};
 
 use common::prelude::*;
-use utils::parse_to_grid;
+use crate::utils::parse_to_grid;
 
 type Pt = (usize, usize);
 

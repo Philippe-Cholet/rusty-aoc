@@ -3,7 +3,7 @@ use std::ops::Add;
 use itertools::Itertools;
 
 use common::prelude::*;
-use utils::OkIterator;
+use crate::utils::OkIterator;
 
 #[derive(Debug, Clone, Copy, Default, PartialEq, Eq, Hash)]
 struct CubeCoords(i32, i32, i32);

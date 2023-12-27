@@ -1,7 +1,7 @@
 use petgraph::{algo::toposort, prelude::DiGraphMap, visit::Dfs};
 
 use common::{prelude::*, Ok};
-use utils::OkIterator;
+use crate::utils::OkIterator;
 
 /// Handy Haversacks
 pub fn solver(part: Part, input: &str) -> Result<usize> {

@@ -3,7 +3,7 @@ use std::collections::VecDeque;
 use itertools::{iproduct, Itertools};
 
 use common::prelude::*;
-use utils::{parse_to_grid, OkIterator};
+use crate::utils::{parse_to_grid, OkIterator};
 
 use Rotation::{Rot0, Rot180, Rot270, Rot90};
 

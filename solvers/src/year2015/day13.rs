@@ -1,7 +1,7 @@
 use itertools::Itertools;
 
 use common::prelude::*;
-use utils::{permutations_map, OkIterator};
+use crate::utils::{permutations_map, OkIterator};
 
 /// Knights of the Dinner Table
 pub fn solver(part: Part, input: &str) -> Result<i32> {

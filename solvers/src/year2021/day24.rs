@@ -34,7 +34,7 @@ mod parser {
     use std::str::FromStr;
 
     use common::prelude::*;
-    use utils::OkIterator;
+    use crate::utils::OkIterator;
 
     use self::{
         Instruction::{Add, Div, Eql, Inp, Mod, Mul},

@@ -1,7 +1,7 @@
 use petgraph::{algo::toposort, graph::NodeIndex, Directed, Graph};
 
 use common::prelude::*;
-use utils::OkIterator;
+use crate::utils::OkIterator;
 
 #[derive(Debug)]
 enum Operation {

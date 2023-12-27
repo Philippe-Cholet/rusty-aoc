@@ -3,7 +3,7 @@ use std::{cmp::Ordering, str::FromStr};
 use itertools::{EitherOrBoth, Itertools};
 
 use common::{prelude::*, Ok};
-use utils::OkIterator;
+use crate::utils::OkIterator;
 
 #[derive(Debug, Clone, PartialEq, Eq)]
 enum Packet {

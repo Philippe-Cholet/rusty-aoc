@@ -1,5 +1,5 @@
 use common::prelude::*;
-use utils::{char10, OkIterator};
+use crate::utils::{char10, OkIterator};
 
 /// Supply Stacks
 pub fn solver(part: Part, input: &str) -> Result<String> {

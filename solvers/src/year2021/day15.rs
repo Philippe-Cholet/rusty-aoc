@@ -3,7 +3,7 @@ use std::collections::BinaryHeap;
 use itertools::iproduct;
 
 use common::prelude::*;
-use utils::{char10, neighbors, parse_to_grid, HeuristicItem};
+use crate::utils::{char10, neighbors, parse_to_grid, HeuristicItem};
 
 /// Chiton
 pub fn solver(part: Part, input: &str) -> Result<u32> {

@@ -1,5 +1,5 @@
 use common::prelude::*;
-use utils::OkIterator;
+use crate::utils::OkIterator;
 
 const CAVE_WIDTH: usize = 7;
 const NB_ROCKS: usize = 5;

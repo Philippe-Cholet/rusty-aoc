@@ -2,7 +2,7 @@ use itertools::iproduct;
 use ndarray::prelude::*;
 
 use common::prelude::*;
-use utils::parse_to_grid;
+use crate::utils::parse_to_grid;
 
 const N: usize = 6;
 

@@ -3,7 +3,7 @@ use std::{fmt, iter::Sum, ops::Add, str::FromStr};
 use itertools::Itertools;
 
 use common::prelude::*;
-use utils::OkIterator;
+use crate::utils::OkIterator;
 
 // I avoided to derive Clone on purpose.
 #[derive(Debug)]

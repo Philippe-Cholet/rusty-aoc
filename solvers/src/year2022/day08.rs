@@ -3,7 +3,7 @@ use std::{fmt::Display, iter::repeat};
 use itertools::iproduct;
 
 use common::prelude::*;
-use utils::{char10, parse_to_grid};
+use crate::utils::{char10, parse_to_grid};
 
 struct VisibleTrees<'a> {
     grid: &'a [Vec<u8>],
@@ -159,7 +159,7 @@ use std::iter::repeat;
 use itertools::iproduct;
 
 use common::prelude::*;
-use utils::{char10, parse_to_grid};
+use crate::utils::{char10, parse_to_grid};
 
 /// Treetop Tree House
 pub fn solver(part: Part, input: &str) -> Result<usize> {

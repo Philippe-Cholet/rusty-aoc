@@ -1,7 +1,7 @@
 use itertools::iproduct;
 
 use common::prelude::*;
-use utils::{char10, neighbors, parse_to_grid};
+use crate::utils::{char10, neighbors, parse_to_grid};
 
 /// Smoke Basin
 pub fn solver(part: Part, input: &str) -> Result<usize> {
