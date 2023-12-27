@@ -2,6 +2,8 @@ use std::time::{Duration, Instant};
 
 use common::{bail, Day, Part, Result, Year};
 
+#[macro_use]
+mod macros;
 pub mod utils;
 
 macro_rules! pub_mod {
