@@ -2,8 +2,7 @@ use std::env;
 use std::time::Duration;
 
 use common::{ensure, Day, Part, Part1, Part2, Result, Year};
-
-aoc_macro::make_aoc!();
+use solvers::aoc;
 
 fn run_some_inputs(year: Year, day: Day, parts: &[Part], index: Option<usize>) -> Result<()> {
     let (solver, inputs) = aoc(year, day)?;

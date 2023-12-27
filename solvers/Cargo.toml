@@ -21,7 +21,6 @@ lp = ["dep:good_lp"]
 
 [dependencies]
 paste = "1.0.14"
-aoc-macro = { path = "../aoc-macro" }
 anyhow.workspace = true
 good_lp = { version = "1.7.0", features = ["lp-solvers"], default-features = false, optional = true }
 itertools.workspace = true
