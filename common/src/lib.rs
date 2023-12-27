@@ -10,13 +10,12 @@
 pub mod prelude {
     pub use crate::{bail, ensure, format_err, Context, Error, Result};
     pub use crate::{Part, Part1, Part2};
-    // My solvers do not need `Day`, `Year` and `AocSolver`.
+    // My solvers do not need `Day`, `Year`.
     pub use crate::hash::prelude::*;
     pub use crate::include_input;
 }
 
 use std::str::FromStr;
-use std::time::{Duration, Instant};
 
 pub use anyhow::{bail, ensure, format_err, Context, Error, Ok, Result};
 
@@ -33,28 +32,6 @@ macro_rules! include_input {
             ".txt"
         ));
     };
-}
-
-pub trait AocSolver {
-    fn solve(&self, part: Part, input: &str) -> Result<String>;
-    fn timed_solve(&self, part: Part, input: &str) -> Result<(String, Duration)>;
-}
-
-impl<T, F> AocSolver for F
-where
-    T: std::fmt::Display,
-    F: Fn(Part, &str) -> Result<T>,
-{
-    fn solve(&self, part: Part, input: &str) -> Result<String> {
-        self(part, input).map(|t| t.to_string())
-    }
-
-    fn timed_solve(&self, part: Part, input: &str) -> Result<(String, Duration)> {
-        let now = Instant::now();
-        let t = self(part, input)?;
-        let elapsed = now.elapsed();
-        Ok((t.to_string(), elapsed))
-    }
 }
 
 #[non_exhaustive]
