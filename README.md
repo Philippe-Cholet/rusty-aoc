@@ -58,7 +58,6 @@ The session cookie can be hold in an environment variable (`AOC_TOKEN` by defaul
 
 ## Roadmap
 - Expand/Improve my utilities.
-- Solve puzzles.
-- Solve puzzles faster.
-- Maybe make a "wasm-runner".
-- Maybe make visualizations.
+- Solve puzzles & faster.
+- Maybe make a Terminal User Interface.
+- Maybe make terminal visualizations, in my "solvers" library behind a feature flag.
