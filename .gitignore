@@ -12,7 +12,7 @@ Cargo.lock
 # Puzzle inputs to solve them.
 /inputs
 # Test other inputs.
-/solvers/tests
+/solvers/tests/*.rs
 # See https://www.reddit.com/r/adventofcode/wiki/faqs/copyright/inputs/
 
 # I use a Sublime Text project to manage this workspace.
