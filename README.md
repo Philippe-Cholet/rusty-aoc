@@ -15,22 +15,11 @@ In this workspace, packages are:
 
 - "common" which defines `Year`, `Day`, `Part` enums used in other packages and reexport "anyhow" and an extended "rustc-hash".
   It also has a prelude for convenience.
-- "aoc-macro" defines two "function-like" procedural macros:
-    - `make_aoc` generates a function "aoc" to get the solver and inputs
-      for a given year and day (it reads the cargo manifest to detect dependencies).
-    - `make_aoc_tests` generates multiple test functions from a collection of tests
-      (tests kept private because we should not share inputs, I keep what I found though).
-- "cli-runner" to run my solutions from the command line.
-- "utils" lists utilities that my solutions can all use.
+- "solvers" is a library for all my solutions and utilities plus a binary to run them from the command line.
 - "web" for simple interactions with [adventofcode.com](https://adventofcode.com).
-- E.g. the folder "aoc2021/day01" is for the library "aoc21-01" containing a solver, inputs and tests against those inputs.
 
 ### Performance
 [**The Rust Performance Book**](https://nnethercote.github.io/perf-book/) is a must-read.
-
-#### [Faster compile times](https://endler.dev/2020/rust-compile-times/)
-My target directory is on a SSD and packages without changes are not recompiled thanks to this workspace structure.
-I first used "clap" to parse command line arguments but the compile times were longer.
 
 #### Faster tests
 Using "cargo-nextest", run tests in release mode is 70% to 120% faster.
@@ -87,8 +76,6 @@ but I might need "regex", "num" at some point, eventually others.
 I also thought about "smallvec" and "rayon" but it does not seem to really fasten my code.
 
 #### Non-solver dependencies
-- **quote** and **syn** for procedural macros
-- **cargo_toml** to parse the dependencies automatically
 - **clap** for a nice command line interface
 - **ureq** for simple http requests
 - **thiserror** for a nice library error type

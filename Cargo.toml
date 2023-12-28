@@ -18,10 +18,6 @@ license = "MIT OR Apache-2.0"
 anyhow = "1.0.75"
 itertools = "0.12.0"
 rustc-hash = "1.1.0"
-# Dependencies to create procedural macros
-cargo_toml = "0.17.1"
-quote = "1.0.33"
-syn = "2.0.39"
 clap = { version = "4.4.10", features = ["derive"] }
 thiserror = "1.0.50"
 ureq = { version = "2.9.1", default-features = false, features = ["native-tls"] }
