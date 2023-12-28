@@ -110,7 +110,7 @@ pub fn solver(part: Part, input: &str) -> Result<u64> {
     .context("No seed")
 }
 
-pub const INPUTS: [&str; 2] = [
+test_solver! {
     "\
 seeds: 79 14 55 13
 
@@ -145,15 +145,6 @@ temperature-to-humidity map:
 humidity-to-location map:
 60 56 37
 56 93 4
-",
-    include_input!(23 05),
-];
-
-#[test]
-fn solver_23_05() -> Result<()> {
-    assert_eq!(solver(Part1, INPUTS[0])?, 35);
-    assert_eq!(solver(Part1, INPUTS[1])?, 993500720);
-    assert_eq!(solver(Part2, INPUTS[0])?, 46);
-    assert_eq!(solver(Part2, INPUTS[1])?, 4917124);
-    Ok(())
+" => (35, 46),
+    include_input!(23 05) => (993500720, 4917124),
 }

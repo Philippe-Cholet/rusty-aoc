@@ -21,22 +21,14 @@ pub fn solver(part: Part, input: &str) -> Result<usize> {
         .count())
 }
 
-pub const INPUTS: [&str; 2] = [
-    "2-4,6-8
+test_solver! {
+    "\
+2-4,6-8
 2-3,4-5
 5-7,7-9
 2-8,3-7
 6-6,4-6
 2-6,4-8
-",
-    include_input!(22 04),
-];
-
-#[test]
-fn solver_22_04() -> Result<()> {
-    assert_eq!(solver(Part1, INPUTS[0])?, 2);
-    assert_eq!(solver(Part1, INPUTS[1])?, 644);
-    assert_eq!(solver(Part2, INPUTS[0])?, 4);
-    assert_eq!(solver(Part2, INPUTS[1])?, 926);
-    Ok(())
+" => (2, 4),
+    include_input!(22 04) => (644, 926),
 }

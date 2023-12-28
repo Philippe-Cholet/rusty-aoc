@@ -103,11 +103,4 @@ fn find_robin_lower_bound(x: u32) -> u32 {
     maxi
 }
 
-pub const INPUTS: [&str; 1] = [include_input!(15 20)];
-
-#[test]
-fn solver_15_20() -> Result<()> {
-    assert_eq!(solver(Part1, INPUTS[0])?, 831600);
-    assert_eq!(solver(Part2, INPUTS[0])?, 884520);
-    Ok(())
-}
+test_solver!(include_input!(15 20) => (831600, 884520));

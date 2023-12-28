@@ -172,7 +172,7 @@ impl std::fmt::Display for Grid {
     }
 }
 
-pub const INPUTS: [&str; 2] = [
+test_solver! {
     "\
 O....#....
 O.OO#....#
@@ -184,15 +184,6 @@ O.#..O.#.#
 .......O..
 #....###..
 #OO..#....
-",
-    include_input!(23 14),
-];
-
-#[test]
-fn solver_23_14() -> Result<()> {
-    assert_eq!(solver(Part1, INPUTS[0])?, 136);
-    assert_eq!(solver(Part1, INPUTS[1])?, 108935);
-    assert_eq!(solver(Part2, INPUTS[0])?, 64);
-    assert_eq!(solver(Part2, INPUTS[1])?, 100876);
-    Ok(())
+" => (136, 64),
+    include_input!(23 14) => (108935, 100876),
 }

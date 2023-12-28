@@ -85,8 +85,15 @@ fn display_grid(grid: &Vec<Vec<Option<SeaCucumberKind>>>) {
     println!();
 }
 
-pub const INPUTS: [&str; 2] = [
-    "v...>>.vv>
+const SUCCESS: &str = "\
+The sleigh keys are detected directly under the submarine.
+And you remotely start the sleigh.
+You can now go back to the surface.
+It's Christmas! Congratulations!";
+
+test_solver! {
+    "\
+v...>>.vv>
 .vv>>.vv..
 >>.>v>...v
 >>v>>.>.v.
@@ -95,21 +102,6 @@ v>v.vv.v..
 .vv..>.>v.
 v.v..>>v.v
 ....v..v.>
-",
-    include_input!(21 25),
-];
-
-const SUCCESS: &str = "\
-The sleigh keys are detected directly under the submarine.
-And you remotely start the sleigh.
-You can now go back to the surface.
-It's Christmas! Congratulations!";
-
-#[test]
-fn solver_21_25() -> Result<()> {
-    assert_eq!(solver(Part1, INPUTS[0])?, "58");
-    assert_eq!(solver(Part1, INPUTS[1])?, "549");
-    assert_eq!(solver(Part2, INPUTS[0])?, SUCCESS);
-    assert_eq!(solver(Part2, INPUTS[1])?, SUCCESS);
-    Ok(())
+" => "58",
+    include_input!(21 25) => "549",
 }

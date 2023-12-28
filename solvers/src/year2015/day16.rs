@@ -56,11 +56,4 @@ pub fn solver(part: Part, input: &str) -> Result<usize> {
         .map_err(|it| format_err!("Not one aunt but {}.", it.count()))
 }
 
-pub const INPUTS: [&str; 1] = [include_input!(15 16)];
-
-#[test]
-fn solver_15_16() -> Result<()> {
-    assert_eq!(solver(Part1, INPUTS[0])?, 373);
-    assert_eq!(solver(Part2, INPUTS[0])?, 260);
-    Ok(())
-}
+test_solver!(include_input!(15 16) => (373, 260));

@@ -97,7 +97,7 @@ pub fn solver(part: Part, input: &str) -> Result<u64> {
     })
 }
 
-pub const INPUTS: [&str; 2] = [
+test_solver! {
     "\
 class: 1-3 or 5-7
 row: 6-11 or 33-44
@@ -111,14 +111,6 @@ nearby tickets:
 40,4,50
 55,2,20
 38,6,12
-",
-    include_input!(20 16),
-];
-
-#[test]
-fn solver_20_16() -> Result<()> {
-    assert_eq!(solver(Part1, INPUTS[0])?, 71);
-    assert_eq!(solver(Part1, INPUTS[1])?, 18142);
-    assert_eq!(solver(Part2, INPUTS[1])?, 1069784384303);
-    Ok(())
+" => 71,
+    include_input!(20 16) => (18142, 1069784384303),
 }

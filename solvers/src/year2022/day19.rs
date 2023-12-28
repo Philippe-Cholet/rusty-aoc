@@ -171,27 +171,19 @@ pub fn solver(part: Part, input: &str) -> Result<u32> {
     }
 }
 
-pub const INPUTS: [&str; 2] = [
-    "Blueprint 1: \
-Each ore robot costs 4 ore. \
-Each clay robot costs 2 ore. \
-Each obsidian robot costs 3 ore and 14 clay. \
-Each geode robot costs 2 ore and 7 obsidian.
-Blueprint 2: \
-Each ore robot costs 2 ore. \
-Each clay robot costs 3 ore. \
-Each obsidian robot costs 3 ore and 8 clay. \
-Each geode robot costs 3 ore and 12 obsidian.
-",
-    include_input!(22 19),
-];
-
-#[test]
-#[cfg_attr(feature = "lp", ignore)] // slow (roughly 30 seconds)
-fn solver_22_19() -> Result<()> {
-    assert_eq!(solver(Part1, INPUTS[0])?, 33);
-    assert_eq!(solver(Part1, INPUTS[1])?, 1981);
-    assert_eq!(solver(Part2, INPUTS[0])?, 56 * 62);
-    assert_eq!(solver(Part2, INPUTS[1])?, 10962);
-    Ok(())
+test_solver! {
+    #[cfg_attr(feature = "lp", ignore)] // slow (roughly 30 seconds)
+    {
+        "Blueprint 1: \
+        Each ore robot costs 4 ore. \
+        Each clay robot costs 2 ore. \
+        Each obsidian robot costs 3 ore and 14 clay. \
+        Each geode robot costs 2 ore and 7 obsidian.\n\
+        Blueprint 2: \
+        Each ore robot costs 2 ore. \
+        Each clay robot costs 3 ore. \
+        Each obsidian robot costs 3 ore and 8 clay. \
+        Each geode robot costs 3 ore and 12 obsidian." => (33, 56 * 62),
+        include_input!(22 19) => (1981, 10962),
+    }
 }

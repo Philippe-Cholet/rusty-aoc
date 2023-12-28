@@ -25,16 +25,7 @@ pub fn solver(part: Part, input: &str) -> Result<u32> {
         .sum()
 }
 
-pub const INPUTS: [&str; 2] = [
-    "abc\n\na\nb\nc\n\nab\nac\n\na\na\na\na\n\nb\n",
-    include_input!(20 06),
-];
-
-#[test]
-fn solver_20_06() -> Result<()> {
-    assert_eq!(solver(Part1, INPUTS[0])?, 11);
-    assert_eq!(solver(Part1, INPUTS[1])?, 6748);
-    assert_eq!(solver(Part2, INPUTS[0])?, 6);
-    assert_eq!(solver(Part2, INPUTS[1])?, 3445);
-    Ok(())
+test_solver! {
+    "abc\n\na\nb\nc\n\nab\nac\n\na\na\na\na\n\nb" => (11, 6),
+    include_input!(20 06) => (6748, 3445),
 }

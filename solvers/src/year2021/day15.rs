@@ -58,8 +58,9 @@ pub fn solver(part: Part, input: &str) -> Result<u32> {
     risks[nrows - 1][ncols - 1].context("Did not reach the end")
 }
 
-pub const INPUTS: [&str; 2] = [
-    "1163751742
+test_solver! {
+    "\
+1163751742
 1381373672
 2136511328
 3694931569
@@ -69,15 +70,6 @@ pub const INPUTS: [&str; 2] = [
 3125421639
 1293138521
 2311944581
-",
-    include_input!(21 15),
-];
-
-#[test]
-fn solver_21_15() -> Result<()> {
-    assert_eq!(solver(Part1, INPUTS[0])?, 40);
-    assert_eq!(solver(Part1, INPUTS[1])?, 656);
-    assert_eq!(solver(Part2, INPUTS[0])?, 315);
-    assert_eq!(solver(Part2, INPUTS[1])?, 2979);
-    Ok(())
+" => (40, 315),
+    include_input!(21 15) => (656, 2979),
 }

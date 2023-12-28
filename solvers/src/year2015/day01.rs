@@ -23,11 +23,4 @@ pub fn solver(part: Part, input: &str) -> Result<i32> {
     }
 }
 
-pub const INPUTS: [&str; 1] = [include_input!(15 01)];
-
-#[test]
-fn solver_15_01() -> Result<()> {
-    assert_eq!(solver(Part1, INPUTS[0])?, 280);
-    assert_eq!(solver(Part2, INPUTS[0])?, 1797);
-    Ok(())
-}
+test_solver!(include_input!(15 01) => (280, 1797));

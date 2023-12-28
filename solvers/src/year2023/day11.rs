@@ -40,7 +40,7 @@ pub fn solver(part: Part, input: &str) -> Result<usize> {
         .sum())
 }
 
-pub const INPUTS: [&str; 2] = [
+test_solver! {
     "\
 ...#......
 .......#..
@@ -52,14 +52,6 @@ pub const INPUTS: [&str; 2] = [
 ..........
 .......#..
 #...#.....
-",
-    include_input!(23 11),
-];
-
-#[test]
-fn solver_23_11() -> Result<()> {
-    assert_eq!(solver(Part1, INPUTS[0])?, 374);
-    assert_eq!(solver(Part1, INPUTS[1])?, 9403026);
-    assert_eq!(solver(Part2, INPUTS[1])?, 543018317006);
-    Ok(())
+" => 374,
+    include_input!(23 11) => (9403026, 543018317006),
 }

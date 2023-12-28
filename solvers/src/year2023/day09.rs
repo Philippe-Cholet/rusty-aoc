@@ -83,20 +83,11 @@ impl fmt::Debug for CachedBinomials {
     }
 }
 
-pub const INPUTS: [&str; 2] = [
+test_solver! {
     "\
 0 3 6 9 12 15
 1 3 6 10 15 21
 10 13 16 21 30 45
-",
-    include_input!(23 09),
-];
-
-#[test]
-fn solver_23_09() -> Result<()> {
-    assert_eq!(solver(Part1, INPUTS[0])?, 114); // 18 + 28 + 68
-    assert_eq!(solver(Part1, INPUTS[1])?, 1987402313);
-    assert_eq!(solver(Part2, INPUTS[0])?, 2); // -3 + 0 + 5
-    assert_eq!(solver(Part2, INPUTS[1])?, 900);
-    Ok(())
+" => (18 + 28 + 68, -3 + 0 + 5),
+    include_input!(23 09) => (1987402313, 900),
 }

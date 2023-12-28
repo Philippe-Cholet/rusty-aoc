@@ -18,12 +18,7 @@ pub fn solver(part: Part, input: &str) -> Result<u64> {
     }
 }
 
-pub const INPUTS: [&str; 2] = ["abcdef", include_input!(15 04)];
-
-#[test]
-fn solver_15_04() -> Result<()> {
-    assert_eq!(solver(Part1, INPUTS[0])?, 609043);
-    assert_eq!(solver(Part1, INPUTS[1])?, 117946);
-    assert_eq!(solver(Part2, INPUTS[1])?, 3938038);
-    Ok(())
+test_solver! {
+    "abcdef" => 609043,
+    include_input!(15 04) => (117946, 3938038),
 }

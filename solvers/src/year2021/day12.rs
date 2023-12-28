@@ -130,16 +130,18 @@ impl std::str::FromStr for CaveGraph {
     }
 }
 
-pub const INPUTS: [&str; 4] = [
-    "start-A
+test_solver! {
+    "\
+start-A
 start-b
 A-c
 A-b
 b-d
 A-end
 b-end
-",
-    "dc-end
+" => (10, 36),
+    "\
+dc-end
 HN-start
 start-kj
 dc-start
@@ -149,8 +151,9 @@ HN-end
 kj-sa
 kj-HN
 kj-dc
-",
-    "fs-end
+" => (19, 103),
+    "\
+fs-end
 he-DX
 fs-he
 start-DX
@@ -168,17 +171,6 @@ he-WI
 zg-he
 pj-fs
 start-RW
-",
-    include_input!(21 12),
-];
-
-#[test]
-fn solver_21_12() -> Result<()> {
-    for (input, answer) in INPUTS.iter().zip([10, 19, 226, 3497]) {
-        assert_eq!(solver(Part1, input)?, answer);
-    }
-    for (input, answer) in INPUTS.iter().zip([36, 103, 3509, 93686]) {
-        assert_eq!(solver(Part2, input)?, answer);
-    }
-    Ok(())
+" => (226, 3509),
+    include_input!(21 12) => (3497, 93686),
 }

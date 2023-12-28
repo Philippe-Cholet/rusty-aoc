@@ -75,7 +75,7 @@ pub fn solver(part: Part, input: &str) -> Result<u32> {
     .map(|(_, idx_score)| idx_score)
 }
 
-pub const INPUTS: [&str; 2] = [
+test_solver! {
     "7,4,9,5,11,17,23,2,0,14,21,24,10,16,13,6,15,25,12,22,18,20,8,19,3,26,1
 
 22 13 17 11  0
@@ -95,15 +95,6 @@ pub const INPUTS: [&str; 2] = [
 18  8 23 26 20
 22 11 13  6  5
  2  0 12  3  7
-",
-    include_input!(21 04),
-];
-
-#[test]
-fn solver_21_04() -> Result<()> {
-    assert_eq!(solver(Part1, INPUTS[0])?, 4512);
-    assert_eq!(solver(Part1, INPUTS[1])?, 64084);
-    assert_eq!(solver(Part2, INPUTS[0])?, 1924);
-    assert_eq!(solver(Part2, INPUTS[1])?, 12833);
-    Ok(())
+" => (4512, 1924),
+    include_input!(21 04) => (64084, 12833),
 }

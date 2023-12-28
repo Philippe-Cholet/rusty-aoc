@@ -124,7 +124,7 @@ impl Direction {
     }
 }
 
-pub const INPUTS: [&str; 2] = [
+test_solver! {
     "\
 2413432311323
 3215453535623
@@ -139,15 +139,6 @@ pub const INPUTS: [&str; 2] = [
 1224686865563
 2546548887735
 4322674655533
-",
-    include_input!(23 17),
-];
-
-#[test]
-fn solver_23_17() -> Result<()> {
-    assert_eq!(solver(Part1, INPUTS[0])?, 102);
-    assert_eq!(solver(Part1, INPUTS[1])?, 902);
-    assert_eq!(solver(Part2, INPUTS[0])?, 94);
-    assert_eq!(solver(Part2, INPUTS[1])?, 1073);
-    Ok(())
+" => (102, 94),
+    include_input!(23 17) => (902, 1073),
 }

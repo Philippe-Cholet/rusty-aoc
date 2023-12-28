@@ -99,7 +99,7 @@ pub fn solver(part: Part, input: &str) -> Result<usize> {
     Ok(pts.len())
 }
 
-pub const INPUTS: [&str; 2] = [
+test_solver! {
     "\
 sesenwnenenewseeswwswswwnenewsewsw
 neeenesenwnwwswnenewnwwsewnenwseswesw
@@ -121,15 +121,6 @@ nenewswnwewswnenesenwnesewesw
 eneswnwswnwsenenwnwnwwseeswneewsenese
 neswnwewnwnwseenwseesewsenwsweewe
 wseweeenwnesenwwwswnew
-",
-    include_input!(20 24),
-];
-
-#[test]
-fn solver_20_24() -> Result<()> {
-    assert_eq!(solver(Part1, INPUTS[0])?, 10);
-    assert_eq!(solver(Part1, INPUTS[1])?, 293);
-    assert_eq!(solver(Part2, INPUTS[0])?, 2208);
-    assert_eq!(solver(Part2, INPUTS[1])?, 3967);
-    Ok(())
+" => (10, 2208),
+    include_input!(20 24) => (293, 3967),
 }

@@ -122,7 +122,10 @@ impl std::str::FromStr for Graph {
     }
 }
 
-pub const INPUTS: [&str; 2] = [
+const SUCCESS: &str = "Global snow production restarted!
+Now, how am I gonna go down safely to enjoy all this snow?!";
+
+test_solver! {
     "\
 jqt: rhn xhk nvd
 rsh: frs pzl lsr
@@ -137,18 +140,6 @@ nvd: lhk
 lsr: lhk
 rzs: qnr cmg lsr rsh
 frs: qnr lhk lsr
-",
-    include_input!(23 25),
-];
-
-const SUCCESS: &str = "Global snow production restarted!
-Now, how am I gonna go down safely to enjoy all this snow?!";
-
-#[test]
-fn solver_23_25() -> Result<()> {
-    assert_eq!(solver(Part1, INPUTS[0])?, "54"); // 9 * 6
-    assert_eq!(solver(Part1, INPUTS[1])?, "601344"); // 768 * 783
-    assert_eq!(solver(Part2, INPUTS[0])?, SUCCESS);
-    assert_eq!(solver(Part2, INPUTS[1])?, SUCCESS);
-    Ok(())
+" => "54", // 9 * 6
+    include_input!(23 25) => "601344", // 768 * 783
 }

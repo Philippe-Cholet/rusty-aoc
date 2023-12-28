@@ -122,27 +122,18 @@ impl std::fmt::Binary for Instruction {
     }
 }
 
-pub const INPUTS: [&str; 3] = [
+test_solver! {
     "\
 mask = XXXXXXXXXXXXXXXXXXXXXXXXXXXXX1XXXX0X
 mem[8] = 11
 mem[7] = 101
 mem[8] = 0
-",
+" => 165,
     "\
 mask = 000000000000000000000000000000X1001X
 mem[42] = 100
 mask = 00000000000000000000000000000000X0XX
 mem[26] = 1
-",
-    include_input!(20 14),
-];
-
-#[test]
-fn solver_20_14() -> Result<()> {
-    assert_eq!(solver(Part1, INPUTS[0])?, 165);
-    assert_eq!(solver(Part1, INPUTS[2])?, 9615006043476);
-    assert_eq!(solver(Part2, INPUTS[1])?, 208);
-    assert_eq!(solver(Part2, INPUTS[2])?, 4275496544925);
-    Ok(())
+" => ((), 208),
+    include_input!(20 14) => (9615006043476, 4275496544925),
 }

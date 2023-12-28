@@ -30,22 +30,14 @@ pub fn solver(part: Part, input: &str) -> Result<i32> {
     Ok(position * depth)
 }
 
-pub const INPUTS: [&str; 2] = [
-    "forward 5
+test_solver! {
+    "\
+forward 5
 down 5
 forward 8
 up 3
 down 8
 forward 2
-",
-    include_input!(21 02),
-];
-
-#[test]
-fn solver_21_02() -> Result<()> {
-    assert_eq!(solver(Part1, INPUTS[0])?, 150);
-    assert_eq!(solver(Part1, INPUTS[1])?, 1507611);
-    assert_eq!(solver(Part2, INPUTS[0])?, 900);
-    assert_eq!(solver(Part2, INPUTS[1])?, 1880593125);
-    Ok(())
+" => (150, 900),
+    include_input!(21 02) => (1507611, 1880593125),
 }

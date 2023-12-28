@@ -56,20 +56,11 @@ pub fn solver(part: Part, input: &str) -> Result<u32> {
     .context("No city")
 }
 
-pub const INPUTS: [&str; 2] = [
+test_solver! {
     "\
 London to Dublin = 464
 London to Belfast = 518
 Dublin to Belfast = 141
-",
-    include_input!(15 09),
-];
-
-#[test]
-fn solver_15_09() -> Result<()> {
-    assert_eq!(solver(Part1, INPUTS[0])?, 605);
-    assert_eq!(solver(Part1, INPUTS[1])?, 251);
-    assert_eq!(solver(Part2, INPUTS[0])?, 982);
-    assert_eq!(solver(Part2, INPUTS[1])?, 898);
-    Ok(())
+" => (605, 982),
+    include_input!(15 09) => (251, 898),
 }

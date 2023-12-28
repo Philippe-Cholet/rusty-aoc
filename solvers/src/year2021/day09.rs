@@ -40,21 +40,13 @@ pub fn solver(part: Part, input: &str) -> Result<usize> {
     })
 }
 
-pub const INPUTS: [&str; 2] = [
-    "2199943210
+test_solver! {
+    "\
+2199943210
 3987894921
 9856789892
 8767896789
 9899965678
-",
-    include_input!(21 09),
-];
-
-#[test]
-fn solver_21_09() -> Result<()> {
-    assert_eq!(solver(Part1, INPUTS[0])?, 15);
-    assert_eq!(solver(Part1, INPUTS[1])?, 524);
-    assert_eq!(solver(Part2, INPUTS[0])?, 1134); // 9 * 14 * 9
-    assert_eq!(solver(Part2, INPUTS[1])?, 1235430);
-    Ok(())
+" => (15, 1134), // 9 * 14 * 9
+    include_input!(21 09) => (524, 1235430),
 }

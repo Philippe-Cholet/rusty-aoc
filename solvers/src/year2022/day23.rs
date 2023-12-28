@@ -203,23 +203,15 @@ pub fn solver(part: Part, input: &str) -> Result<usize> {
     unreachable!("Endless loop");
 }
 
-pub const INPUTS: [&str; 2] = [
-    "....#..
+test_solver! {
+    "\
+....#..
 ..###.#
 #...#.#
 .#...##
 #.###..
 ##.#.##
 .#..#..
-",
-    include_input!(22 23),
-];
-
-#[test]
-fn solver_22_23() -> Result<()> {
-    assert_eq!(solver(Part1, INPUTS[0])?, 110);
-    assert_eq!(solver(Part1, INPUTS[1])?, 4068);
-    assert_eq!(solver(Part2, INPUTS[0])?, 20);
-    assert_eq!(solver(Part2, INPUTS[1])?, 968);
-    Ok(())
+" => (110, 20),
+    include_input!(22 23) => (4068, 968),
 }

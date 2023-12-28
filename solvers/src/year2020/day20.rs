@@ -403,7 +403,7 @@ impl std::str::FromStr for Tile {
     }
 }
 
-pub const INPUTS: [&str; 2] = [
+test_solver! {
     "\
 Tile 2311:
 ..##.#..#.
@@ -512,15 +512,6 @@ Tile 3079:
 ..#.###...
 ..#.......
 ..#.###...
-",
-    include_input!(20 20),
-];
-
-#[test]
-fn solver_20_20() -> Result<()> {
-    assert_eq!(solver(Part1, INPUTS[0])?, 20899048083289); // 1951 * 3079 * 2971 * 1171
-    assert_eq!(solver(Part1, INPUTS[1])?, 21599955909991); // 1061 * 2521 * 2633 * 3067
-    assert_eq!(solver(Part2, INPUTS[0])?, 273);
-    assert_eq!(solver(Part2, INPUTS[1])?, 2495);
-    Ok(())
+" => (20899048083289, 273), // 1951 * 3079 * 2971 * 1171
+    include_input!(20 20) => (21599955909991, 2495), // 1061 * 2521 * 2633 * 3067
 }

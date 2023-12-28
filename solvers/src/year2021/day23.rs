@@ -451,21 +451,13 @@ impl<const N: usize> fmt::Display for State<N> {
     }
 }
 
-pub const INPUTS: [&str; 2] = [
-    "#############
+test_solver! {
+    "\
+#############
 #...........#
 ###B#C#B#D###
   #A#D#C#A#
   #########
-",
-    include_input!(21 23),
-];
-
-#[test]
-fn solver_21_23() -> Result<()> {
-    assert_eq!(solver(Part1, INPUTS[0])?, 12521);
-    assert_eq!(solver(Part1, INPUTS[1])?, 16157);
-    assert_eq!(solver(Part2, INPUTS[0])?, 44169);
-    assert_eq!(solver(Part2, INPUTS[1])?, 43481);
-    Ok(())
+" => (12521, 44169),
+    include_input!(21 23) => (16157, 43481),
 }

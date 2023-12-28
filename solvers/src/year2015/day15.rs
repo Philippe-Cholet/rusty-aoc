@@ -72,19 +72,10 @@ fn highest_score<const NB_INGS: usize>(original: bool, data: &[[i32; 5]]) -> Opt
     res
 }
 
-pub const INPUTS: [&str; 2] = [
+test_solver! {
     "\
 Butterscotch: capacity -1, durability -2, flavor 6, texture 3, calories 8
 Cinnamon: capacity 2, durability 3, flavor -2, texture -1, calories 3
-",
-    include_input!(15 15),
-];
-
-#[test]
-fn solver_15_15() -> Result<()> {
-    assert_eq!(solver(Part1, INPUTS[0])?, 62842880);
-    assert_eq!(solver(Part1, INPUTS[1])?, 13882464);
-    assert_eq!(solver(Part2, INPUTS[0])?, 57600000);
-    assert_eq!(solver(Part2, INPUTS[1])?, 11171160);
-    Ok(())
+" => (62842880, 57600000),
+    include_input!(15 15) => (13882464, 11171160),
 }

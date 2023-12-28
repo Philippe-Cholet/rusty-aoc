@@ -162,22 +162,13 @@ where
     }
 }
 
-pub const INPUTS: [&str; 2] = [
+test_solver! {
     "\
 32T3K 765
 T55J5 684
 KK677 28
 KTJJT 220
 QQQJA 483
-",
-    include_input!(23 07),
-];
-
-#[test]
-fn solver_23_07() -> Result<()> {
-    assert_eq!(solver(Part1, INPUTS[0])?, 6440);
-    assert_eq!(solver(Part1, INPUTS[1])?, 248453531);
-    assert_eq!(solver(Part2, INPUTS[0])?, 5905);
-    assert_eq!(solver(Part2, INPUTS[1])?, 248781813);
-    Ok(())
+" => (6440, 5905),
+    include_input!(23 07) => (248453531, 248781813),
 }

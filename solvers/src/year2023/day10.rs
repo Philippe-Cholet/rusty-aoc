@@ -186,21 +186,21 @@ impl PipeGrid {
     }
 }
 
-pub const INPUTS: [&str; 6] = [
+test_solver! {
     "\
 .....
 .S-7.
 .|.|.
 .L-J.
 .....
-",
+" => 4,
     "\
 ..F7.
 .FJ|.
 SJ.L7
 |F--J
 LJ...
-",
+" => 8,
     "\
 ...........
 .S-------7.
@@ -211,7 +211,7 @@ LJ...
 .|..|.|..|.
 .L--J.L--J.
 ...........
-",
+" => ((), 4),
     "\
 .F----7F7F7F7F-7....
 .|F--7||||||||FJ....
@@ -223,7 +223,7 @@ L--J.L7...LJS7F-7L7.
 .....|FJLJ|FJ|F7|.LJ
 ....FJL-7.||.||||...
 ....L---J.LJ.LJLJ...
-",
+" => ((), 8),
     "\
 FF7FSF7F7F7F7F7F---7
 L|LJ||||||||||||F--J
@@ -235,18 +235,6 @@ L---JF-JLJ.||-FJLJJ7
 7-L-JL7||F7|L7F-7F7|
 L.L7LFJ|||||FJL7||LJ
 L7JLJL-JLJLJL--JLJ.L
-",
-    include_input!(23 10),
-];
-
-#[test]
-fn solver_23_10() -> Result<()> {
-    assert_eq!(solver(Part1, INPUTS[0])?, 4);
-    assert_eq!(solver(Part1, INPUTS[1])?, 8);
-    assert_eq!(solver(Part1, INPUTS[5])?, 6800);
-    assert_eq!(solver(Part2, INPUTS[2])?, 4);
-    assert_eq!(solver(Part2, INPUTS[3])?, 8);
-    assert_eq!(solver(Part2, INPUTS[4])?, 10);
-    assert_eq!(solver(Part2, INPUTS[5])?, 483);
-    Ok(())
+" => ((), 10),
+    include_input!(23 10) => (6800, 483),
 }

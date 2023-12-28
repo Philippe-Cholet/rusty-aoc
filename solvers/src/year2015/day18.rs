@@ -46,11 +46,4 @@ pub fn solver(part: Part, input: &str) -> Result<usize> {
         .count())
 }
 
-pub const INPUTS: [&str; 1] = [include_input!(15 18)];
-
-#[test]
-fn solver_15_18() -> Result<()> {
-    assert_eq!(solver(Part1, INPUTS[0])?, 768);
-    assert_eq!(solver(Part2, INPUTS[0])?, 781);
-    Ok(())
-}
+test_solver!(include_input!(15 18) => (768, 781));

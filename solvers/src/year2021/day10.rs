@@ -74,8 +74,9 @@ pub fn solver(part: Part, input: &str) -> Result<usize> {
     })
 }
 
-pub const INPUTS: [&str; 2] = [
-    "[({(<(())[]>[[{[]{<()<>>
+test_solver! {
+    "\
+[({(<(())[]>[[{[]{<()<>>
 [(()[<>])]({[<{<<[]>>(
 {([(<{}[<>[]}>{[]{[(<()>
 (((({<>}<{<{<>}{[]{[]{}
@@ -85,15 +86,6 @@ pub const INPUTS: [&str; 2] = [
 [<(<(<(<{}))><([]([]()
 <{([([[(<>()){}]>(<<{{
 <{([{{}}[<[[[<>{}]]]>[]]
-",
-    include_input!(21 10),
-];
-
-#[test]
-fn solver_21_10() -> Result<()> {
-    assert_eq!(solver(Part1, INPUTS[0])?, 26397);
-    assert_eq!(solver(Part1, INPUTS[1])?, 341823);
-    assert_eq!(solver(Part2, INPUTS[0])?, 288957);
-    assert_eq!(solver(Part2, INPUTS[1])?, 2801302861);
-    Ok(())
+" => (26397, 288957),
+    include_input!(21 10) => (341823, 2801302861),
 }

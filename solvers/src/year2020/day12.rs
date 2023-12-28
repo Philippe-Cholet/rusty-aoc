@@ -166,13 +166,7 @@ impl std::str::FromStr for Action {
     }
 }
 
-pub const INPUTS: [&str; 2] = ["F10\nN3\nF7\nR90\nF11\n", include_input!(20 12)];
-
-#[test]
-fn solver_20_12() -> Result<()> {
-    assert_eq!(solver(Part1, INPUTS[0])?, 25);
-    assert_eq!(solver(Part1, INPUTS[1])?, 415);
-    assert_eq!(solver(Part2, INPUTS[0])?, 286);
-    assert_eq!(solver(Part2, INPUTS[1])?, 29401);
-    Ok(())
+test_solver! {
+    "F10\nN3\nF7\nR90\nF11" => (25, 286),
+    include_input!(20 12) => (415, 29401),
 }

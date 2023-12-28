@@ -17,8 +17,9 @@ pub fn solver(part: Part, input: &str) -> Result<usize> {
     Ok(pairs.filter(|(a, b)| a < b).count())
 }
 
-pub const INPUTS: [&str; 2] = [
-    "199
+test_solver! {
+    "\
+199
 200
 208
 210
@@ -28,15 +29,6 @@ pub const INPUTS: [&str; 2] = [
 269
 260
 263
-",
-    include_input!(21 01),
-];
-
-#[test]
-fn solver_21_01() -> Result<()> {
-    assert_eq!(solver(Part1, INPUTS[0])?, 7);
-    assert_eq!(solver(Part1, INPUTS[1])?, 1665);
-    assert_eq!(solver(Part2, INPUTS[0])?, 5);
-    assert_eq!(solver(Part2, INPUTS[1])?, 1702);
-    Ok(())
+" => (7, 5),
+    include_input!(21 01) => (1665, 1702),
 }

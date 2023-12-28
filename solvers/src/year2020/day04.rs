@@ -98,8 +98,9 @@ pub fn solver(part: Part, input: &str) -> Result<usize> {
     Ok(data.len())
 }
 
-pub const INPUTS: [&str; 2] = [
-    "ecl:gry pid:860033327 eyr:2020 hcl:#fffffd
+test_solver! {
+    "\
+ecl:gry pid:860033327 eyr:2020 hcl:#fffffd
 byr:1937 iyr:2017 cid:147 hgt:183cm
 
 iyr:2013 ecl:amb cid:350 eyr:2023 pid:028048884
@@ -112,17 +113,8 @@ hgt:179cm
 
 hcl:#cfa07d eyr:2025 pid:166559648
 iyr:2011 ecl:brn hgt:59in
-",
-    include_input!(20 04),
-];
-
-#[test]
-fn solver_20_04() -> Result<()> {
-    assert_eq!(solver(Part1, INPUTS[0])?, 2);
-    assert_eq!(solver(Part1, INPUTS[1])?, 226);
-    // assert_eq!(solver(Part2, INPUTS[0])?, 2);
-    assert_eq!(solver(Part2, INPUTS[1])?, 160);
-    Ok(())
+" => 2,
+    include_input!(20 04) => (226, 160),
 }
 
 #[cfg(test)]

@@ -71,33 +71,12 @@ fn eval(part: Part, pair: Pair<Rule>) -> Result<u64> {
     })
 }
 
-pub const INPUTS: [&str; 7] = [
-    "1 + 2 * 3 + 4 * 5 + 6",
-    "1 + (2 * 3) + (4 * (5 + 6))",
-    "2 * 3 + (4 * 5)",
-    "5 + (8 * 3 + 9 + 3 * 4 * 3)",
-    "5 * 9 * (7 * 3 * 3 + 9 * 3 + (8 + 6 * 4))",
-    "((2 + 4 * 9) * (6 + 9 * 8 + 6) + 6) + 2 + 4 * 2",
-    include_input!(20 18),
-];
-
-#[test]
-fn solver_20_18() -> Result<()> {
-    assert_eq!(solver(Part1, INPUTS[0])?, 71);
-    assert_eq!(solver(Part1, INPUTS[1])?, 51);
-    assert_eq!(solver(Part1, INPUTS[2])?, 26);
-    assert_eq!(solver(Part1, INPUTS[3])?, 437);
-    assert_eq!(solver(Part1, INPUTS[4])?, 12240);
-    assert_eq!(solver(Part1, INPUTS[5])?, 13632);
-    assert_eq!(solver(Part1, INPUTS[6])?, 280014646144);
-
-    assert_eq!(solver(Part2, INPUTS[0])?, 231);
-    assert_eq!(solver(Part2, INPUTS[1])?, 51);
-    assert_eq!(solver(Part2, INPUTS[2])?, 46);
-    assert_eq!(solver(Part2, INPUTS[3])?, 1445);
-    assert_eq!(solver(Part2, INPUTS[4])?, 669060);
-    assert_eq!(solver(Part2, INPUTS[5])?, 23340);
-    assert_eq!(solver(Part2, INPUTS[6])?, 9966990988262);
-
-    Ok(())
+test_solver! {
+    "1 + 2 * 3 + 4 * 5 + 6" => (71, 231),
+    "1 + (2 * 3) + (4 * (5 + 6))" => (51, 51),
+    "2 * 3 + (4 * 5)" => (26, 46),
+    "5 + (8 * 3 + 9 + 3 * 4 * 3)" => (437, 1445),
+    "5 * 9 * (7 * 3 * 3 + 9 * 3 + (8 + 6 * 4))" => (12240, 669060),
+    "((2 + 4 * 9) * (6 + 9 * 8 + 6) + 6) + 2 + 4 * 2" => (13632, 23340),
+    include_input!(20 18) => (280014646144, 9966990988262),
 }

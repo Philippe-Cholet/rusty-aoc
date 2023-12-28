@@ -233,16 +233,7 @@ pub fn solver(part: Part, input: &str) -> Result<usize> {
     Ok(input.parse::<TetrisSolver>()?.solve(nb_steps))
 }
 
-pub const INPUTS: [&str; 2] = [
-    ">>><<><>><<<>><>>><<<>>><<<><<<>><>><<>>\n",
-    include_input!(22 17),
-];
-
-#[test]
-fn solver_22_17() -> Result<()> {
-    assert_eq!(solver(Part1, INPUTS[0])?, 3068);
-    assert_eq!(solver(Part1, INPUTS[1])?, 3157); // 10h14
-    assert_eq!(solver(Part2, INPUTS[0])?, 1514285714288);
-    assert_eq!(solver(Part2, INPUTS[1])?, 1581449275319); // 12h35
-    Ok(())
+test_solver! {
+    ">>><<><>><<<>><>>><<<>>><<<><<<>><>><<>>" => (3068, 1514285714288),
+    include_input!(22 17) => (3157, 1581449275319),
 }

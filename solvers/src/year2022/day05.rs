@@ -55,21 +55,12 @@ pub fn solver(part: Part, input: &str) -> Result<String> {
         .collect()
 }
 
-pub const INPUTS: [&str; 2] = [
+test_solver! {
     "    [D]    \n[N] [C]    \n[Z] [M] [P]\n 1   2   3 \n
 move 1 from 2 to 1
 move 3 from 1 to 3
 move 2 from 2 to 1
 move 1 from 1 to 2
-",
-    include_input!(22 05),
-];
-
-#[test]
-fn solver_22_05() -> Result<()> {
-    assert_eq!(solver(Part1, INPUTS[0])?, "CMZ");
-    assert_eq!(solver(Part1, INPUTS[1])?, "LJSVLTWQM");
-    assert_eq!(solver(Part2, INPUTS[0])?, "MCD");
-    assert_eq!(solver(Part2, INPUTS[1])?, "BRQWDBBJM");
-    Ok(())
+" => ("CMZ", "MCD"),
+    include_input!(22 05) => ("LJSVLTWQM", "BRQWDBBJM"),
 }

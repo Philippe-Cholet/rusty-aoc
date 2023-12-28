@@ -114,21 +114,21 @@ impl<'a> PartialEq<str> for Repl<'a> {
     }
 }
 
-pub const INPUTS: [&str; 5] = [
+test_solver! {
     "\
 H => HO
 H => OH
 O => HH
 
 HOH
-",
+" => 4,
     "\
 H => HO
 H => OH
 O => HH
 
 HOHOHO
-",
+" => 7,
     "\
 e => H
 e => O
@@ -137,7 +137,7 @@ H => OH
 O => HH
 
 HOH
-",
+" => ((), 3),
     "\
 e => H
 e => O
@@ -146,17 +146,6 @@ H => OH
 O => HH
 
 HOHOHO
-",
-    include_input!(15 19),
-];
-
-#[test]
-fn solver_15_19() -> Result<()> {
-    assert_eq!(solver(Part1, INPUTS[0])?, 4);
-    assert_eq!(solver(Part1, INPUTS[1])?, 7);
-    assert_eq!(solver(Part1, INPUTS[4])?, 509);
-    assert_eq!(solver(Part2, INPUTS[2])?, 3);
-    assert_eq!(solver(Part2, INPUTS[3])?, 6);
-    assert_eq!(solver(Part2, INPUTS[4])?, 195);
-    Ok(())
+" => ((), 6),
+    include_input!(15 19) => (509, 195),
 }

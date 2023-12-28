@@ -39,8 +39,9 @@ pub fn solver(part: Part, input: &str) -> Result<usize> {
     Ok(counts.into_values().filter(|&value| value > 1).count())
 }
 
-pub const INPUTS: [&str; 2] = [
-    "0,9 -> 5,9
+test_solver! {
+    "\
+0,9 -> 5,9
 8,0 -> 0,8
 9,4 -> 3,4
 2,2 -> 2,1
@@ -50,15 +51,6 @@ pub const INPUTS: [&str; 2] = [
 3,4 -> 1,4
 0,0 -> 8,8
 5,5 -> 8,2
-",
-    include_input!(21 05),
-];
-
-#[test]
-fn solver_21_05() -> Result<()> {
-    assert_eq!(solver(Part1, INPUTS[0])?, 5);
-    assert_eq!(solver(Part1, INPUTS[1])?, 5698);
-    assert_eq!(solver(Part2, INPUTS[0])?, 12);
-    assert_eq!(solver(Part2, INPUTS[1])?, 15463);
-    Ok(())
+" => (5, 12),
+    include_input!(21 05) => (5698, 15463),
 }

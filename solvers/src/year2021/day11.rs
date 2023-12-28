@@ -65,8 +65,9 @@ pub fn solver(part: Part, input: &str) -> Result<usize> {
     })
 }
 
-pub const INPUTS: [&str; 2] = [
-    "5483143223
+test_solver! {
+    "\
+5483143223
 2745854711
 5264556173
 6141336146
@@ -76,15 +77,6 @@ pub const INPUTS: [&str; 2] = [
 6882881134
 4846848554
 5283751526
-",
-    include_input!(21 11),
-];
-
-#[test]
-fn solver_21_11() -> Result<()> {
-    assert_eq!(solver(Part1, INPUTS[0])?, 1656);
-    assert_eq!(solver(Part1, INPUTS[1])?, 1617);
-    assert_eq!(solver(Part2, INPUTS[0])?, 195);
-    assert_eq!(solver(Part2, INPUTS[1])?, 258);
-    Ok(())
+" => (1656, 195),
+    include_input!(21 11) => (1617, 258),
 }

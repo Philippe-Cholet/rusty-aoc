@@ -76,7 +76,7 @@ pub fn solver(part: Part, input: &str) -> Result<u64> {
         })?
 }
 
-pub const INPUTS: [&str; 2] = [
+test_solver! {
     "\
 R 6 (#70c710)
 D 5 (#0dc571)
@@ -92,15 +92,6 @@ R 2 (#7807d2)
 U 3 (#a77fa3)
 L 2 (#015232)
 U 2 (#7a21e3)
-",
-    include_input!(23 18),
-];
-
-#[test]
-fn solver_23_18() -> Result<()> {
-    assert_eq!(solver(Part1, INPUTS[0])?, 62);
-    assert_eq!(solver(Part1, INPUTS[1])?, 50465);
-    assert_eq!(solver(Part2, INPUTS[0])?, 952408144115);
-    assert_eq!(solver(Part2, INPUTS[1])?, 82712746433310);
-    Ok(())
+" => (62, 952408144115),
+    include_input!(23 18) => (50465, 82712746433310),
 }

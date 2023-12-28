@@ -98,8 +98,9 @@ impl Operation {
     }
 }
 
-pub const INPUTS: [&str; 2] = [
-    "nop +0
+test_solver! {
+    "\
+nop +0
 acc +1
 jmp +4
 acc +3
@@ -108,15 +109,6 @@ acc -99
 acc +1
 jmp -4
 acc +6
-",
-    include_input!(20 08),
-];
-
-#[test]
-fn solver_20_08() -> Result<()> {
-    assert_eq!(solver(Part1, INPUTS[0])?, 5);
-    assert_eq!(solver(Part1, INPUTS[1])?, 1654);
-    assert_eq!(solver(Part2, INPUTS[0])?, 8);
-    assert_eq!(solver(Part2, INPUTS[1])?, 833);
-    Ok(())
+" => (5, 8),
+    include_input!(20 08) => (1654, 833),
 }

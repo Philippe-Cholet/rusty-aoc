@@ -75,24 +75,12 @@ pub fn solver(part: Part, input: &str) -> Result<String> {
     })
 }
 
-pub const INPUTS: [&str; 2] = [
+test_solver! {
     "\
 mxmxvkd kfcds sqjhc nhms (contains dairy, fish)
 trh fvjkl sbzzf mxmxvkd (contains dairy)
 sqjhc fvjkl (contains soy)
 sqjhc mxmxvkd sbzzf (contains fish)
-",
-    include_input!(20 21),
-];
-
-#[test]
-fn solver_20_21() -> Result<()> {
-    assert_eq!(solver(Part1, INPUTS[0])?, "5");
-    assert_eq!(solver(Part1, INPUTS[1])?, "1829");
-    assert_eq!(solver(Part2, INPUTS[0])?, "mxmxvkd,sqjhc,fvjkl");
-    assert_eq!(
-        solver(Part2, INPUTS[1])?,
-        "mxkh,gkcqxs,bvh,sp,rgc,krjn,bpbdlmg,tdbcfb",
-    );
-    Ok(())
+" => ("5", "mxmxvkd,sqjhc,fvjkl"),
+    include_input!(20 21) => ("1829", "mxkh,gkcqxs,bvh,sp,rgc,krjn,bpbdlmg,tdbcfb"),
 }

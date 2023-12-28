@@ -117,16 +117,8 @@ impl std::str::FromStr for DeckGame {
     }
 }
 
-pub const INPUTS: [&str; 2] = [
-    "Player 1:\n9\n2\n6\n3\n1\n\nPlayer 2:\n5\n8\n4\n7\n10\n",
-    include_input!(20 22),
-];
-
-#[test]
-fn solver_20_22() -> Result<()> {
-    assert_eq!(solver(Part1, INPUTS[0])?, 306);
-    assert_eq!(solver(Part1, INPUTS[1])?, 29764);
-    assert_eq!(solver(Part2, INPUTS[0])?, 291);
-    assert_eq!(solver(Part2, INPUTS[1])?, 32588);
-    Ok(())
+test_solver! {
+    "Player 1:\n9\n2\n6\n3\n1\n\n\
+     Player 2:\n5\n8\n4\n7\n10" => (306, 291),
+    include_input!(20 22) => (29764, 32588),
 }

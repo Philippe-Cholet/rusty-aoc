@@ -29,7 +29,7 @@ pub fn solver(part: Part, input: &str) -> Result<usize> {
     })
 }
 
-pub const INPUTS: [&str; 2] = [
+test_solver! {
     "\
 ..##.......
 #...#...#..
@@ -42,15 +42,6 @@ pub const INPUTS: [&str; 2] = [
 #.##...#...
 #...##....#
 .#..#...#.#
-",
-    include_input!(20 03),
-];
-
-#[test]
-fn solver_20_03() -> Result<()> {
-    assert_eq!(solver(Part1, INPUTS[0])?, 7);
-    assert_eq!(solver(Part1, INPUTS[1])?, 218);
-    assert_eq!(solver(Part2, INPUTS[0])?, 336);
-    assert_eq!(solver(Part2, INPUTS[1])?, 3847183340);
-    Ok(())
+" => (7, 336),
+    include_input!(20 03) => (218, 3847183340),
 }

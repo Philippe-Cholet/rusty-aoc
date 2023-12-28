@@ -70,13 +70,7 @@ pub fn solver(part: Part, input: &str) -> Result<u64> {
     })
 }
 
-pub const INPUTS: [&str; 2] = ["389125467", include_input!(20 23)];
-
-#[test]
-fn solver_20_23() -> Result<()> {
-    assert_eq!(solver(Part1, INPUTS[0])?, 67384529);
-    assert_eq!(solver(Part1, INPUTS[1])?, 27956483);
-    assert_eq!(solver(Part2, INPUTS[0])?, 149245887792); // 934001 * 159792
-    assert_eq!(solver(Part2, INPUTS[1])?, 18930983775);
-    Ok(())
+test_solver! {
+    "389125467" => (67384529, 149245887792),
+    include_input!(20 23) => (27956483, 18930983775),
 }

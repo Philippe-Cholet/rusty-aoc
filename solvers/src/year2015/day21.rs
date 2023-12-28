@@ -163,11 +163,4 @@ impl std::iter::Sum for Item {
     }
 }
 
-pub const INPUTS: [&str; 1] = [include_input!(15 21)];
-
-#[test]
-fn solver_15_21() -> Result<()> {
-    assert_eq!(solver(Part1, INPUTS[0])?, 91);
-    assert_eq!(solver(Part2, INPUTS[0])?, 158);
-    Ok(())
-}
+test_solver!(include_input!(15 21) => (91, 158));

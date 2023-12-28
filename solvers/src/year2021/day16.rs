@@ -120,38 +120,18 @@ pub fn solver(part: Part, input: &str) -> Result<usize> {
     }
 }
 
-pub const INPUTS: [&str; 13] = [
-    "8A004A801A8002F478",
-    "620080001611562C8802118E34",
-    "C0015000016115A2E0802F182340",
-    "A0016C880162017C3686B18A3D4780",
-    "C200B40A82",                 // 1 + 2 => 3
-    "04005AC33890",               // 6 * 9 => 54
-    "880086C3E88112",             // min(7, 8, 9) => 7
-    "CE00C43D881120",             // max(7, 8, 9) => 9
-    "D8005AC2A8F0",               // "5 < 15" is true => 1
-    "F600BC2D8F",                 // "5 > 15" is false => 0
-    "9C005AC2F8F0",               // "5 is equal to 15" is false => 0
-    "9C0141080250320F1802104A08", // "1 + 3 = 2 * 2" is true => 1
-    include_input!(21 16),
-];
-
-#[test]
-fn solver_21_16() -> Result<()> {
-    let (big_input, inputs) = INPUTS.split_last().context("No input")?;
-    let (inputs1, inputs2) = inputs.split_at(4);
-
-    let answers1 = [16, 12, 23, 31];
-    for (input, answer) in inputs1.iter().zip(answers1) {
-        assert_eq!(solver(Part1, input)?, answer);
-    }
-    assert_eq!(solver(Part1, big_input)?, 943);
-
-    let answers2 = [3, 54, 7, 9, 1, 0, 0, 1];
-    for (input, answer) in inputs2.iter().zip(answers2) {
-        assert_eq!(solver(Part2, input)?, answer);
-    }
-    assert_eq!(solver(Part2, big_input)?, 167737115857);
-
-    Ok(())
+test_solver! {
+    "8A004A801A8002F478" => 16,
+    "620080001611562C8802118E34" => 12,
+    "C0015000016115A2E0802F182340" => 23,
+    "A0016C880162017C3686B18A3D4780" => 31,
+    "C200B40A82" => ((), 3),                 // 1 + 2 => 3
+    "04005AC33890" => ((), 54),              // 6 * 9 => 54
+    "880086C3E88112" => ((), 7),             // min(7, 8, 9) => 7
+    "CE00C43D881120" => ((), 9),             // max(7, 8, 9) => 9
+    "D8005AC2A8F0" => ((), 1),               // "5 < 15" is true => 1
+    "F600BC2D8F" => ((), 0),                 // "5 > 15" is false => 0
+    "9C005AC2F8F0" => ((), 0),               // "5 is equal to 15" is false => 0
+    "9C0141080250320F1802104A08" => ((), 1), // "1 + 3 = 2 * 2" is true => 1
+    include_input!(21 16) => (943, 167737115857),
 }

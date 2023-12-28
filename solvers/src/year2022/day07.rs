@@ -118,7 +118,7 @@ pub fn solver(part: Part, input: &str) -> Result<usize> {
     })
 }
 
-pub const INPUTS: [&str; 2] = [
+test_solver! {
     "$ cd /
 $ ls
 dir a
@@ -142,15 +142,6 @@ $ ls
 8033020 d.log
 5626152 d.ext
 7214296 k
-",
-    include_input!(22 07),
-];
-
-#[test]
-fn solver_22_07() -> Result<()> {
-    assert_eq!(solver(Part1, INPUTS[0])?, 95437);
-    assert_eq!(solver(Part1, INPUTS[1])?, 1334506);
-    assert_eq!(solver(Part2, INPUTS[0])?, 24933642);
-    assert_eq!(solver(Part2, INPUTS[1])?, 7421137);
-    Ok(())
+" => (95437, 24933642),
+    include_input!(22 07) => (1334506, 7421137),
 }

@@ -118,7 +118,7 @@ impl std::fmt::Binary for Grid {
     }
 }
 
-pub const INPUTS: [&str; 2] = [
+test_solver! {
     "\
 #.##..##.
 ..#.##.#.
@@ -135,15 +135,6 @@ pub const INPUTS: [&str; 2] = [
 #####.##.
 ..##..###
 #....#..#
-",
-    include_input!(23 13),
-];
-
-#[test]
-fn solver_23_13() -> Result<()> {
-    assert_eq!(solver(Part1, INPUTS[0])?, 405);
-    assert_eq!(solver(Part1, INPUTS[1])?, 33735);
-    assert_eq!(solver(Part2, INPUTS[0])?, 400);
-    assert_eq!(solver(Part2, INPUTS[1])?, 38063);
-    Ok(())
+" => (405, 400),
+    include_input!(23 13) => (33735, 38063),
 }

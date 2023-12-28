@@ -38,22 +38,13 @@ pub fn solver(part: Part, input: &str) -> Result<u32> {
         })
 }
 
-pub const INPUTS: [&str; 2] = [
+test_solver! {
     "\
 Game 1: 3 blue, 4 red; 1 red, 2 green, 6 blue; 2 green
 Game 2: 1 blue, 2 green; 3 green, 4 blue, 1 red; 1 green, 1 blue
 Game 3: 8 green, 6 blue, 20 red; 5 blue, 4 red, 13 green; 5 green, 1 red
 Game 4: 1 green, 3 red, 6 blue; 3 green, 6 red; 3 green, 15 blue, 14 red
 Game 5: 6 red, 1 blue, 3 green; 2 blue, 1 red, 2 green
-",
-    include_input!(23 02),
-];
-
-#[test]
-fn solver_23_02() -> Result<()> {
-    assert_eq!(solver(Part1, INPUTS[0])?, 8);
-    assert_eq!(solver(Part1, INPUTS[1])?, 2685);
-    assert_eq!(solver(Part2, INPUTS[0])?, 2286);
-    assert_eq!(solver(Part2, INPUTS[1])?, 83707);
-    Ok(())
+" => (8, 2286),
+    include_input!(23 02) => (2685, 83707),
 }

@@ -28,13 +28,7 @@ pub fn solver(part: Part, input: &str) -> Result<usize> {
     Ok(state.iter().sum())
 }
 
-pub const INPUTS: [&str; 2] = ["3,4,3,1,2", include_input!(21 06)];
-
-#[test]
-fn solver_21_06() -> Result<()> {
-    assert_eq!(solver(Part1, INPUTS[0])?, 5934);
-    assert_eq!(solver(Part1, INPUTS[1])?, 363101);
-    assert_eq!(solver(Part2, INPUTS[0])?, 26984457539);
-    assert_eq!(solver(Part2, INPUTS[1])?, 1644286074024);
-    Ok(())
+test_solver! {
+    "3,4,3,1,2" => (5934, 26984457539),
+    include_input!(21 06) => (363101, 1644286074024),
 }

@@ -40,22 +40,13 @@ pub fn solver(part: Part, input: &str) -> Result<usize> {
     }
 }
 
-pub const INPUTS: [&str; 2] = [
+test_solver! {
     "vJrwpWtwJgWrhcsFMMfFFhFp
 jqHRNqRjqzjGDLGLrsFMfFZSrLrFZsSL
 PmmdzqPrVvPwwTWBwg
 wMqvLMZHhHMvwLHjbvcjnnSBnvTQFn
 ttgJtRGJQctTZtZT
 CrZsJsPPZsGzwwsLwLmpwMDw
-",
-    include_input!(22 03),
-];
-
-#[test]
-fn solver_22_03() -> Result<()> {
-    assert_eq!(solver(Part1, INPUTS[0])?, 157);
-    assert_eq!(solver(Part1, INPUTS[1])?, 7997);
-    assert_eq!(solver(Part2, INPUTS[0])?, 70);
-    assert_eq!(solver(Part2, INPUTS[1])?, 2545);
-    Ok(())
+" => (157, 70),
+    include_input!(22 03) => (7997, 2545),
 }

@@ -268,7 +268,7 @@ impl<'a> TryFrom<&'a str> for Item<&'a str> {
     }
 }
 
-pub const INPUTS: [&str; 2] = [
+test_solver! {
     "\
 px{a<2006:qkq,m>2090:A,rfg}
 pv{a>1716:R,A}
@@ -287,15 +287,6 @@ hdj{m>838:A,pv}
 {x=2036,m=264,a=79,s=2244}
 {x=2461,m=1339,a=466,s=291}
 {x=2127,m=1623,a=2188,s=1013}
-",
-    include_input!(23 19),
-];
-
-#[test]
-fn solver_23_19() -> Result<()> {
-    assert_eq!(solver(Part1, INPUTS[0])?, 19114);
-    assert_eq!(solver(Part1, INPUTS[1])?, 352052);
-    assert_eq!(solver(Part2, INPUTS[0])?, 167409079868000);
-    assert_eq!(solver(Part2, INPUTS[1])?, 116606738659695);
-    Ok(())
+" => (19114, 167409079868000),
+    include_input!(23 19) => (352052, 116606738659695),
 }

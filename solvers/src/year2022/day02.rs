@@ -77,13 +77,7 @@ pub fn solver(part: Part, input: &str) -> Result<u32> {
         .sum()
 }
 
-pub const INPUTS: [&str; 2] = ["A Y\nB X\nC Z\n", include_input!(22 02)];
-
-#[test]
-fn solver_22_02() -> Result<()> {
-    assert_eq!(solver(Part1, INPUTS[0])?, 15);
-    assert_eq!(solver(Part1, INPUTS[1])?, 11767);
-    assert_eq!(solver(Part2, INPUTS[0])?, 12);
-    assert_eq!(solver(Part2, INPUTS[1])?, 13886);
-    Ok(())
+test_solver! {
+    "A Y\nB X\nC Z\n" => (15, 12),
+    include_input!(22 02) => (11767, 13886),
 }

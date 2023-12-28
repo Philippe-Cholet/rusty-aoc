@@ -101,11 +101,4 @@ impl<'a> TryFrom<&'a str> for Operation<'a> {
     }
 }
 
-pub const INPUTS: [&str; 1] = [include_input!(15 07)];
-
-#[test]
-fn solver_15_07() -> Result<()> {
-    assert_eq!(solver(Part1, INPUTS[0])?, 46065);
-    assert_eq!(solver(Part2, INPUTS[0])?, 14134);
-    Ok(())
-}
+test_solver!(include_input!(15 07) => (46065, 14134));

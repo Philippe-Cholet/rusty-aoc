@@ -44,7 +44,7 @@ pub fn solver(part: Part, input: &str) -> Result<i32> {
     .context("No people around the rable")
 }
 
-pub const INPUTS: [&str; 2] = [
+test_solver! {
     "\
 Alice would gain 54 happiness units by sitting next to Bob.
 Alice would lose 79 happiness units by sitting next to Carol.
@@ -58,14 +58,6 @@ Carol would gain 55 happiness units by sitting next to David.
 David would gain 46 happiness units by sitting next to Alice.
 David would lose 7 happiness units by sitting next to Bob.
 David would gain 41 happiness units by sitting next to Carol.
-",
-    include_input!(15 13),
-];
-
-#[test]
-fn solver_15_13() -> Result<()> {
-    assert_eq!(solver(Part1, INPUTS[0])?, 330);
-    assert_eq!(solver(Part1, INPUTS[1])?, 618);
-    assert_eq!(solver(Part2, INPUTS[1])?, 601);
-    Ok(())
+" => 330,
+    include_input!(15 13) => (618, 601),
 }

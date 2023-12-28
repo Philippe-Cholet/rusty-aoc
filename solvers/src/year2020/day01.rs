@@ -21,22 +21,13 @@ pub fn solver(part: Part, input: &str) -> Result<u32> {
     .context("No solution")
 }
 
-pub const INPUTS: [&str; 2] = [
+test_solver! {
     "1721
 979
 366
 299
 675
 1456
-",
-    include_input!(20 01),
-];
-
-#[test]
-fn solver_20_01() -> Result<()> {
-    assert_eq!(solver(Part1, INPUTS[0])?, 514579); // 1721 * 299
-    assert_eq!(solver(Part1, INPUTS[1])?, 1016964);
-    assert_eq!(solver(Part2, INPUTS[0])?, 241861950); // 979 * 366 * 675
-    assert_eq!(solver(Part2, INPUTS[1])?, 182588480);
-    Ok(())
+" => (514579, 241861950), // 1721 * 299, 979 * 366 * 675
+    include_input!(20 01) => (1016964, 182588480),
 }

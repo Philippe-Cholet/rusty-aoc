@@ -82,7 +82,7 @@ pub fn solver(part: Part, input: &str) -> Result<usize> {
     })
 }
 
-pub const INPUTS: [&str; 4] = [
+test_solver! {
     "RL
 
 AAA = (BBB, CCC)
@@ -92,13 +92,13 @@ DDD = (DDD, DDD)
 EEE = (EEE, EEE)
 GGG = (GGG, GGG)
 ZZZ = (ZZZ, ZZZ)
-",
+" => 2,
     "LLR
 
 AAA = (BBB, BBB)
 BBB = (AAA, ZZZ)
 ZZZ = (ZZZ, ZZZ)
-",
+" => 6,
     "LR
 
 11A = (11B, XXX)
@@ -109,16 +109,6 @@ ZZZ = (ZZZ, ZZZ)
 22C = (22Z, 22Z)
 22Z = (22B, 22B)
 XXX = (XXX, XXX)
-",
-    include_input!(23 08),
-];
-
-#[test]
-fn solver_23_08() -> Result<()> {
-    assert_eq!(solver(Part1, INPUTS[0])?, 2);
-    assert_eq!(solver(Part1, INPUTS[1])?, 6);
-    assert_eq!(solver(Part1, INPUTS[3])?, 12737);
-    assert_eq!(solver(Part2, INPUTS[2])?, 6);
-    assert_eq!(solver(Part2, INPUTS[3])?, 9064949303801);
-    Ok(())
+" => ((), 6),
+    include_input!(23 08) => (12737, 9064949303801),
 }

@@ -50,19 +50,8 @@ pub fn solver(part: Part, input: &str) -> Result<i64> {
     })
 }
 
-pub const INPUTS: [&str; 2] = [
-    "\
-Time:      7  15   30
-Distance:  9  40  200
-",
-    include_input!(23 06),
-];
-
-#[test]
-fn solver_23_06() -> Result<()> {
-    assert_eq!(solver(Part1, INPUTS[0])?, 288); // 4 * 8 * 9
-    assert_eq!(solver(Part1, INPUTS[1])?, 505494);
-    assert_eq!(solver(Part2, INPUTS[0])?, 71503);
-    assert_eq!(solver(Part2, INPUTS[1])?, 23632299);
-    Ok(())
+test_solver! {
+    "Time:      7  15   30\n\
+     Distance:  9  40  200" => (4 * 8 * 9, 71503),
+    include_input!(23 06) => (505494, 23632299),
 }

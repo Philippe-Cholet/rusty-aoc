@@ -95,7 +95,7 @@ impl std::str::FromStr for Rule {
     }
 }
 
-pub const INPUTS: [&str; 3] = [
+test_solver! {
     r#"0: 4 1 5
 1: 2 3 | 3 2
 2: 4 4 | 5 5
@@ -108,7 +108,7 @@ bababa
 abbbab
 aaabbb
 aaaabbb
-"#,
+"# => 2,
     r#"42: 9 14 | 10 1
 9: 14 27 | 1 26
 10: 23 14 | 28 1
@@ -156,15 +156,6 @@ aaaabbaaaabbaaa
 aaaabbaabbaaaaaaabbbabbbaaabbaabaaa
 babaaabbbaaabaababbaabababaaab
 aabbbbbaabbbaaaaaabbbbbababaaaaabbaaabba
-"#,
-    include_input!(20 19),
-];
-
-#[test]
-fn solver_20_19() -> Result<()> {
-    assert_eq!(solver(Part1, INPUTS[0])?, 2);
-    assert_eq!(solver(Part1, INPUTS[2])?, 208);
-    assert_eq!(solver(Part2, INPUTS[1])?, 12);
-    assert_eq!(solver(Part2, INPUTS[2])?, 316);
-    Ok(())
+"# => ((), 12),
+    include_input!(20 19) => (208, 316),
 }

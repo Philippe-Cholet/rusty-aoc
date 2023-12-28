@@ -79,18 +79,8 @@ fn player_universes(start: usize) -> [(usize, usize); MAX_TURN + 1] {
     })
 }
 
-pub const INPUTS: [&str; 2] = [
-    "Player 1 starting position: 4
-Player 2 starting position: 8
-",
-    include_input!(21 21),
-];
-
-#[test]
-fn solver_21_21() -> Result<()> {
-    assert_eq!(solver(Part1, INPUTS[0])?, 739785);
-    assert_eq!(solver(Part1, INPUTS[1])?, 888735);
-    assert_eq!(solver(Part2, INPUTS[0])?, 444356092776315);
-    assert_eq!(solver(Part2, INPUTS[1])?, 647608359455719);
-    Ok(())
+test_solver! {
+    "Player 1 starting position: 4\n\
+     Player 2 starting position: 8" => (739785, 444356092776315),
+    include_input!(21 21) => (888735, 647608359455719),
 }

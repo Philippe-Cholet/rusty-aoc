@@ -35,19 +35,11 @@ pub fn solver(part: Part, input: &str) -> Result<usize> {
         .count())
 }
 
-pub const INPUTS: [&str; 2] = [
-    "1-3 a: abcde
+test_solver! {
+    "\
+1-3 a: abcde
 1-3 b: cdefg
 2-9 c: ccccccccc
-",
-    include_input!(20 02),
-];
-
-#[test]
-fn solver_20_02() -> Result<()> {
-    assert_eq!(solver(Part1, INPUTS[0])?, 2);
-    assert_eq!(solver(Part1, INPUTS[1])?, 564);
-    assert_eq!(solver(Part2, INPUTS[0])?, 1);
-    assert_eq!(solver(Part2, INPUTS[1])?, 325);
-    Ok(())
+" => (2, 1),
+    include_input!(20 02) => (564, 325),
 }

@@ -162,7 +162,7 @@ pub fn solver(part: Part, input: &str) -> Result<usize> {
     bgrid.find_multi_path(part.value(0, 1))
 }
 
-pub const INPUTS: [&str; 2] = [
+test_solver! {
     "\
 #.######
 #>>.<^<#
@@ -170,15 +170,6 @@ pub const INPUTS: [&str; 2] = [
 #>v.><>#
 #<^v^^>#
 ######.#
-",
-    include_input!(22 24),
-];
-
-#[test]
-fn solver_22_24() -> Result<()> {
-    assert_eq!(solver(Part1, INPUTS[0])?, 18);
-    assert_eq!(solver(Part1, INPUTS[1])?, 279);
-    assert_eq!(solver(Part2, INPUTS[0])?, 54);
-    assert_eq!(solver(Part2, INPUTS[1])?, 762);
-    Ok(())
+" => (18, 54),
+    include_input!(22 24) => (279, 762),
 }

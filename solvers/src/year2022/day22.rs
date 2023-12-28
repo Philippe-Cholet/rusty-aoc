@@ -271,7 +271,7 @@ pub fn solver(part: Part, input: &str) -> Result<usize> {
     Ok(1000 * r + 4 * c + d.facing())
 }
 
-pub const INPUTS: [&str; 2] = [
+test_solver! {
     "        ...#
         .#..
         #...
@@ -286,16 +286,6 @@ pub const INPUTS: [&str; 2] = [
         ......#.
 
 10R5L5R10L4R5L5
-",
-    include_input!(22 22),
-];
-
-#[test]
-fn solver_22_22() -> Result<()> {
-    assert_eq!(solver(Part1, INPUTS[0])?, 6032);
-    assert_eq!(solver(Part1, INPUTS[1])?, 30552);
-    // This does not pass tests yet as my implementation relies on my input layout and size.
-    // assert_eq!(solver(Part2, INPUTS[0])?, 5031);
-    assert_eq!(solver(Part2, INPUTS[1])?, 184106);
-    Ok(())
+" => (6032, ), // 5031 but the test fails as my implementation relies on my input layout and size.
+    include_input!(22 22) => (30552, 184106),
 }

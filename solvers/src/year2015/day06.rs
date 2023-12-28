@@ -72,11 +72,4 @@ impl std::str::FromStr for Instruction {
     }
 }
 
-pub const INPUTS: [&str; 1] = [include_input!(15 06)];
-
-#[test]
-fn solver_15_06() -> Result<()> {
-    assert_eq!(solver(Part1, INPUTS[0])?, 400410);
-    assert_eq!(solver(Part2, INPUTS[0])?, 15343601);
-    Ok(())
-}
+test_solver!(include_input!(15 06) => (400410, 15343601));

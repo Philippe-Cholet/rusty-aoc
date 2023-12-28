@@ -48,16 +48,7 @@ fn hash_hash() {
     assert_eq!(hash("HASH"), 52);
 }
 
-pub const INPUTS: [&str; 2] = [
-    "rn=1,cm-,qp=3,cm=2,qp-,pc=4,ot=9,ab=5,pc-,pc=6,ot=7\n",
-    include_input!(23 15),
-];
-
-#[test]
-fn solver_23_15() -> Result<()> {
-    assert_eq!(solver(Part1, INPUTS[0])?, 1320);
-    assert_eq!(solver(Part1, INPUTS[1])?, 506869);
-    assert_eq!(solver(Part2, INPUTS[0])?, 145);
-    assert_eq!(solver(Part2, INPUTS[1])?, 271384);
-    Ok(())
+test_solver! {
+    "rn=1,cm-,qp=3,cm=2,qp-,pc=4,ot=9,ab=5,pc-,pc=6,ot=7" => (1320, 145),
+    include_input!(23 15) => (506869, 271384),
 }

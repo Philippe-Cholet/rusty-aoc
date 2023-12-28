@@ -18,7 +18,7 @@ pub fn solver(part: Part, input: &str) -> Result<u32> {
     })
 }
 
-pub const INPUTS: [&str; 2] = [
+test_solver! {
     "1000
 2000
 3000
@@ -33,15 +33,6 @@ pub const INPUTS: [&str; 2] = [
 9000
 
 10000
-",
-    include_input!(22 01), // 259 elves
-];
-
-#[test]
-fn solver_22_01() -> Result<()> {
-    assert_eq!(solver(Part1, INPUTS[0])?, 24000);
-    assert_eq!(solver(Part1, INPUTS[1])?, 71124);
-    assert_eq!(solver(Part2, INPUTS[0])?, 45000);
-    assert_eq!(solver(Part2, INPUTS[1])?, 204639);
-    Ok(())
+" => (24000, 45000),
+    include_input!(22 01) => (71124, 204639), // 259 elves
 }

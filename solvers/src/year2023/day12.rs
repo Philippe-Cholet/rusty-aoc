@@ -170,27 +170,6 @@ fn cache_key(records: &[Record], nums: &[u8]) -> CacheKey {
     (rec_id, n_id)
 }
 
-pub const INPUTS: [&str; 2] = [
-    "\
-???.### 1,1,3
-.??..??...?##. 1,1,3
-?#?#?#?#?#?#?#? 1,3,1,6
-????.#...#... 4,1,1
-????.######..#####. 1,6,5
-?###???????? 3,2,1
-",
-    include_input!(23 12),
-];
-
-#[test]
-fn solver_23_12() -> Result<()> {
-    assert_eq!(solver(Part1, INPUTS[0])?, 21);
-    assert_eq!(solver(Part1, INPUTS[1])?, 7307);
-    assert_eq!(solver(Part2, INPUTS[0])?, 525152);
-    assert_eq!(solver(Part2, INPUTS[1])?, 3415570893842);
-    Ok(())
-}
-
 #[test]
 fn examples() {
     let mut cache = HashMap::new();
@@ -212,4 +191,16 @@ fn examples() {
     assert_eq!(part2_from("????.#...#...", &[4, 1, 1]), 16);
     assert_eq!(part2_from("????.######..#####.", &[1, 6, 5]), 2500);
     assert_eq!(part2_from("?###????????", &[3, 2, 1]), 506250);
+}
+
+test_solver! {
+    "\
+???.### 1,1,3
+.??..??...?##. 1,1,3
+?#?#?#?#?#?#?#? 1,3,1,6
+????.#...#... 4,1,1
+????.######..#####. 1,6,5
+?###???????? 3,2,1
+" => (21, 525152),
+    include_input!(23 12) => (7307, 3415570893842),
 }

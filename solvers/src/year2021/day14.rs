@@ -66,7 +66,7 @@ pub fn solver(part: Part, input: &str) -> Result<usize> {
         .context("empty template")
 }
 
-pub const INPUTS: [&str; 2] = [
+test_solver! {
     "NNCB
 
 CH -> B
@@ -85,15 +85,6 @@ BB -> N
 BC -> B
 CC -> N
 CN -> C
-",
-    include_input!(21 14),
-];
-
-#[test]
-fn solver_21_14() -> Result<()> {
-    assert_eq!(solver(Part1, INPUTS[0])?, 1588);
-    assert_eq!(solver(Part1, INPUTS[1])?, 4517);
-    assert_eq!(solver(Part2, INPUTS[0])?, 2188189693529);
-    assert_eq!(solver(Part2, INPUTS[1])?, 4704817645083);
-    Ok(())
+" => (1588, 2188189693529),
+    include_input!(21 14) => (4517, 4704817645083),
 }

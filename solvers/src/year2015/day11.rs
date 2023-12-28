@@ -101,13 +101,8 @@ impl std::str::FromStr for Password {
     }
 }
 
-pub const INPUTS: [&str; 3] = ["abcdefgh", "ghijklmn", include_input!(15 11)];
-
-#[test]
-fn solver_15_11() -> Result<()> {
-    assert_eq!(solver(Part1, INPUTS[0])?, "abcdffaa");
-    assert_eq!(solver(Part1, INPUTS[1])?, "ghjaabcc");
-    assert_eq!(solver(Part1, INPUTS[2])?, "vzbxxyzz");
-    assert_eq!(solver(Part2, INPUTS[2])?, "vzcaabcc");
-    Ok(())
+test_solver! {
+    "abcdefgh" => "abcdffaa",
+    "ghijklmn" => "ghjaabcc",
+    include_input!(15 11) => ("vzbxxyzz", "vzcaabcc"),
 }

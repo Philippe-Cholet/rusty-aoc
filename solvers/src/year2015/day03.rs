@@ -44,11 +44,4 @@ pub fn solver(part: Part, input: &str) -> Result<usize> {
     Ok(houses.len())
 }
 
-pub const INPUTS: [&str; 1] = [include_input!(15 03)];
-
-#[test]
-fn solver_15_03() -> Result<()> {
-    assert_eq!(solver(Part1, INPUTS[0])?, 2572);
-    assert_eq!(solver(Part2, INPUTS[0])?, 2631);
-    Ok(())
-}
+test_solver!(include_input!(15 03) => (2572, 2631));

@@ -117,18 +117,7 @@ mod grid {
     }
 }
 
-pub const INPUTS: [&str; 2] = [
-    "498,4 -> 498,6 -> 496,6
-503,4 -> 502,4 -> 502,9 -> 494,9
-",
-    include_input!(22 14),
-];
-
-#[test]
-fn solver_22_14() -> Result<()> {
-    assert_eq!(solver(Part1, INPUTS[0])?, 24);
-    assert_eq!(solver(Part1, INPUTS[1])?, 843);
-    assert_eq!(solver(Part2, INPUTS[0])?, 93);
-    assert_eq!(solver(Part2, INPUTS[1])?, 27625);
-    Ok(())
+test_solver! {
+    "498,4 -> 498,6 -> 496,6\n503,4 -> 502,4 -> 502,9 -> 494,9" => (24, 93),
+    include_input!(22 14) => (843, 27625),
 }

@@ -38,30 +38,11 @@ pub fn solver(part: Part, input: &str) -> Result<usize> {
     Ok(size + idx)
 }
 
-pub const INPUTS: [&str; 6] = [
-    "mjqjpqmgbljsphdztnvjfqwrcgsmlb\n",
-    "bvwbjplbgvbhsrlpgdmjqwftvncz\n",
-    "nppdvjthqldpwncqszvftbrmjlhg\n",
-    "nznrnfrfntjfmvfwmzdfjlvtqnbhcprsg\n",
-    "zcfzfwzzqfrljwzlrfnpqdbhtmscgvjw\n",
-    include_input!(22 06),
-];
-
-#[test]
-fn solver_22_06() -> Result<()> {
-    assert_eq!(solver(Part1, INPUTS[0])?, 7);
-    assert_eq!(solver(Part1, INPUTS[1])?, 5);
-    assert_eq!(solver(Part1, INPUTS[2])?, 6);
-    assert_eq!(solver(Part1, INPUTS[3])?, 10);
-    assert_eq!(solver(Part1, INPUTS[4])?, 11);
-    assert_eq!(solver(Part1, INPUTS[5])?, 1929);
-
-    assert_eq!(solver(Part2, INPUTS[0])?, 19);
-    assert_eq!(solver(Part2, INPUTS[1])?, 23);
-    assert_eq!(solver(Part2, INPUTS[2])?, 23);
-    assert_eq!(solver(Part2, INPUTS[3])?, 29);
-    assert_eq!(solver(Part2, INPUTS[4])?, 26);
-    assert_eq!(solver(Part2, INPUTS[5])?, 3298);
-
-    Ok(())
+test_solver! {
+    "mjqjpqmgbljsphdztnvjfqwrcgsmlb\n" => (7, 19),
+    "bvwbjplbgvbhsrlpgdmjqwftvncz\n" => (5, 23),
+    "nppdvjthqldpwncqszvftbrmjlhg\n" => (6, 23),
+    "nznrnfrfntjfmvfwmzdfjlvtqnbhcprsg\n" => (10, 29),
+    "zcfzfwzzqfrljwzlrfnpqdbhtmscgvjw\n" => (11, 26),
+    include_input!(22 06) => (1929, 3298),
 }

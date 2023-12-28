@@ -105,8 +105,9 @@ pub fn solver(part: Part, input: &str) -> Result<usize> {
     })
 }
 
-pub const INPUTS: [&str; 2] = [
-    "[1,1,3,1,1]
+test_solver! {
+    "\
+[1,1,3,1,1]
 [1,1,5,1,1]
 
 [[1],[2,3,4]]
@@ -129,15 +130,6 @@ pub const INPUTS: [&str; 2] = [
 
 [1,[2,[3,[4,[5,6,7]]]],8,9]
 [1,[2,[3,[4,[5,6,0]]]],8,9]
-",
-    include_input!(22 13),
-];
-
-#[test]
-fn solver_22_13() -> Result<()> {
-    assert_eq!(solver(Part1, INPUTS[0])?, 13);
-    assert_eq!(solver(Part1, INPUTS[1])?, 5555);
-    assert_eq!(solver(Part2, INPUTS[0])?, 140);
-    assert_eq!(solver(Part2, INPUTS[1])?, 22852);
-    Ok(())
+" => (13, 140),
+    include_input!(22 13) => (5555, 22852),
 }

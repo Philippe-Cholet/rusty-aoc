@@ -40,13 +40,7 @@ pub fn solver(part: Part, input: &str) -> Result<u32> {
     })
 }
 
-pub const INPUTS: [&str; 2] = ["20\n15\n10\n5\n5\n", include_input!(15 17)];
-
-#[test]
-fn solver_15_17() -> Result<()> {
-    assert_eq!(solver(Part1, INPUTS[0])?, 4);
-    assert_eq!(solver(Part1, INPUTS[1])?, 1304);
-    assert_eq!(solver(Part2, INPUTS[0])?, 3);
-    assert_eq!(solver(Part2, INPUTS[1])?, 18);
-    Ok(())
+test_solver! {
+    "20\n15\n10\n5\n5\n" => (4, 3),
+    include_input!(15 17) => (1304, 18),
 }

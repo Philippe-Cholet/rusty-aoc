@@ -73,19 +73,10 @@ pub fn solver(part: Part, input: &str) -> Result<u16> {
     .context("No reindeer racing")
 }
 
-pub const INPUTS: [&str; 2] = [
+test_solver! {
     "\
 Comet can fly 14 km/s for 10 seconds, but then must rest for 127 seconds.
 Dancer can fly 16 km/s for 11 seconds, but then must rest for 162 seconds.
-",
-    include_input!(15 14),
-];
-
-#[test]
-fn solver_15_14() -> Result<()> {
-    assert_eq!(solver(Part1, INPUTS[0])?, 1120);
-    assert_eq!(solver(Part1, INPUTS[1])?, 2640);
-    assert_eq!(solver(Part2, INPUTS[0])?, 689);
-    assert_eq!(solver(Part2, INPUTS[1])?, 1102);
-    Ok(())
+" => (1120, 689),
+    include_input!(15 14) => (2640, 1102),
 }

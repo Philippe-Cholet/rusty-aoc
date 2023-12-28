@@ -22,11 +22,4 @@ pub fn solver(part: Part, input: &str) -> Result<u32> {
         .sum()
 }
 
-pub const INPUTS: [&str; 1] = [include_input!(15 02)];
-
-#[test]
-fn solver_15_02() -> Result<()> {
-    assert_eq!(solver(Part1, INPUTS[0])?, 1586300);
-    assert_eq!(solver(Part2, INPUTS[0])?, 3737498);
-    Ok(())
-}
+test_solver!(include_input!(15 02) => (1586300, 3737498));

@@ -21,14 +21,7 @@ pub fn solver(part: Part, input: &str) -> Result<u64> {
     Ok(model_number)
 }
 
-pub const INPUTS: [&str; 1] = [include_input!(21 24)];
-
-#[test]
-fn solver_21_24() -> Result<()> {
-    assert_eq!(solver(Part1, INPUTS[0])?, 99919692496939);
-    assert_eq!(solver(Part2, INPUTS[0])?, 81914111161714);
-    Ok(())
-}
+test_solver!(include_input!(21 24) => (99919692496939, 81914111161714));
 
 mod parser {
     use std::str::FromStr;

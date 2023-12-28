@@ -182,8 +182,9 @@ pub fn solver(part: Part, input: &str) -> Result<usize> {
         .product())
 }
 
-pub const INPUTS: [&str; 2] = [
-    "Monkey 0:
+test_solver! {
+    "\
+Monkey 0:
   Starting items: 79, 98
   Operation: new = old * 19
   Test: divisible by 23
@@ -210,15 +211,6 @@ Monkey 3:
   Test: divisible by 17
     If true: throw to monkey 0
     If false: throw to monkey 1
-",
-    include_input!(22 11),
-];
-
-#[test]
-fn solver_22_11() -> Result<()> {
-    assert_eq!(solver(Part1, INPUTS[0])?, 10605);
-    assert_eq!(solver(Part1, INPUTS[1])?, 99852);
-    assert_eq!(solver(Part2, INPUTS[0])?, 2713310158);
-    assert_eq!(solver(Part2, INPUTS[1])?, 25935263541);
-    Ok(())
+" => (10605, 2713310158),
+    include_input!(22 11) => (99852, 25935263541),
 }

@@ -77,7 +77,7 @@ pub fn solver(part: Part, input: &str) -> Result<usize> {
         .count())
 }
 
-pub const INPUTS: [&str; 2] = [
+test_solver! {
     "\
 L.LL.LL.LL
 LLLLLLL.LL
@@ -89,15 +89,6 @@ L.LLLLL.LL
 LLLLLLLLLL
 L.LLLLLL.L
 L.LLLLL.LL
-",
-    include_input!(20 11),
-];
-
-#[test]
-fn solver_20_11() -> Result<()> {
-    assert_eq!(solver(Part1, INPUTS[0])?, 37);
-    assert_eq!(solver(Part1, INPUTS[1])?, 2354);
-    assert_eq!(solver(Part2, INPUTS[0])?, 26);
-    assert_eq!(solver(Part2, INPUTS[1])?, 2072);
-    Ok(())
+" => (37, 26),
+    include_input!(20 11) => (2354, 2072),
 }

@@ -62,8 +62,9 @@ pub fn solver(part: Part, input: &str) -> Result<u32> {
     })
 }
 
-pub const INPUTS: [&str; 2] = [
-    "00100
+test_solver! {
+    "\
+00100
 11110
 10110
 10111
@@ -75,15 +76,6 @@ pub const INPUTS: [&str; 2] = [
 11001
 00010
 01010
-",
-    include_input!(21 03),
-];
-
-#[test]
-fn solver_21_03() -> Result<()> {
-    assert_eq!(solver(Part1, INPUTS[0])?, 198);
-    assert_eq!(solver(Part1, INPUTS[1])?, 3958484);
-    assert_eq!(solver(Part2, INPUTS[0])?, 230);
-    assert_eq!(solver(Part2, INPUTS[1])?, 1613181);
-    Ok(())
+" => (198, 230),
+    include_input!(21 03) => (3958484, 1613181),
 }

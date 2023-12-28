@@ -40,14 +40,9 @@ pub fn solver(part: Part, input: &str) -> Result<u16> {
     }
 }
 
-pub const INPUTS: [&str; 1] = [include_input!(20 05)];
-
-#[test]
-fn solver_20_05() -> Result<()> {
-    assert_eq!(solver(Part1, "BFFFBBFRRR")?, 567);
-    assert_eq!(solver(Part1, "FFFBBBFRRR")?, 119);
-    assert_eq!(solver(Part1, "BBFFBBFRLL")?, 820);
-    assert_eq!(solver(Part1, INPUTS[0])?, 989);
-    assert_eq!(solver(Part2, INPUTS[0])?, 548);
-    Ok(())
+test_solver! {
+    "BFFFBBFRRR" => 567,
+    "FFFBBBFRRR" => 119,
+    "BBFFBBFRLL" => 820,
+    include_input!(20 05) => (989, 548),
 }

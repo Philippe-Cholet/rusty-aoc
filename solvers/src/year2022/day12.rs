@@ -50,21 +50,13 @@ pub fn solver(part: Part, input: &str) -> Result<u32> {
         .context("No start?!")
 }
 
-pub const INPUTS: [&str; 2] = [
-    "Sabqponm
+test_solver! {
+    "\
+Sabqponm
 abcryxxl
 accszExk
 acctuvwj
 abdefghi
-",
-    include_input!(22 12),
-];
-
-#[test]
-fn solver_22_12() -> Result<()> {
-    assert_eq!(solver(Part1, INPUTS[0])?, 31);
-    assert_eq!(solver(Part1, INPUTS[1])?, 449);
-    assert_eq!(solver(Part2, INPUTS[0])?, 29);
-    assert_eq!(solver(Part2, INPUTS[1])?, 443);
-    Ok(())
+" => (31, 29),
+    include_input!(22 12) => (449, 443),
 }

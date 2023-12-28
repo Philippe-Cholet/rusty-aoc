@@ -71,13 +71,11 @@ pub fn solver(part: Part, input: &str) -> Result<usize> {
     Ok(count_actives(&flaten_array))
 }
 
-pub const INPUTS: [&str; 2] = [".#.\n..#\n###\n", include_input!(20 17)];
-
-#[test]
-fn solver_20_17() -> Result<()> {
-    assert_eq!(solver(Part1, INPUTS[0])?, 112);
-    assert_eq!(solver(Part1, INPUTS[1])?, 315);
-    assert_eq!(solver(Part2, INPUTS[0])?, 848);
-    assert_eq!(solver(Part2, INPUTS[1])?, 1520);
-    Ok(())
+test_solver! {
+    "\
+.#.
+..#
+###
+" => (112, 848),
+    include_input!(20 17) => (315, 1520),
 }

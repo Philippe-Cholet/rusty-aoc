@@ -152,22 +152,13 @@ impl std::str::FromStr for Hailstone {
     }
 }
 
-pub const INPUTS: [&str; 2] = [
+test_solver! {
     "\
 19, 13, 30 @ -2,  1, -2
 18, 19, 22 @ -1, -1, -2
 20, 25, 34 @ -2, -2, -4
 12, 31, 28 @ -1, -2, -1
 20, 19, 15 @  1, -5, -3
-",
-    include_input!(23 24),
-];
-
-#[test]
-fn solver_23_24() -> Result<()> {
-    assert_eq!(solver(Part1, INPUTS[0])?, 2);
-    assert_eq!(solver(Part1, INPUTS[1])?, 15593);
-    assert_eq!(solver(Part2, INPUTS[0])?, 47);
-    assert_eq!(solver(Part2, INPUTS[1])?, 757031940316991);
-    Ok(())
+" => (2, 47),
+    include_input!(23 24) => (15593, 757031940316991),
 }

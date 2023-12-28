@@ -239,29 +239,21 @@ fn final_conjunctions<T>(
     Ok((rx_idx, periods))
 }
 
-pub const INPUTS: [&str; 3] = [
+test_solver! {
     "\
 broadcaster -> a, b, c
 %a -> b
 %b -> c
 %c -> inv
 &inv -> a
-",
+" => 32000000, // 8000 low * 4000 high
     "\
 broadcaster -> a
 %a -> inv, con
 &inv -> b
 %b -> con
 &con -> output
-",
-    include_input!(23 20),
-];
-
-#[test]
-fn solver_23_20() -> Result<()> {
-    assert_eq!(solver(Part1, INPUTS[0])?, 32000000); // 8000 low * 4000 high
-    assert_eq!(solver(Part1, INPUTS[1])?, 11687500); // 4250 low * 2750 high
-    assert_eq!(solver(Part1, INPUTS[2])?, 731517480); // 17708 low * 41310 high
-    assert_eq!(solver(Part2, INPUTS[2])?, 244178746156661); // 4049 * 3761 * 3931 * 4079
-    Ok(())
+" => 11687500, // 4250 low * 2750 high
+    include_input!(23 20) => (731517480, 244178746156661),
+    // 17708 low * 41310 high, 4049 * 3761 * 3931 * 4079
 }

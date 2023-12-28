@@ -31,11 +31,7 @@ pub fn solver(part: Part, input: &str) -> Result<i64> {
     Ok(data[(i0 + 1000) % nb].1 + data[(i0 + 2000) % nb].1 + data[(i0 + 3000) % nb].1)
 }
 
-pub const INPUTS: [&str; 2] = ["1\n2\n-3\n3\n-2\n0\n4\n", include_input!(22 20)];
-
-#[test]
-fn solver_22_20() -> Result<()> {
-    assert_eq!(solver(Part1, INPUTS[1])?, 988);
-    assert_eq!(solver(Part2, INPUTS[1])?, 7768531372516);
-    Ok(())
+test_solver! {
+    "1\n2\n-3\n3\n-2\n0\n4" => (3, 1623178306),
+    include_input!(22 20) => (988, 7768531372516),
 }

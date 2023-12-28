@@ -27,26 +27,13 @@ pub fn solver(part: Part, input: &str) -> Result<u32> {
     Ok(n)
 }
 
-pub const INPUTS: [&str; 8] = [
-    "0,3,6",
-    "1,3,2",
-    "2,1,3",
-    "1,2,3",
-    "2,3,1",
-    "3,2,1",
-    "3,1,2",
-    include_input!(20 15),
-];
-
-#[test]
-fn solver_20_15() -> Result<()> {
-    let answers1 = [436, 1, 10, 27, 78, 438, 1836, 1696];
-    for (input, answer) in INPUTS.iter().zip(answers1) {
-        assert_eq!(solver(Part1, input)?, answer);
-    }
-    let answers2 = [175594, 2578, 3544142, 261214, 6895259, 18, 362, 37385];
-    for (input, answer) in INPUTS.iter().zip(answers2) {
-        assert_eq!(solver(Part2, input)?, answer);
-    }
-    Ok(())
+test_solver! {
+    "0,3,6" => (436, 175594),
+    "1,3,2" => (1, 2578),
+    "2,1,3" => (10, 3544142),
+    "1,2,3" => (27, 261214),
+    "2,3,1" => (78, 6895259),
+    "3,2,1" => (438, 18),
+    "3,1,2" => (1836, 362),
+    include_input!(20 15) => (1696, 37385),
 }

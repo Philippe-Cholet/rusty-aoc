@@ -56,24 +56,12 @@ fn mod_inv(a: i64, n: i64) -> Option<i64> {
     (r.0 <= 1).then_some(t.0)
 }
 
-pub const INPUTS: [&str; 2] = ["939\n7,13,x,x,59,x,31,19\n", include_input!(20 13)];
-
-#[test]
-fn solver_20_13() -> Result<()> {
-    assert_eq!(solver(Part1, INPUTS[0])?, 295);
-    assert_eq!(solver(Part1, INPUTS[1])?, 4938);
-    assert_eq!(solver(Part2, INPUTS[0])?, 1068781);
-    assert_eq!(solver(Part2, INPUTS[1])?, 230903629977901);
-    Ok(())
-}
-
-#[test]
-#[ignore]
-fn examples() -> Result<()> {
-    assert_eq!(solver(Part2, "0\n17,x,13,19")?, 3417);
-    assert_eq!(solver(Part2, "0\n67,7,59,61")?, 754018);
-    assert_eq!(solver(Part2, "0\n67,x,7,59,61")?, 779210);
-    assert_eq!(solver(Part2, "0\n67,7,x,59,61")?, 1261476);
-    assert_eq!(solver(Part2, "0\n1789,37,47,1889")?, 1202161486);
-    Ok(())
+test_solver! {
+    "939\n7,13,x,x,59,x,31,19" => (295, 1068781),
+    "0\n17,x,13,19" => ((), 3417),
+    "0\n67,7,59,61" => ((), 754018),
+    "0\n67,x,7,59,61" => ((), 779210),
+    "0\n67,7,x,59,61" => ((), 1261476),
+    "0\n1789,37,47,1889" => ((), 1202161486),
+    include_input!(20 13) => (4938, 230903629977901),
 }

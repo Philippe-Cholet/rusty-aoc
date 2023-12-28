@@ -51,13 +51,7 @@ pub fn solver(part: Part, input: &str) -> Result<i32> {
     }
 }
 
-pub const INPUTS: [&str; 2] = ["target area: x=20..30, y=-10..-5\n", include_input!(21 17)];
-
-#[test]
-fn solver_21_17() -> Result<()> {
-    assert_eq!(solver(Part1, INPUTS[0])?, 45);
-    assert_eq!(solver(Part1, INPUTS[1])?, 10585);
-    assert_eq!(solver(Part2, INPUTS[0])?, 112);
-    assert_eq!(solver(Part2, INPUTS[1])?, 5247);
-    Ok(())
+test_solver! {
+    "target area: x=20..30, y=-10..-5" => (45, 112),
+    include_input!(21 17) => (10585, 5247),
 }

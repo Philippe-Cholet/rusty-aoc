@@ -72,34 +72,8 @@ pub fn solver(part: Part, input: &str) -> Result<usize> {
     Ok(tail_pos.into_iter().unique().count())
 }
 
-pub const INPUTS: [&str; 3] = [
-    "R 4
-U 4
-L 3
-D 1
-R 4
-D 1
-L 5
-R 2
-",
-    "R 5
-U 8
-L 8
-D 3
-R 17
-D 10
-L 25
-U 20
-",
-    include_input!(22 09),
-];
-
-#[test]
-fn solver_22_09() -> Result<()> {
-    assert_eq!(solver(Part1, INPUTS[0])?, 13);
-    assert_eq!(solver(Part1, INPUTS[2])?, 6037);
-    assert_eq!(solver(Part2, INPUTS[0])?, 1);
-    assert_eq!(solver(Part2, INPUTS[1])?, 36);
-    assert_eq!(solver(Part2, INPUTS[2])?, 2485);
-    Ok(())
+test_solver! {
+    "R 4\nU 4\nL 3\nD 1\nR 4\nD 1\nL 5\nR 2" => (13, 1),
+    "R 5\nU 8\nL 8\nD 3\nR 17\nD 10\nL 25\nU 20" => ((), 36),
+    include_input!(22 09) => (6037, 2485),
 }

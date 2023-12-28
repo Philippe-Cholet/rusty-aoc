@@ -273,11 +273,4 @@ fn example() {
     // assert_eq!(g.exact_steps(5_000), 16_733_044);
 }
 
-pub const INPUTS: [&str; 1] = [include_input!(23 21)];
-
-#[test]
-fn solver_23_21() -> Result<()> {
-    assert_eq!(solver(Part1, INPUTS[0])?, 3591);
-    assert_eq!(solver(Part2, INPUTS[0])?, 598_044_246_091_826);
-    Ok(())
-}
+test_solver!(include_input!(23 21) => (3591, 598_044_246_091_826));

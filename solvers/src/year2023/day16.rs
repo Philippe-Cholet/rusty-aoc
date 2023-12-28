@@ -152,7 +152,7 @@ fn print_grid(grid: &Grid) {
     }
 }
 
-pub const INPUTS: [&str; 2] = [
+test_solver! {
     r".|...\....
 |.-.\.....
 .....|-...
@@ -163,15 +163,6 @@ pub const INPUTS: [&str; 2] = [
 .-.-/..|..
 .|....-|.\
 ..//.|....
-",
-    include_input!(23 16),
-];
-
-#[test]
-fn solver_23_16() -> Result<()> {
-    assert_eq!(solver(Part1, INPUTS[0])?, 46);
-    assert_eq!(solver(Part1, INPUTS[1])?, 8112);
-    assert_eq!(solver(Part2, INPUTS[0])?, 51);
-    assert_eq!(solver(Part2, INPUTS[1])?, 8314);
-    Ok(())
+" => (46, 51),
+    include_input!(23 16) => (8112, 8314),
 }

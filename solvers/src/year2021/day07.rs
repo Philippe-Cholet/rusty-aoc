@@ -23,13 +23,7 @@ pub fn solver(part: Part, input: &str) -> Result<u32> {
         .context("empty")
 }
 
-pub const INPUTS: [&str; 2] = ["16,1,2,0,4,2,7,1,2,14\n", include_input!(21 07)];
-
-#[test]
-fn solver_21_07() -> Result<()> {
-    assert_eq!(solver(Part1, INPUTS[0])?, 37);
-    assert_eq!(solver(Part1, INPUTS[1])?, 356922);
-    assert_eq!(solver(Part2, INPUTS[0])?, 168);
-    assert_eq!(solver(Part2, INPUTS[1])?, 100347031);
-    Ok(())
+test_solver! {
+    "16,1,2,0,4,2,7,1,2,14" => (37, 168),
+    include_input!(21 07) => (356922, 100347031),
 }

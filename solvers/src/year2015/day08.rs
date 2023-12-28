@@ -36,20 +36,11 @@ pub fn solver(part: Part, input: &str) -> Result<usize> {
         .sum()
 }
 
-pub const INPUTS: [&str; 2] = [
+test_solver! {
     r#"""
 "abc"
 "aaa\"aaa"
 "\x27"
-"#,
-    include_input!(15 08),
-];
-
-#[test]
-fn solver_15_08() -> Result<()> {
-    assert_eq!(solver(Part1, INPUTS[0])?, 12);
-    assert_eq!(solver(Part1, INPUTS[1])?, 1371);
-    assert_eq!(solver(Part2, INPUTS[0])?, 19);
-    assert_eq!(solver(Part2, INPUTS[1])?, 2117);
-    Ok(())
+"# => (12, 19),
+    include_input!(15 08) => (1371, 2117),
 }

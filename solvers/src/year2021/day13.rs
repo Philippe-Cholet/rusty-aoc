@@ -72,8 +72,9 @@ pub fn solver(part: Part, input: &str) -> Result<String> {
     })
 }
 
-pub const INPUTS: [&str; 2] = [
-    "6,10
+test_solver! {
+    "\
+6,10
 0,14
 9,10
 0,3
@@ -94,30 +95,17 @@ pub const INPUTS: [&str; 2] = [
 
 fold along y=7
 fold along x=5
-",
-    include_input!(21 13),
-];
-
-#[test]
-fn solver_21_13() -> Result<()> {
-    assert_eq!(solver(Part1, INPUTS[0])?, "17");
-    assert_eq!(solver(Part1, INPUTS[1])?, "607");
-    let answers = [
-        "\
+" => ("17", "\
 █████
 █░░░█
 █░░░█
 █░░░█
-█████",
-        "\
+█████"), // Squared O
+    include_input!(21 13) => ("607", "\
 ░██░░███░░████░█░░░░███░░████░████░█░░░
 █░░█░█░░█░░░░█░█░░░░█░░█░█░░░░░░░█░█░░░
 █░░░░█░░█░░░█░░█░░░░█░░█░███░░░░█░░█░░░
 █░░░░███░░░█░░░█░░░░███░░█░░░░░█░░░█░░░
 █░░█░█░░░░█░░░░█░░░░█░░░░█░░░░█░░░░█░░░
-░██░░█░░░░████░████░█░░░░█░░░░████░████",
-    ];
-    assert_eq!(solver(Part2, INPUTS[0])?, answers[0]); // Squared O
-    assert_eq!(solver(Part2, INPUTS[1])?, answers[1]); // CPZLPFZL
-    Ok(())
+░██░░█░░░░████░████░█░░░░█░░░░████░████"), // CPZLPFZL
 }

@@ -209,8 +209,9 @@ pub fn solver(part: Part, input: &str) -> Result<i64> {
     monkey_values["humn"].context("Failed to solve")
 }
 
-pub const INPUTS: [&str; 2] = [
-    "root: pppw + sjmn
+test_solver! {
+    "\
+root: pppw + sjmn
 dbpl: 5
 cczh: sllz + lgvd
 zczc: 2
@@ -225,15 +226,6 @@ pppw: cczh / lfqf
 lgvd: ljgn * ptdq
 drzm: hmdt - zczc
 hmdt: 32
-",
-    include_input!(22 21),
-];
-
-#[test]
-fn solver_22_21() -> Result<()> {
-    assert_eq!(solver(Part1, INPUTS[0])?, 152);
-    assert_eq!(solver(Part1, INPUTS[1])?, 256997859093114);
-    assert_eq!(solver(Part2, INPUTS[0])?, 301);
-    assert_eq!(solver(Part2, INPUTS[1])?, 3952288690726);
-    Ok(())
+" => (152, 301),
+    include_input!(22 21) => (256997859093114, 3952288690726),
 }

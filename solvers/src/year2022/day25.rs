@@ -45,8 +45,11 @@ fn int_to_snafu(mut n: i64) -> String {
     snafu
 }
 
-pub const INPUTS: [&str; 2] = [
-    "1=-0-2
+const SUCCESS: &str = "It's time for the reindeer to get its star-smoothie.";
+
+test_solver! {
+    "\
+1=-0-2
 12111
 2=0=
 21
@@ -59,17 +62,6 @@ pub const INPUTS: [&str; 2] = [
 12
 1=
 122
-",
-    include_input!(22 25),
-];
-
-const SUCCESS: &str = "It's time for the reindeer to get its star-smoothie.";
-
-#[test]
-fn solver_22_25() -> Result<()> {
-    assert_eq!(solver(Part1, INPUTS[0])?, "2=-1=0");
-    assert_eq!(solver(Part1, INPUTS[1])?, "20=02=120-=-2110-0=1");
-    assert_eq!(solver(Part2, INPUTS[0])?, SUCCESS);
-    assert_eq!(solver(Part2, INPUTS[1])?, SUCCESS);
-    Ok(())
+" => "2=-1=0",
+    include_input!(22 25) => "20=02=120-=-2110-0=1",
 }

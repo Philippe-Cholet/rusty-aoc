@@ -173,13 +173,7 @@ pub fn solver(part: Part, input: &str) -> Result<u32> {
     }
 }
 
-pub const INPUTS: [&str; 2] = [include_str!("day19-example.txt"), include_input!(21 19)];
-
-#[test]
-fn solver_21_19() -> Result<()> {
-    assert_eq!(solver(Part1, INPUTS[0])?, 79);
-    assert_eq!(solver(Part1, INPUTS[1])?, 434);
-    assert_eq!(solver(Part2, INPUTS[0])?, 3621);
-    assert_eq!(solver(Part2, INPUTS[1])?, 11906);
-    Ok(())
+test_solver! {
+    include_str!("day19-example.txt") => (79, 3621),
+    include_input!(21 19) => (434, 11906)
 }

@@ -141,8 +141,8 @@ pub fn solver(part: Part, input: &str) -> Result<usize> {
     }
 }
 
-pub const INPUTS: [&str; 3] = [
-    "acedgfb cdfbe gcdfa fbcad dab cefabd cdfgeb eafb cagedb ab | cdfeb fcadb cdfeb cdbaf",
+test_solver! {
+    "acedgfb cdfbe gcdfa fbcad dab cefabd cdfgeb eafb cagedb ab | cdfeb fcadb cdfeb cdbaf" => (0, 5353),
     "be cfbegad cbdgef fgaecd cgeb fdcge agebfd fecdb fabcd edb | fdgacbe cefdb cefbgd gcbe
 edbfga begcd cbg gc gcadebf fbgde acbgfd abcde gfcbed gfec | fcgedb cgb dgebacf gc
 fgaebd cg bdaec gdafb agbcfd gdcbef bgcad gfac gcb cdgabef | cg cg fdcagb cbg
@@ -153,17 +153,6 @@ dbcfg fgd bdegcaf fgec aegbdf ecdfab fbedc dacgb gdcebf gf | cefg dcbef fcge gbc
 bdfegc cbegaf gecbf dfcage bdacg ed bedf ced adcbefg gebcd | ed bcgafe cdgba cbgef
 egadfb cdbfeg cegd fecab cgb gbdefca cg fgcdab egfdb bfceg | gbdfcae bgc cg cgb
 gcafb gcf dcaebfg ecagb gf abcdeg gaef cafbge fdbac fegbdc | fgae cfgab fg bagce
-",
-    include_input!(21 08),
-];
-
-#[test]
-fn solver_21_08() -> Result<()> {
-    assert_eq!(solver(Part1, INPUTS[0])?, 0);
-    assert_eq!(solver(Part1, INPUTS[1])?, 26);
-    assert_eq!(solver(Part1, INPUTS[2])?, 301);
-    assert_eq!(solver(Part2, INPUTS[0])?, 5353);
-    assert_eq!(solver(Part2, INPUTS[1])?, 61229);
-    assert_eq!(solver(Part2, INPUTS[2])?, 908067);
-    Ok(())
+" => (26, 61229),
+    include_input!(21 08) => (301, 908067),
 }

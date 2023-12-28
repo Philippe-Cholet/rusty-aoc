@@ -54,15 +54,9 @@ fn checked_mod_pow(mut n: u64, mut exp: u64, modulus: u64) -> Option<u64> {
     Some(res)
 }
 
-pub const INPUTS: [&str; 2] = ["5764801\n17807724\n", include_input!(20 25)];
-
 const SUCCESS: &str = "Time to pay the resort and take a ride in Santa' sleigh.";
 
-#[test]
-fn solver_20_25() -> Result<()> {
-    assert_eq!(solver(Part1, INPUTS[0])?, "14897079");
-    assert_eq!(solver(Part1, INPUTS[1])?, "12285001");
-    assert_eq!(solver(Part2, INPUTS[0])?, SUCCESS);
-    assert_eq!(solver(Part2, INPUTS[1])?, SUCCESS);
-    Ok(())
+test_solver! {
+    "5764801\n17807724" => "14897079",
+    include_input!(20 25) => "12285001",
 }
