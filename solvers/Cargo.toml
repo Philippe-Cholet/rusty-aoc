@@ -35,3 +35,10 @@ rand = "0.8.5"                # For random algorithms
 serde_json = "1.0.108"        # JSON
 common = { path = "../common" }
 # Maybe "smallvec/arrayvec/tinyvec" and "rayon" later but it does not seem to really fasten my code.
+
+[dev-dependencies]
+criterion = "0.5.1"
+
+[[bench]]
+name = "solvers"
+harness = false
