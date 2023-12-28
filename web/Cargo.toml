@@ -9,9 +9,9 @@ repository.workspace = true
 license.workspace = true
 
 [dependencies]
-clap.workspace = true
-thiserror.workspace = true
-ureq.workspace = true
-native-tls.workspace = true
-webbrowser.workspace = true
+clap = { version = "4.4.10", features = ["derive"] }
+thiserror = "1.0.50"
+ureq = { version = "2.9.1", default-features = false, features = ["native-tls"] }
+native-tls = "0" # Let ureq decide the version.
+webbrowser = "0.8.12"
 common = { path = "../common" }

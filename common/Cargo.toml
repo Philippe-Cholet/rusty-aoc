@@ -13,5 +13,5 @@ test = false
 doctest = false
 
 [dependencies]
-anyhow.workspace = true
-rustc-hash.workspace = true
+anyhow = "1.0.75"             # Error handling
+rustc-hash = "1.1.0"          # Non-cryptographic but faster hasher

@@ -56,31 +56,6 @@ The session cookie can be hold in an environment variable (`AOC_TOKEN` by defaul
     cargo web [--token <TOKEN>] <YEAR> <DAY> download [--calendar <FILEPATH>] [--description <FILEPATH>] [--input <FILEPATH>]
     cargo web [--token <TOKEN>] <YEAR> <DAY> submit <PART> <ANSWER>
 
-### Current dependencies
-- **anyhow:** error handling
-- **rustc-hash:** non-cryptographic but faster hasher
-- **itertools:** iterators are nice
-- **petgraph:** graph algorithms
-- **ndarray:** n-dimensional arrays
-- **num-integer:** integer operations
-- **pest:** Parsing Expression Grammar
-- **md5:** hash function
-- **serde_json:** handle JSON
-- **permutohedron:** permutations using Heap's algorithm (without heap allocation)
-- **memchr:** fast substring search
-- **rand** for random algorithms
-- **good_lp (optional):** linear programming
-
-but I might need "regex", "num" at some point, eventually others.
-
-I also thought about "smallvec" and "rayon" but it does not seem to really fasten my code.
-
-#### Non-solver dependencies
-- **clap** for a nice command line interface
-- **ureq** for simple http requests
-- **thiserror** for a nice library error type
-- **webbrowser** to open a webpage
-
 ## Roadmap
 - Expand/Improve my utilities.
 - Solve puzzles.

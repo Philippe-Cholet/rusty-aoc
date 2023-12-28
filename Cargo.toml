@@ -14,16 +14,6 @@ authors = ["Philippe Cholet"]
 repository = "https://github.com/Philippe-Cholet/rusty-aoc"
 license = "MIT OR Apache-2.0"
 
-[workspace.dependencies]
-anyhow = "1.0.75"
-itertools = "0.12.0"
-rustc-hash = "1.1.0"
-clap = { version = "4.4.10", features = ["derive"] }
-thiserror = "1.0.50"
-ureq = { version = "2.9.1", default-features = false, features = ["native-tls"] }
-native-tls = "0" # Let ureq decide the version.
-webbrowser = "0.8.12"
-
 [profile.final]
 inherits = "release"
 lto = true
