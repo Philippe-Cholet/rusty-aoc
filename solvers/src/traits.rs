@@ -9,6 +9,11 @@ pub trait AocSolver {
     fn timed_solve(&self, part: Part, input: &str) -> Result<(String, Duration)>;
 }
 
+/// Useful for a nice `test_solver` macro.
+pub trait TestAnswers<T>: Sized {
+    fn test_answers(&self) -> [Option<&T>; 2];
+}
+
 impl SolverAnswer for String {}
 impl SolverAnswer for &'static str {}
 impl SolverAnswer for u8 {}
@@ -38,5 +43,29 @@ where
         let t = self(part, input)?;
         let elapsed = now.elapsed();
         Ok((t.to_string(), elapsed))
+    }
+}
+
+impl<T: SolverAnswer> TestAnswers<T> for T {
+    fn test_answers(&self) -> [Option<&T>; 2] {
+        [Some(self), None]
+    }
+}
+
+impl<T: SolverAnswer> TestAnswers<T> for (T,) {
+    fn test_answers(&self) -> [Option<&T>; 2] {
+        [Some(&self.0), None]
+    }
+}
+
+impl<T: SolverAnswer> TestAnswers<T> for ((), T) {
+    fn test_answers(&self) -> [Option<&T>; 2] {
+        [None, Some(&self.1)]
+    }
+}
+
+impl<T: SolverAnswer> TestAnswers<T> for (T, T) {
+    fn test_answers(&self) -> [Option<&T>; 2] {
+        [&self.0, &self.1].map(Some)
     }
 }
