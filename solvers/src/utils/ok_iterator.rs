@@ -5,9 +5,8 @@ use std::{
     iter::{Product, Sum},
 };
 
-use anyhow::{format_err, Error, Ok as ok, Result};
-
 use common::hash::prelude::*;
+use common::{format_err, Error, Ok as ok, Result};
 
 /// An interface for dealing with iterators of results and shortcuts to collect into usual types.
 pub trait OkIterator<T, E>

@@ -1,4 +1,4 @@
-use anyhow::Result;
+use common::Result;
 
 pub fn parse<'a, It, T, F>(s: It, mut parser: F) -> Result<Vec<Vec<T>>>
 where
