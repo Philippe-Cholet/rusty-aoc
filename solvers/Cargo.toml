@@ -37,7 +37,8 @@ common = { path = "../common" }
 # Maybe "smallvec/arrayvec/tinyvec" and "rayon" later but it does not seem to really fasten my code.
 
 [dev-dependencies]
-criterion = "0.5.1"
+# Disabled features: rayon, plotters
+criterion = { version = "0.5.1", default-features = false, features = ["cargo_bench_support"] }
 
 [[bench]]
 name = "solvers"
