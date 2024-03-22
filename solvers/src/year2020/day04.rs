@@ -1,6 +1,7 @@
 use common::prelude::*;
 use crate::utils::OkIterator;
 
+#[allow(clippy::struct_field_names)] // Passport::passport_id
 #[derive(Debug)]
 struct Passport<'a> {
     birth_year: Option<&'a str>,

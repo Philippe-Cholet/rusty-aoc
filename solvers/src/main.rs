@@ -86,7 +86,7 @@ impl Args {
         }
         ensure!(args.len() <= 4, "Up to four arguments expected");
         Ok(Self {
-            year: args.get(0).map(|s| s.parse()).transpose()?,
+            year: args.first().map(|s| s.parse()).transpose()?,
             day: args.get(1).map(|s| s.parse()).transpose()?,
             part: args.get(2).map(|s| s.parse()).transpose()?,
             index: args.get(3).map(|s| s.parse()).transpose()?,

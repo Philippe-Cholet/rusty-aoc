@@ -8,7 +8,7 @@ pub fn solver(part: Part, input: &str) -> Result<usize> {
         '.' => Ok(false),
         _ => bail!("Wrong char: {}", ch),
     })?;
-    let width = data.get(0).context("Empty grid")?.len();
+    let width = data.first().context("Empty grid")?.len();
     ensure!(
         data.iter().all(|row| row.len() == width),
         "The grid is not rectangular",
