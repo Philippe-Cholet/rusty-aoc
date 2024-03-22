@@ -20,25 +20,25 @@ doctest = false
 lp = ["dep:good_lp"]
 
 [dependencies]
-paste = "1.0.14"              # For simple macros, to avoid manual procedural macros
-good_lp = { version = "1.7.0", features = ["lp-solvers"], default-features = false, optional = true } # Linear programming
-itertools = "0.12.0"          # Iterators are nice
-md5 = "0.7.0"                 # Hash function
-memchr = "2.6.4"              # Fast substring search
-ndarray = "0.15.6"            # N-dimensional arrays
-num-integer = "0.1.45"        # Integer operations
-permutohedron = "0.2.4"       # Permutations using Heap's algorithm (without heap allocation)
-pest = "2.7.5"                # Parsing Expression Grammar
-pest_derive = "2.7.5"
-petgraph = "0.6.4"            # Graph algorithms
-rand = "0.8.5"                # For random algorithms
-serde_json = "1.0.108"        # JSON
+paste = "1"                   # For simple macros, to avoid manual procedural macros
+good_lp = { version = "1.7", features = ["lp-solvers"], default-features = false, optional = true } # Linear programming
+itertools = "0.12"            # Iterators are nice
+md5 = "0.7"                   # Hash function
+memchr = "2"                  # Fast substring search
+ndarray = "0.15"              # N-dimensional arrays
+num-integer = "0.1"           # Integer operations
+permutohedron = "0.2"         # Permutations using Heap's algorithm (without heap allocation)
+pest = "2.7"                  # Parsing Expression Grammar
+pest_derive = "2.7"
+petgraph = "0.6"              # Graph algorithms
+rand = "0.8"                  # For random algorithms
+serde_json = "1"              # JSON
 common = { path = "../common" }
 # Maybe "smallvec/arrayvec/tinyvec" and "rayon" later but it does not seem to really fasten my code.
 
 [dev-dependencies]
 # Disabled features: rayon, plotters
-criterion = { version = "0.5.1", default-features = false, features = ["cargo_bench_support"] }
+criterion = { version = "0.5", default-features = false, features = ["cargo_bench_support"] }
 
 [[bench]]
 name = "solvers"

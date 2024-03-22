@@ -13,5 +13,5 @@ test = false
 doctest = false
 
 [dependencies]
-anyhow = "1.0.75"             # Error handling
-rustc-hash = "1.1.0"          # Non-cryptographic but faster hasher
+anyhow = "1.0"                # Error handling
+rustc-hash = "1.1"            # Non-cryptographic but faster hasher
