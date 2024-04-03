@@ -9,6 +9,7 @@ pub trait AocSolver {
     fn timed_solve(&self, part: Part, input: &str) -> Result<(String, Duration)>;
 }
 
+#[cfg(test)]
 /// Useful for a nice `test_solver` macro.
 pub trait TestAnswers<T>: Sized {
     fn test_answers(&self) -> [Option<&T>; 2];
@@ -46,24 +47,28 @@ where
     }
 }
 
+#[cfg(test)]
 impl<T: SolverAnswer> TestAnswers<T> for T {
     fn test_answers(&self) -> [Option<&T>; 2] {
         [Some(self), None]
     }
 }
 
+#[cfg(test)]
 impl<T: SolverAnswer> TestAnswers<T> for (T,) {
     fn test_answers(&self) -> [Option<&T>; 2] {
         [Some(&self.0), None]
     }
 }
 
+#[cfg(test)]
 impl<T: SolverAnswer> TestAnswers<T> for ((), T) {
     fn test_answers(&self) -> [Option<&T>; 2] {
         [None, Some(&self.1)]
     }
 }
 
+#[cfg(test)]
 impl<T: SolverAnswer> TestAnswers<T> for (T, T) {
     fn test_answers(&self) -> [Option<&T>; 2] {
         [&self.0, &self.1].map(Some)
