@@ -232,10 +232,8 @@ impl Part {
         matches!(self, Part2)
     }
 
-    // Can not be const because `one` or `two` is dropped and the destructor might not be evaluated at compile time.
-    #[allow(clippy::missing_const_for_fn)]
     #[inline]
-    pub fn value<T>(self, one: T, two: T) -> T {
+    pub const fn value<T: Copy>(self, one: T, two: T) -> T {
         match self {
             Part1 => one,
             Part2 => two,
