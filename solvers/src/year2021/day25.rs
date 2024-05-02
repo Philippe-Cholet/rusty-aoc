@@ -3,7 +3,7 @@ use crate::utils::parse_to_grid;
 
 use SeaCucumberKind::{East, South};
 
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, Copy, PartialEq)]
 enum SeaCucumberKind {
     East,
     South,
@@ -37,10 +37,10 @@ pub fn solver(part: Part, input: &str) -> Result<String> {
         for direction in [East, South] {
             let mut new_grid = vec![vec![None; ncols]; nrows];
             for (r, row) in grid.iter().enumerate() {
-                for (c, cucumber) in row.iter().enumerate() {
+                for (c, cucumber) in row.iter().copied().enumerate() {
                     let (r2, c2) = match cucumber {
                         None => continue,
-                        Some(dir) if dir != &direction => (r, c),
+                        Some(dir) if dir != direction => (r, c),
                         _ => {
                             let (r1, c1) = match direction {
                                 East => (r, (c + 1) % ncols),
@@ -54,7 +54,7 @@ pub fn solver(part: Part, input: &str) -> Result<String> {
                             }
                         }
                     };
-                    new_grid[r2][c2] = cucumber.clone();
+                    new_grid[r2][c2] = cucumber;
                 }
             }
             grid = new_grid;
