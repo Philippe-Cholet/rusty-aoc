@@ -2,6 +2,12 @@ use common::{bail, Day, Result, Year};
 
 use crate::traits::AocSolver;
 
+#[cfg(feature = "trace_alloc")]
+#[global_allocator]
+pub static ALLOCATOR: allocator::CounterAllocator = allocator::CounterAllocator::new();
+
+#[cfg(feature = "trace_alloc")]
+mod allocator;
 #[macro_use]
 mod macros;
 mod traits;

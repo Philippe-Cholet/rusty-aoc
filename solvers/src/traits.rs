@@ -2,11 +2,16 @@ use std::time::{Duration, Instant};
 
 use common::{Part, Result};
 
+#[cfg(feature = "trace_alloc")]
+use crate::{allocator::AllocInfos, ALLOCATOR};
+
 trait SolverAnswer: std::fmt::Display {}
 
 pub trait AocSolver {
     fn solve(&self, part: Part, input: &str) -> Result<String>;
     fn timed_solve(&self, part: Part, input: &str) -> Result<(String, Duration)>;
+    #[cfg(feature = "trace_alloc")]
+    fn alloc_solve(&self, part: Part, input: &str) -> Result<(String, AllocInfos)>;
 }
 
 #[cfg(test)]
@@ -44,6 +49,14 @@ where
         let t = self(part, input)?;
         let elapsed = now.elapsed();
         Ok((t.to_string(), elapsed))
+    }
+
+    #[cfg(feature = "trace_alloc")]
+    fn alloc_solve(&self, part: Part, input: &str) -> Result<(String, AllocInfos)> {
+        ALLOCATOR.reset();
+        let t = self(part, input)?;
+        let infos = ALLOCATOR.infos();
+        Ok((t.to_string(), infos))
     }
 }
 

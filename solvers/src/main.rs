@@ -22,7 +22,10 @@ fn run_some_inputs(year: Year, day: Day, parts: &[Part], index: Option<usize>) -
             println!("\n{part:?} input #{input_idx}:");
             let input = inputs[*input_idx];
             ensure!(!input.is_empty(), "Empty input: you forgot to fill it?!");
+            #[cfg(not(feature = "trace_alloc"))]
             let (result, t) = solver.timed_solve(part, input)?;
+            #[cfg(feature = "trace_alloc")]
+            let (result, t) = solver.alloc_solve(part, input)?;
             println!("[ Done in {t:?} ]\n{result}");
         }
     }

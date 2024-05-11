@@ -17,6 +17,8 @@ test = false
 doctest = false
 
 [features]
+default = ["trace_alloc"]
+trace_alloc = []
 lp = ["dep:good_lp"]
 
 [dependencies]
