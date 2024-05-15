@@ -22,7 +22,7 @@ lp = ["dep:good_lp"]
 [dependencies]
 paste = "1"                   # For simple macros, to avoid manual procedural macros
 good_lp = { version = "1.7", features = ["lp-solvers"], default-features = false, optional = true } # Linear programming
-itertools = "0.12"            # Iterators are nice
+itertools = "0.13"            # Iterators are nice
 md5 = "0.7"                   # Hash function
 memchr = "2"                  # Fast substring search
 ndarray = "0.15"              # N-dimensional arrays

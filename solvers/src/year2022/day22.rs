@@ -249,7 +249,7 @@ pub fn solver(part: Part, input: &str) -> Result<usize> {
     grid.push((0..ncols).map(|_| Tile::Void).collect());
     let instructions = line
         .chars()
-        .group_by(char::is_ascii_digit)
+        .chunk_by(char::is_ascii_digit)
         .into_iter()
         .map(|(b, mut group)| {
             let t = group.join("");

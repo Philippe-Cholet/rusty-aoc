@@ -13,5 +13,5 @@ clap = { version = "4.5", features = ["derive"] }
 thiserror = "1.0"
 ureq = { version = "2.9", default-features = false, features = ["native-tls"] }
 native-tls = "0" # Let ureq decide the version.
-webbrowser = "0.8"
+webbrowser = "1"
 common = { path = "../common" }

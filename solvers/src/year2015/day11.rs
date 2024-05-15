@@ -78,7 +78,7 @@ impl Password {
             && self
                 .0
                 .iter()
-                .group_by(|n| **n)
+                .chunk_by(|n| **n)
                 .into_iter()
                 .map(|(_, g)| g.count() / 2)
                 .sum::<usize>()
