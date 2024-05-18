@@ -174,11 +174,7 @@ pub fn solver(part: Part, input: &str) -> Result<usize> {
     Ok(monkeys
         .into_iter()
         .map(|m| m.inspected_items)
-        // https://github.com/rust-itertools/itertools/issues/586
-        // there is not a `k_largest` so...
-        .map(std::cmp::Reverse) // reverse comparisons
-        .k_smallest(2) // get smallests
-        .map(|rev| rev.0) // unpack reversed
+        .k_largest(2)
         .product())
 }
 
