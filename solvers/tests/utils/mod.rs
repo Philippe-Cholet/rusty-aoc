@@ -48,6 +48,7 @@ macro_rules! test_collection {
     ) => {
         paste::paste! {
             $(
+                #[allow(clippy::zero_prefixed_literal)] // 0s needed for `stringify`.
                 #[allow(non_snake_case)] // Usernames are not formatted.
                 #[test]
                 fn [<$username _ $year>]() -> common::Result<()> {

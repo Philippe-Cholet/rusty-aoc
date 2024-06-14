@@ -11,7 +11,7 @@ macro_rules! seat_position {
                 $upper => Ok(true),
                 _ => bail!("Not {}/{} but {}", $lower, $upper, ch),
             })
-            .ok_fold(0, |res, b| (res << 1) | (b as u16))
+            .ok_fold(0, |res, b| (res << 1) | u16::from(b))
     };
 }
 

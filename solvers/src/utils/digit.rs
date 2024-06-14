@@ -39,7 +39,7 @@ mod tests {
             assert_eq!(char10::<u64>(ch)?, dec as u64);
             assert_eq!(char10::<i128>(ch)?, dec as i128);
             assert_eq!(char10::<u128>(ch)?, dec as u128);
-            assert_eq!(char10::<usize>(ch)?, dec as usize);
+            assert_eq!(char10::<usize>(ch)?, dec);
             assert_eq!(char10::<isize>(ch)?, dec as isize);
             // As long as it can infer the type.
             let _x: Vec<i32> = vec![char10(ch)?];
@@ -69,7 +69,7 @@ mod tests {
             assert_eq!(char16::<u64>(ch)?, hex as u64);
             assert_eq!(char16::<i128>(ch)?, hex as i128);
             assert_eq!(char16::<u128>(ch)?, hex as u128);
-            assert_eq!(char16::<usize>(ch)?, hex as usize);
+            assert_eq!(char16::<usize>(ch)?, hex);
             assert_eq!(char16::<isize>(ch)?, hex as isize);
             // As long as it can infer the type.
             let _x: Vec<i32> = vec![char16(ch)?];

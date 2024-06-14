@@ -48,6 +48,7 @@ macro_rules! test_solver {
         fn test_solver() -> ::common::Result<()> {
             use crate::traits::TestAnswers;
             let inputs = INPUTS;
+            #[allow(clippy::identity_op)]
             let all_answers = [$($answers.test_answers()),*];
             for (part_idx, part) in ::common::Part::ALL.into_iter().enumerate() {
                 for (test_idx, (input, answers)) in inputs.iter().zip(&all_answers).enumerate() {
